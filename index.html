@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Municipalidad de Esquina — Inicio</title>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --azul:#0077c0; --azul-dark:#005a91; --azul-light:#e6f3fb;
+  --amarillo:#ffcc00; --amarillo-dark:#d4a900; --amarillo-light:#fffbe6;
+  --oscuro:#2b2b2b; --gris:#6b6b6b; --gris-claro:#e8e8e8;
+  --fondo:#f5f5f5; --blanco:#fff; --borde:#ddd;
+  --verde:#2e7d32; --verde-light:#e8f5e9;
+  --rojo:#c62828; --rojo-light:#ffebee;
+  --font-body:Verdana,Geneva,sans-serif; --font-d:'Dosis',sans-serif;
+}
+body { font-family:var(--font-body); background:var(--fondo); color:var(--oscuro); font-size:14px; line-height:1.6; }
+.demo-bar { background:var(--amarillo); color:var(--oscuro); text-align:center; padding:7px 1rem; font-family:var(--font-d); font-size:12px; font-weight:700; }
+
+/* HERO */
+.hero { position:relative; height:520px; overflow:hidden; display:flex; align-items:flex-end; }
+.hero-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 60%; }
+.hero-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,30,60,.92) 0%,rgba(0,40,80,.5) 45%,rgba(0,40,80,.1) 100%); }
+.hero-content { position:relative; z-index:2; width:100%; max-width:1200px; margin:0 auto; padding:0 2rem 3rem; }
+.hero-eyebrow { display:inline-flex; align-items:center; gap:8px; background:rgba(255,204,0,.18); border:1px solid rgba(255,204,0,.4); color:var(--amarillo); font-family:var(--font-d); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:5px 14px; border-radius:4px; margin-bottom:14px; }
+.hero h1 { font-family:var(--font-d); font-size:clamp(2rem,5vw,3.5rem); font-weight:800; color:white; line-height:1.1; margin-bottom:12px; }
+.hero h1 span { color:var(--amarillo); }
+.hero-sub { color:rgba(255,255,255,.75); font-size:15px; max-width:500px; margin-bottom:2rem; line-height:1.65; }
+.hero-btns { display:flex; gap:12px; flex-wrap:wrap; }
+.btn-am { background:var(--amarillo); color:var(--oscuro); font-family:var(--font-d); font-weight:700; font-size:13px; padding:12px 24px; border-radius:6px; text-decoration:none; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:background .15s,transform .1s; letter-spacing:.02em; text-transform:uppercase; }
+.btn-am:hover { background:var(--amarillo-dark); transform:translateY(-1px); }
+.btn-ow { background:transparent; color:white; font-family:var(--font-d); font-weight:600; font-size:13px; padding:11px 24px; border-radius:6px; text-decoration:none; border:1.5px solid rgba(255,255,255,.45); cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:border-color .15s,background .15s; letter-spacing:.02em; text-transform:uppercase; }
+.btn-ow:hover { border-color:white; background:rgba(255,255,255,.1); }
+
+/* BÚSQUEDA */
+.search-section { background:white; border-bottom:2px solid var(--gris-claro); padding:1.25rem 0; }
+.search-inner { max-width:1200px; margin:0 auto; padding:0 2rem; display:flex; gap:12px; align-items:center; }
+.search-wrap { flex:1; display:flex; align-items:center; gap:10px; border:2px solid var(--gris-claro); border-radius:8px; padding:0 14px; height:46px; transition:border-color .15s; background:var(--fondo); }
+.search-wrap:focus-within { border-color:var(--azul); background:white; }
+.search-wrap input { border:none; background:transparent; font-family:var(--font-body); font-size:13px; color:var(--oscuro); width:100%; outline:none; }
+.search-btn { background:var(--azul); color:white; font-family:var(--font-d); font-size:12px; font-weight:700; padding:0 18px; height:46px; border:none; border-radius:8px; cursor:pointer; text-transform:uppercase; letter-spacing:.04em; transition:background .15s; white-space:nowrap; }
+.search-btn:hover { background:var(--azul-dark); }
+.search-tags { display:flex; gap:8px; flex-wrap:wrap; }
+.search-tag { font-family:var(--font-d); font-size:11px; font-weight:600; color:var(--azul); background:var(--azul-light); border:1px solid rgba(0,119,192,.2); padding:4px 12px; border-radius:4px; cursor:pointer; transition:background .15s; white-space:nowrap; text-transform:uppercase; letter-spacing:.04em; text-decoration:none; }
+.search-tag:hover { background:rgba(0,119,192,.15); }
+
+/* ACCESOS */
+.accesos { background:var(--oscuro); padding:1.75rem 0; }
+.accesos-in { max-width:1200px; margin:0 auto; padding:0 2rem; }
+.accesos-lbl { font-family:var(--font-d); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:12px; }
+.accesos-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:10px; }
+.acceso { display:flex; flex-direction:column; align-items:center; gap:8px; padding:1rem .75rem; border-radius:8px; border:1.5px solid rgba(255,255,255,.1); background:rgba(255,255,255,.05); cursor:pointer; text-decoration:none; color:rgba(255,255,255,.85); transition:border-color .15s,background .15s,transform .1s; text-align:center; }
+.acceso:hover { border-color:var(--amarillo); background:rgba(255,204,0,.08); transform:translateY(-2px); }
+.acceso-ic { width:42px; height:42px; border-radius:8px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; font-size:18px; transition:background .15s; }
+.acceso:hover .acceso-ic { background:rgba(255,204,0,.15); }
+.acceso span { font-family:var(--font-d); font-size:11px; font-weight:600; line-height:1.3; text-transform:uppercase; letter-spacing:.03em; color:rgba(255,255,255,.8); }
+
+/* MAIN */
+.main-grid { max-width:1200px; margin:2.5rem auto; padding:0 2rem; display:grid; grid-template-columns:1fr 340px; gap:2rem; }
+.section-title { font-family:var(--font-d); font-size:1.25rem; font-weight:800; color:var(--azul); margin-bottom:1.25rem; display:flex; align-items:center; justify-content:space-between; text-transform:uppercase; letter-spacing:.02em; padding-bottom:10px; border-bottom:3px solid var(--amarillo); }
+.section-title a { font-size:12px; font-weight:600; color:var(--gris); text-decoration:none; text-transform:none; letter-spacing:0; display:flex; align-items:center; gap:4px; }
+.section-title a:hover { color:var(--azul); }
+
+/* NOTICIAS */
+.noticias-grid { display:flex; flex-direction:column; gap:1px; background:var(--gris-claro); border-radius:8px; overflow:hidden; border:1px solid var(--gris-claro); }
+.noticia-card { background:white; display:flex; gap:1rem; padding:1rem 1.25rem; cursor:pointer; text-decoration:none; color:inherit; transition:background .12s; }
+.noticia-card:hover { background:var(--azul-light); }
+.noticia-thumb { width:82px; height:72px; border-radius:6px; flex-shrink:0; overflow:hidden; }
+.noticia-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.noticia-content { flex:1; min-width:0; }
+.noticia-cat { font-family:var(--font-d); font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:2px 8px; border-radius:3px; margin-bottom:5px; display:inline-block; }
+.cat-gobierno { background:var(--azul-light); color:var(--azul-dark); }
+.cat-turismo  { background:rgba(255,204,0,.15); color:#7a5c00; }
+.cat-obras    { background:rgba(43,43,43,.08); color:var(--oscuro); }
+.cat-salud    { background:rgba(198,40,40,.08); color:#8b2020; }
+.noticia-content h3 { font-family:var(--font-d); font-size:14px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--oscuro); }
+.noticia-content p { font-size:12px; color:var(--gris); line-height:1.45; }
+.noticia-fecha { font-size:11px; color:var(--gris); margin-top:5px; }
+
+/* SIDEBAR */
+.sidebar { display:flex; flex-direction:column; gap:1.5rem; }
+.widget { background:white; border:1px solid var(--borde); border-radius:8px; overflow:hidden; }
+.widget-header { background:var(--azul); color:white; padding:11px 16px; font-family:var(--font-d); font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; display:flex; align-items:center; gap:8px; border-left:5px solid var(--amarillo); }
+.widget-body { padding:1rem; }
+.clima-main { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.clima-temp { font-family:var(--font-d); font-size:3rem; font-weight:800; color:var(--oscuro); line-height:1; }
+.clima-temp sup { font-size:1.2rem; font-family:var(--font-body); color:var(--gris); }
+.clima-details { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.clima-det { background:var(--fondo); border-radius:6px; padding:8px 10px; font-family:var(--font-d); font-size:11px; color:var(--gris); font-weight:500; text-transform:uppercase; letter-spacing:.04em; }
+.clima-det strong { display:block; font-size:1rem; font-weight:800; color:var(--oscuro); }
+.tramite-list { list-style:none; }
+.tramite-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--gris-claro); cursor:pointer; font-family:var(--font-d); font-size:13px; font-weight:600; color:var(--oscuro); text-decoration:none; transition:color .12s; }
+.tramite-item:last-child { border-bottom:none; }
+.tramite-item:hover { color:var(--azul); }
+.tramite-dot { width:8px; height:8px; border-radius:50%; background:var(--amarillo); border:2px solid var(--amarillo-dark); flex-shrink:0; }
+.tramite-arrow { margin-left:auto; color:var(--gris); }
+.em-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.em-card { border-radius:8px; padding:12px 10px; text-align:center; cursor:pointer; transition:opacity .15s; border:1.5px solid transparent; }
+.em-card:hover { opacity:.85; }
+.em-card .em-num { font-family:var(--font-d); font-size:1.7rem; font-weight:800; display:block; line-height:1; }
+.em-card .em-lbl { font-family:var(--font-d); font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; margin-top:3px; display:block; }
+.em-rojo  { background:#fdecea; color:var(--rojo); border-color:#f5c0bc; }
+.em-azul  { background:var(--azul-light); color:var(--azul-dark); border-color:rgba(0,119,192,.2); }
+.em-verde { background:var(--verde-light); color:var(--verde); border-color:#b8e8cc; }
+.em-am    { background:var(--amarillo-light); color:#7a5c00; border-color:rgba(255,204,0,.4); }
+.em-tel   { margin-top:10px; padding:10px; background:var(--fondo); border-radius:6px; font-family:var(--font-d); font-size:12px; color:var(--gris); text-align:center; }
+.em-tel strong { color:var(--azul); }
+
+/* TURISMO STRIP */
+.turismo-strip { background:var(--oscuro); padding:3rem 0; }
+.turismo-in { max-width:1200px; margin:0 auto; padding:0 2rem; }
+.turismo-hd { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:1.75rem; gap:1rem; }
+.turismo-hd h2 { font-family:var(--font-d); font-size:1.8rem; font-weight:800; color:white; text-transform:uppercase; }
+.turismo-hd h2 span { color:var(--amarillo); }
+.turismo-hd p { color:rgba(255,255,255,.6); font-size:13px; margin-top:6px; max-width:400px; }
+.turismo-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.turismo-card { background:rgba(255,255,255,.06); border:1.5px solid rgba(255,255,255,.12); border-radius:8px; overflow:hidden; text-decoration:none; transition:border-color .15s,transform .12s; display:block; }
+.turismo-card:hover { border-color:var(--amarillo); transform:translateY(-3px); }
+.turismo-img { height:110px; overflow:hidden; }
+.turismo-img img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(.8); transition:filter .3s; }
+.turismo-card:hover .turismo-img img { filter:brightness(1); }
+.turismo-body { padding:14px; }
+.turismo-body h3 { font-family:var(--font-d); font-size:13px; font-weight:700; color:white; margin-bottom:4px; text-transform:uppercase; letter-spacing:.02em; }
+.turismo-body p { font-size:12px; color:rgba(255,255,255,.6); line-height:1.45; }
+.turismo-tag { font-family:var(--font-d); font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--amarillo); margin-top:8px; display:block; }
+
+/* AGENDA */
+.agenda-section { background:var(--azul-light); border-top:3px solid var(--azul); border-bottom:3px solid var(--azul); padding:2.5rem 0; }
+.agenda-in { max-width:1200px; margin:0 auto; padding:0 2rem; }
+.eventos-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1.5rem; }
+.evento-card { background:white; border-radius:8px; overflow:hidden; border:1px solid var(--borde); display:flex; }
+.evento-fecha { width:64px; background:var(--azul); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1rem .5rem; flex-shrink:0; }
+.evento-dia { font-family:var(--font-d); font-size:2rem; font-weight:800; color:white; line-height:1; }
+.evento-mes { font-family:var(--font-d); font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-top:2px; }
+.evento-body { padding:1rem; flex:1; }
+.evento-tipo { font-family:var(--font-d); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; margin-bottom:5px; display:inline-block; padding:2px 8px; border-radius:3px; }
+.ev-turismo { background:rgba(255,204,0,.15); color:#7a5c00; }
+.ev-cultura { background:var(--azul-light); color:var(--azul-dark); }
+.ev-gobierno { background:rgba(43,43,43,.08); color:var(--oscuro); }
+.evento-body h4 { font-family:var(--font-d); font-size:13px; font-weight:700; color:var(--oscuro); line-height:1.3; }
+.evento-body p { font-size:12px; color:var(--gris); margin-top:4px; }
+
+/* STATS */
+.stats-bar { background:white; border-bottom:1px solid var(--borde); }
+.stats-in { max-width:1200px; margin:0 auto; padding:1.5rem 2rem; display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; text-align:center; }
+.stat-item {}
+.stat-num { font-family:var(--font-d); font-size:2rem; font-weight:800; color:var(--azul); display:block; }
+.stat-lbl { font-size:12px; color:var(--gris); }
+
+@media (max-width:900px) {
+  .main-grid { grid-template-columns:1fr; }
+  .turismo-cards { grid-template-columns:repeat(2,1fr); }
+  .eventos-grid { grid-template-columns:1fr; }
+  .accesos-grid { grid-template-columns:repeat(4,1fr); }
+  .stats-in { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">★ MOCKUP v5 — Municipalidad de Esquina, Corrientes · No es el sitio oficial ★</div>
+
+<!-- Nav compartido -->
+<div id="muni-top-bar"></div>
+<div id="muni-nav"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=1400&q=85" alt="Río Corriente - Esquina">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">⭐ Fiesta Nacional del Pacú · Esquina, Corrientes</div>
+    <h1>Bienvenidos a<br><span>Esquina</span></h1>
+    <p class="hero-sub">Portal oficial del Municipio de Esquina, Corrientes. Accedé a trámites, servicios, noticias y toda la información sobre nuestra ciudad.</p>
+    <div class="hero-btns">
+      <a href="tramites-esquina.html" class="btn-am">📋 Hacer un trámite</a>
+      <a href="turismo-esquina.html" class="btn-ow">📍 Conocer Esquina</a>
+    </div>
+  </div>
+</section>
+
+<!-- BÚSQUEDA -->
+<div class="search-section">
+  <div class="search-inner">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><circle cx="112" cy="112" r="80" stroke="#aaa" stroke-width="16"/><line x1="168.57" y1="168.57" x2="224" y2="224" stroke="#aaa" stroke-width="16" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Buscá un trámite, servicio o información...">
+    </div>
+    <button class="search-btn">Buscar</button>
+  </div>
+  <div class="search-inner" style="padding-top:0;padding-bottom:.75rem;">
+    <div style="width:52px;flex-shrink:0;"></div>
+    <div class="search-tags">
+      <a href="tramites-esquina.html" class="search-tag">Licencia de conducir</a>
+      <a href="tramites-esquina.html" class="search-tag">Habilitación comercial</a>
+      <a href="tramites-esquina.html" class="search-tag">Pago de tasas</a>
+      <a href="servicios-esquina.html" class="search-tag">Residuos</a>
+      <a href="servicios-esquina.html" class="search-tag">Salud</a>
+    </div>
+  </div>
+</div>
+
+<!-- ACCESOS -->
+<div class="accesos">
+  <div class="accesos-in">
+    <div class="accesos-lbl">Accesos rápidos</div>
+    <div class="accesos-grid">
+      <a href="tramites-esquina.html" class="acceso"><div class="acceso-ic">📋</div><span>Trámites online</span></a>
+      <a href="servicios-esquina.html" class="acceso"><div class="acceso-ic">💧</div><span>Servicios</span></a>
+      <a href="tramites-esquina.html" class="acceso"><div class="acceso-ic">💰</div><span>Pago de tasas</span></a>
+      <a href="servicios-esquina.html#panel-salud" class="acceso"><div class="acceso-ic">🏥</div><span>Salud</span></a>
+      <a href="servicios-esquina.html#panel-ambiente" class="acceso"><div class="acceso-ic">🌿</div><span>Medio ambiente</span></a>
+      <a href="turismo-esquina.html" class="acceso"><div class="acceso-ic">🐟</div><span>Turismo y pesca</span></a>
+      <a href="noticias-esquina.html" class="acceso"><div class="acceso-ic">🎭</div><span>Cultura y eventos</span></a>
+      <a href="gobierno-esquina.html#sec-transparencia" class="acceso"><div class="acceso-ic">📰</div><span>Boletín oficial</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-in">
+    <div class="stat-item"><span class="stat-num">30.000</span><span class="stat-lbl">Habitantes</span></div>
+    <div class="stat-item"><span class="stat-num">1806</span><span class="stat-lbl">Año de fundación</span></div>
+    <div class="stat-item"><span class="stat-num">329 km</span><span class="stat-lbl">de Corrientes Capital</span></div>
+    <div class="stat-item"><span class="stat-num">2 ríos</span><span class="stat-lbl">Corriente & Paraná</span></div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+  <!-- Noticias -->
+  <div>
+    <div class="section-title">
+      Últimas noticias
+      <a href="noticias-esquina.html">Ver todas →</a>
+    </div>
+    <div class="noticias-grid">
+      <a href="noticias-esquina.html" class="noticia-card">
+        <div class="noticia-thumb"><img src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=200&q=80" alt="Pacú"></div>
+        <div class="noticia-content">
+          <span class="noticia-cat cat-turismo">Turismo</span>
+          <h3>Todo listo para la 42.ª edición de la Fiesta Nacional del Pacú</h3>
+          <p>La celebración más esperada de la región se prepara para recibir miles de visitantes.</p>
+          <div class="noticia-fecha">Hoy · 10:30 hs</div>
+        </div>
+      </a>
+      <a href="noticias-esquina.html" class="noticia-card">
+        <div class="noticia-thumb"><img src="https://images.unsplash.com/photo-1590496793929-36417d3117de?w=200&q=80" alt="Obras"></div>
+        <div class="noticia-content">
+          <span class="noticia-cat cat-obras">Obras</span>
+          <h3>Avanza la pavimentación del acceso sur: cronograma y cortes de tránsito</h3>
+          <p>El municipio informa los desvíos vigentes y la fecha estimada de finalización.</p>
+          <div class="noticia-fecha">Ayer · 15:20 hs</div>
+        </div>
+      </a>
+      <a href="noticias-esquina.html" class="noticia-card">
+        <div class="noticia-thumb"><img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=200&q=80" alt="Salud"></div>
+        <div class="noticia-content">
+          <span class="noticia-cat cat-salud">Salud</span>
+          <h3>Campaña de vacunación antigripal en los centros de salud del municipio</h3>
+          <p>Mayores de 60 años y grupos de riesgo pueden acercarse sin turno.</p>
+          <div class="noticia-fecha">18 Mar · 09:00 hs</div>
+        </div>
+      </a>
+      <a href="noticias-esquina.html" class="noticia-card">
+        <div class="noticia-thumb"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200&q=80" alt="Espacio verde"></div>
+        <div class="noticia-content">
+          <span class="noticia-cat cat-gobierno">Gobierno</span>
+          <h3>Inauguración del nuevo espacio verde en el barrio San Cayetano</h3>
+          <p>El intendente encabezó el acto junto a vecinos y comisiones barriales.</p>
+          <div class="noticia-fecha">17 Mar · 18:00 hs</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="widget">
+      <div class="widget-header">🌤 Tiempo en Esquina</div>
+      <div class="widget-body">
+        <div class="clima-main">
+          <div>
+            <div class="clima-temp">28<sup>°C</sup></div>
+            <div style="font-family:var(--font-d);"><strong style="display:block;font-size:14px;font-weight:700;color:var(--oscuro);margin-bottom:2px;">Parcialmente nublado</strong><span style="font-size:12px;color:var(--gris);">Esquina, Corrientes</span></div>
+          </div>
+          <span style="font-size:3rem;">⛅</span>
+        </div>
+        <div class="clima-details">
+          <div class="clima-det"><strong>85%</strong>Humedad</div>
+          <div class="clima-det"><strong>12 km/h</strong>Viento N</div>
+          <div class="clima-det"><strong>32°</strong>Máx.</div>
+          <div class="clima-det"><strong>22°</strong>Mín.</div>
+        </div>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="widget-header">📋 Trámites frecuentes</div>
+      <div class="widget-body">
+        <ul class="tramite-list">
+          <li><a href="tramites-esquina.html" class="tramite-item"><span class="tramite-dot"></span>Licencia de conducir<span class="tramite-arrow">›</span></a></li>
+          <li><a href="tramites-esquina.html" class="tramite-item"><span class="tramite-dot"></span>Habilitación comercial<span class="tramite-arrow">›</span></a></li>
+          <li><a href="tramites-esquina.html" class="tramite-item"><span class="tramite-dot"></span>Libre deuda municipal<span class="tramite-arrow">›</span></a></li>
+          <li><a href="tramites-esquina.html" class="tramite-item"><span class="tramite-dot"></span>Certificado de domicilio<span class="tramite-arrow">›</span></a></li>
+          <li><a href="tramites-esquina.html" class="tramite-item"><span class="tramite-dot"></span>Permiso de obra<span class="tramite-arrow">›</span></a></li>
+          <li><a href="tramites-esquina.html" class="tramite-item"><span class="tramite-dot"></span>Pago de tasas online<span class="tramite-arrow">›</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="widget-header">🚨 Emergencias</div>
+      <div class="widget-body">
+        <div class="em-grid">
+          <div class="em-card em-rojo"><span class="em-num">100</span><span class="em-lbl">Bomberos</span></div>
+          <div class="em-card em-azul"><span class="em-num">101</span><span class="em-lbl">Policía</span></div>
+          <div class="em-card em-verde"><span class="em-num">107</span><span class="em-lbl">SAME</span></div>
+          <div class="em-card em-am"><span class="em-num">103</span><span class="em-lbl">Def. Civil</span></div>
+        </div>
+        <div class="em-tel">Municipal: <strong>(03777) 420–000</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TURISMO -->
+<section class="turismo-strip">
+  <div class="turismo-in">
+    <div class="turismo-hd">
+      <div>
+        <h2>Visitá <span>Esquina</span></h2>
+        <p>Pesca, naturaleza, carnaval y gastronomía en el corazón de Corrientes.</p>
+      </div>
+      <a href="turismo-esquina.html" class="btn-am">Guía completa →</a>
+    </div>
+    <div class="turismo-cards">
+      <a href="turismo-esquina.html#sec-pacu" class="turismo-card"><div class="turismo-img"><img src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=400&q=80" alt="Pesca del Pacú"></div><div class="turismo-body"><h3>Pesca del Pacú</h3><p>Capital nacional de la pesca deportiva.</p><span class="turismo-tag">⭐ Actividad emblema</span></div></a>
+      <a href="turismo-esquina.html" class="turismo-card"><div class="turismo-img"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80" alt="Carnaval"></div><div class="turismo-body"><h3>Carnaval</h3><p>Comparsas y murgas de la región.</p><span class="turismo-tag">Enero — Febrero</span></div></a>
+      <a href="turismo-esquina.html" class="turismo-card"><div class="turismo-img"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80" alt="Balneario"></div><div class="turismo-body"><h3>Balneario municipal</h3><p>Playa sobre el Río Corriente.</p><span class="turismo-tag">Diciembre — Marzo</span></div></a>
+      <a href="turismo-esquina.html" class="turismo-card"><div class="turismo-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Patrimonio"></div><div class="turismo-body"><h3>Patrimonio e historia</h3><p>Capilla Santa Rita y Museo Municipal.</p><span class="turismo-tag">Todo el año</span></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section class="agenda-section">
+  <div class="agenda-in">
+    <div class="section-title">📅 Agenda municipal<a href="noticias-esquina.html">Ver calendario →</a></div>
+    <div class="eventos-grid">
+      <div class="evento-card"><div class="evento-fecha"><div class="evento-dia">22</div><div class="evento-mes">Mar</div></div><div class="evento-body"><span class="evento-tipo ev-turismo">Turismo</span><h4>Fiesta Nacional del Pacú — Apertura</h4><p>Costa del Río Corriente · 20:00 hs</p></div></div>
+      <div class="evento-card"><div class="evento-fecha" style="background:var(--amarillo-dark);"><div class="evento-dia">25</div><div class="evento-mes">Mar</div></div><div class="evento-body"><span class="evento-tipo ev-cultura">Cultura</span><h4>Feria de artesanos — Plaza 25 de Mayo</h4><p>Centro · 09:00 a 18:00 hs</p></div></div>
+      <div class="evento-card"><div class="evento-fecha" style="background:var(--oscuro);"><div class="evento-dia">01</div><div class="evento-mes">Abr</div></div><div class="evento-body"><span class="evento-tipo ev-gobierno">Gobierno</span><h4>Sesión del Concejo Deliberante</h4><p>Casa Municipal · 10:00 hs · Público</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer compartido -->
+<div id="muni-footer"></div>
+<script src="nav.js"></script>
+</body>
+</html>

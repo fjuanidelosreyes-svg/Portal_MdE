@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicios — Municipalidad de Esquina</title>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --azul: #0077c0; --azul-dark: #005a91; --azul-light: #e6f3fb;
+  --amarillo: #ffcc00; --amarillo-dark: #d4a900; --amarillo-light: #fffbe6;
+  --oscuro: #2b2b2b; --gris: #6b6b6b; --gris-claro: #e8e8e8;
+  --fondo: #f5f5f5; --blanco: #fff; --borde: #ddd;
+  --verde: #2e7d32; --verde-light: #e8f5e9;
+  --rojo: #c62828; --rojo-light: #ffebee;
+  --naranja: #e65100; --naranja-light: #fff3e0;
+  --violeta: #4527a0; --violeta-light: #ede7f6;
+  --font-body: Verdana, Geneva, sans-serif;
+  --font-d: 'Dosis', sans-serif;
+}
+body { font-family: var(--font-body); background: var(--fondo); color: var(--oscuro); font-size: 14px; line-height: 1.6; }
+
+/* BASE */
+.demo-bar { background: var(--amarillo); color: var(--oscuro); text-align: center; padding: 7px 1rem; font-family: var(--font-d); font-size: 12px; font-weight: 700; }
+.top-bar { background: var(--oscuro); padding: 6px 0; }
+.top-bar-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+.top-bar-inner a { color: rgba(255,255,255,0.6); font-family: var(--font-d); font-size: 11px; font-weight: 500; text-decoration: none; }
+.top-bar-inner a:hover { color: var(--amarillo); }
+.top-links { display: flex; gap: 20px; align-items: center; }
+nav { background: var(--azul); position: sticky; top: 0; z-index: 200; box-shadow: 0 3px 16px rgba(0,0,0,0.2); }
+.nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 64px; }
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-escudo { width: 42px; height: 42px; background: var(--amarillo); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-weight: 800; color: var(--oscuro); font-size: 14px; }
+.logo-text strong { display: block; font-family: var(--font-d); font-size: 15px; font-weight: 700; color: white; }
+.logo-text span { display: block; font-family: var(--font-d); font-size: 11px; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.05em; }
+.nav-links { display: flex; }
+.nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 0 14px; height: 64px; display: flex; align-items: center; gap: 6px; font-family: var(--font-d); font-size: 13px; font-weight: 600; letter-spacing: 0.03em; transition: background 0.15s; border-bottom: 3px solid transparent; text-transform: uppercase; }
+.nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-links a.active { border-bottom-color: var(--amarillo); color: white; }
+.breadcrumb { background: white; border-bottom: 1px solid var(--gris-claro); padding: 10px 0; }
+.breadcrumb-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 8px; font-family: var(--font-d); font-size: 12px; color: var(--gris); }
+.breadcrumb a { color: var(--azul); text-decoration: none; }
+
+/* PAGE HEADER */
+.page-header { background: var(--azul-dark); padding: 2.5rem 0; position: relative; overflow: hidden; }
+.page-header::after { content:''; position:absolute; right:-60px; top:-60px; width:300px; height:300px; background:var(--amarillo); opacity:0.06; border-radius:50%; pointer-events:none; }
+.ph-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index:2; }
+.ph-eye { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amarillo); margin-bottom: 8px; }
+.ph-inner h1 { font-family: var(--font-d); font-size: 2rem; font-weight: 800; color: white; margin-bottom: 8px; }
+.ph-inner p { color: rgba(255,255,255,0.7); font-size: 14px; max-width: 520px; }
+
+/* EMERGENCIAS STRIP */
+.emergencias-strip { background: var(--rojo); padding: 0; }
+.em-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.em-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-right: 1px solid rgba(255,255,255,0.15); white-space: nowrap; cursor: pointer; transition: background 0.15s; flex-shrink: 0; }
+.em-item:hover { background: rgba(255,255,255,0.1); }
+.em-item:last-child { border-right: none; }
+.em-num { font-family: var(--font-d); font-size: 1.4rem; font-weight: 800; color: white; line-height: 1; }
+.em-lbl { font-family: var(--font-d); font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.05em; }
+.em-sep { font-family: var(--font-d); font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); padding: 0 16px; }
+
+/* MAIN LAYOUT */
+.main-layout { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: 260px 1fr; gap: 2rem; align-items: start; }
+
+/* SIDEBAR */
+.sidebar { background: white; border: 1px solid var(--borde); border-radius: 10px; overflow: hidden; position: sticky; top: 80px; }
+.sidebar-header { background: var(--azul); color: white; padding: 12px 16px; font-family: var(--font-d); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 8px; border-left: 5px solid var(--amarillo); }
+.nav-service { list-style: none; padding: 8px 0; }
+.nav-service li a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-family: var(--font-d); font-size: 13px; font-weight: 600; color: var(--oscuro); text-decoration: none; transition: background 0.12s, color 0.12s; border-left: 3px solid transparent; }
+.nav-service li a:hover { background: var(--azul-light); color: var(--azul); }
+.nav-service li a.active { background: var(--azul-light); color: var(--azul); border-left-color: var(--azul); }
+.nav-service li a .svc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.nav-service .divider { height: 1px; background: var(--gris-claro); margin: 6px 16px; }
+.sidebar-contact { padding: 14px 16px; border-top: 1px solid var(--gris-claro); background: var(--fondo); }
+.sidebar-contact p { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gris); margin-bottom: 8px; }
+.sidebar-contact a { display: flex; align-items: center; gap: 7px; font-family: var(--font-d); font-size: 13px; font-weight: 600; color: var(--azul); text-decoration: none; margin-bottom: 5px; }
+.sidebar-contact a:hover { text-decoration: underline; }
+
+/* SERVICIO PANEL */
+.servicio-panel { display: none; }
+.servicio-panel.active { display: block; }
+
+/* PANEL HEADER */
+.panel-header { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; display: flex; gap: 1.25rem; align-items: flex-start; border-top-width: 4px; }
+.panel-icon { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 26px; }
+.panel-header-text h2 { font-family: var(--font-d); font-size: 1.4rem; font-weight: 800; color: var(--oscuro); margin-bottom: 5px; }
+.panel-header-text p { font-size: 13px; color: var(--gris); line-height: 1.6; }
+.panel-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.pbadge { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 10px; border-radius: 4px; display: flex; align-items: center; gap: 5px; }
+
+/* INFO GRID */
+.info-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+.info-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 1.25rem; }
+.info-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.1rem 1.25rem; }
+.info-card-lbl { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gris); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+.info-card-val { font-family: var(--font-d); font-size: 1.1rem; font-weight: 800; color: var(--oscuro); line-height: 1.2; }
+.info-card-sub { font-size: 11px; color: var(--gris); margin-top: 3px; line-height: 1.4; }
+
+/* SECTION TITLE */
+.st { font-family: var(--font-d); font-size: 1rem; font-weight: 800; color: var(--azul); text-transform: uppercase; letter-spacing: 0.04em; padding-bottom: 8px; border-bottom: 2px solid var(--amarillo); display: flex; align-items: center; gap: 7px; margin-bottom: 1rem; }
+
+/* CRONOGRAMA RESIDUOS */
+.calendario-semana { background: white; border: 1.5px solid var(--borde); border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.cal-header { background: var(--azul); padding: 10px 16px; display: grid; grid-template-columns: repeat(7,1fr); gap: 0; }
+.cal-dia-header { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.8); text-align: center; padding: 4px; }
+.cal-body { display: grid; grid-template-columns: repeat(7,1fr); gap: 0; }
+.cal-dia { padding: 12px 8px; text-align: center; border-right: 1px solid var(--gris-claro); border-bottom: 1px solid var(--gris-claro); min-height: 70px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.cal-dia:nth-child(7n) { border-right: none; }
+.cal-dia-num { font-family: var(--font-d); font-size: 13px; font-weight: 700; color: var(--oscuro); }
+.cal-tag { font-family: var(--font-d); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 5px; border-radius: 3px; display: flex; align-items: center; gap: 3px; }
+.ct-dom { background: rgba(0,119,192,0.1); color: var(--azul-dark); }
+.ct-rec { background: var(--verde-light); color: var(--verde); }
+.ct-pod { background: rgba(103,58,183,0.1); color: var(--violeta); }
+.ct-verd { background: rgba(46,125,50,0.1); color: var(--verde); }
+.cal-hoy { background: var(--azul-light); }
+
+/* BARRIOS TABLE */
+.barrios-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--borde); margin-bottom: 1.25rem; }
+.barrios-table th { background: var(--oscuro); color: white; font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 14px; text-align: left; }
+.barrios-table td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid var(--gris-claro); }
+.barrios-table tr:last-child td { border-bottom: none; }
+.barrios-table tr:hover td { background: var(--fondo); }
+.dia-pill { font-family: var(--font-d); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+.dp-lmv { background: var(--azul-light); color: var(--azul-dark); }
+.dp-mj  { background: var(--verde-light); color: var(--verde); }
+.dp-vs  { background: rgba(103,58,183,0.1); color: var(--violeta); }
+.estado-badge { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 9px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+.eb-ok   { background: var(--verde-light); color: var(--verde); }
+.eb-warn { background: var(--amarillo-light); color: #7a5c00; }
+.eb-err  { background: var(--rojo-light); color: var(--rojo); }
+
+/* CENTROS SALUD */
+.centros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+.centro-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.1rem 1.25rem; border-left: 5px solid var(--rojo); transition: box-shadow 0.15s; }
+.centro-card:hover { box-shadow: 0 3px 14px rgba(198,40,40,0.1); }
+.centro-card h4 { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: var(--oscuro); margin-bottom: 6px; }
+.centro-row { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: var(--gris); margin-bottom: 4px; line-height: 1.4; }
+.centro-row svg { flex-shrink: 0; margin-top: 1px; }
+.centro-especialidades { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.esp-tag { font-family: var(--font-d); font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 3px; background: var(--rojo-light); color: var(--rojo); }
+.centro-guardia { background: var(--rojo); color: white; font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 9px; border-radius: 3px; margin-top: 8px; display: inline-flex; align-items: center; gap: 4px; }
+
+/* DENUNCIA FORM */
+.denuncia-tipos { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.25rem; }
+.denuncia-tipo { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.1rem; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.denuncia-tipo:hover, .denuncia-tipo.selected { border-color: var(--azul); background: var(--azul-light); }
+.denuncia-tipo .dt-icon { font-size: 2rem; margin-bottom: 6px; }
+.denuncia-tipo h4 { font-family: var(--font-d); font-size: 13px; font-weight: 700; color: var(--oscuro); margin-bottom: 3px; }
+.denuncia-tipo p { font-size: 11px; color: var(--gris); line-height: 1.4; }
+.form-group { margin-bottom: 1rem; }
+.form-label { font-family: var(--font-d); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gris); margin-bottom: 6px; display: block; }
+.form-input { width: 100%; background: white; border: 1.5px solid var(--borde); border-radius: 8px; padding: 10px 14px; font-family: var(--font-body); font-size: 13px; color: var(--oscuro); outline: none; transition: border-color 0.15s; }
+.form-input:focus { border-color: var(--azul); }
+.form-textarea { width: 100%; background: white; border: 1.5px solid var(--borde); border-radius: 8px; padding: 10px 14px; font-family: var(--font-body); font-size: 13px; color: var(--oscuro); outline: none; transition: border-color 0.15s; resize: vertical; min-height: 100px; }
+.form-textarea:focus { border-color: var(--azul); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.btn-submit { background: var(--azul); color: white; font-family: var(--font-d); font-size: 13px; font-weight: 700; padding: 12px 28px; border-radius: 8px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 8px; transition: background 0.15s; }
+.btn-submit:hover { background: var(--azul-dark); }
+.form-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.5rem; }
+
+/* ALUMBRADO MAP */
+.alumbrado-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 1rem; }
+.al-item { display: flex; align-items: center; gap: 6px; font-family: var(--font-d); font-size: 12px; font-weight: 600; color: var(--gris); }
+.al-dot { width: 12px; height: 12px; border-radius: 50%; }
+.mapa-estilo { background: white; border: 1.5px solid var(--borde); border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.mapa-img { width: 100%; height: 240px; object-fit: cover; display: block; filter: saturate(0.5) brightness(0.9); }
+.mapa-footer { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--gris-claro); }
+.mapa-footer p { font-family: var(--font-d); font-size: 12px; color: var(--gris); }
+.btn-outline-az { background: transparent; color: var(--azul); font-family: var(--font-d); font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: 6px; border: 1.5px solid var(--azul); cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; transition: background 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+.btn-outline-az:hover { background: var(--azul-light); }
+
+/* AGUA INFO */
+.agua-estado { background: var(--verde-light); border: 1.5px solid rgba(46,125,50,0.3); border-radius: 10px; padding: 14px 18px; display: flex; gap: 14px; align-items: center; margin-bottom: 1.25rem; }
+.agua-estado-icon { font-size: 2rem; flex-shrink: 0; }
+.agua-estado h4 { font-family: var(--font-d); font-size: 15px; font-weight: 800; color: var(--verde); margin-bottom: 3px; }
+.agua-estado p { font-size: 12px; color: var(--verde); }
+.agua-estado-time { font-family: var(--font-d); font-size: 11px; font-weight: 600; color: var(--verde); margin-left: auto; text-align: right; white-space: nowrap; }
+
+/* ALERTAS */
+.alerta { border-radius: 10px; padding: 13px 16px; display: flex; gap: 10px; align-items: flex-start; font-size: 13px; margin-bottom: 1rem; }
+.alerta svg { flex-shrink: 0; margin-top: 1px; }
+.alerta-info { background: var(--azul-light); border: 1px solid rgba(0,119,192,0.25); color: var(--azul-dark); }
+.alerta-warn { background: var(--amarillo-light); border: 1px solid rgba(255,204,0,0.4); color: #7a5c00; }
+.alerta-ok   { background: var(--verde-light); border: 1px solid rgba(46,125,50,0.3); color: var(--verde); }
+
+/* MEDIO AMBIENTE */
+.ma-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 1.25rem; }
+.ma-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.25rem; border-top: 4px solid var(--verde); transition: box-shadow 0.15s; cursor: pointer; }
+.ma-card:hover { box-shadow: 0 3px 14px rgba(46,125,50,0.1); }
+.ma-icon { font-size: 2rem; margin-bottom: 8px; }
+.ma-card h4 { font-family: var(--font-d); font-size: 14px; font-weight: 700; color: var(--oscuro); margin-bottom: 5px; }
+.ma-card p { font-size: 12px; color: var(--gris); line-height: 1.5; }
+.ma-link { font-family: var(--font-d); font-size: 12px; font-weight: 700; color: var(--verde); margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+
+/* CTA */
+.cta-strip { background: var(--azul); padding: 2rem 0; margin-top: 2rem; }
+.cta-in { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.cta-in h2 { font-family: var(--font-d); font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 4px; }
+.cta-in p { color: rgba(255,255,255,0.7); font-size: 13px; }
+.btn-am { background: var(--amarillo); color: var(--oscuro); font-family: var(--font-d); font-weight: 700; font-size: 13px; padding: 11px 22px; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.15s; letter-spacing: 0.02em; text-transform: uppercase; }
+.btn-am:hover { background: var(--amarillo-dark); }
+
+/* FOOTER */
+.footer-mini { background: var(--oscuro); color: rgba(255,255,255,0.5); padding: 1.5rem 0; }
+.footer-mini-in { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; font-family: var(--font-d); font-size: 12px; }
+.footer-mini a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.footer-mini a:hover { color: var(--amarillo); }
+
+@media (max-width: 900px) {
+  .main-layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .info-grid-2, .info-grid-3, .form-row, .centros-grid, .denuncia-tipos, .ma-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .cal-body, .cal-header { grid-template-columns: repeat(7,1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">★ MOCKUP — Municipalidad de Esquina · Servicios Municipales ★</div>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-links"><a href="#">Inicio</a><a href="#">Transparencia</a><a href="#">Boletín Oficial</a></div>
+    <div class="top-links"><a href="#">📞 (03777) 420–000</a></div>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-escudo">ME</div>
+      <div class="logo-text"><strong>Municipalidad de Esquina</strong><span>Corrientes · Argentina</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#">Inicio</a><a href="#">Gobierno</a><a href="#">Trámites</a>
+      <a href="#" class="active">Servicios</a>
+      <a href="#">Noticias</a>
+      <a href="#" style="background:var(--amarillo);color:var(--oscuro)!important;border-radius:6px;margin-left:8px;height:36px!important;padding:0 14px!important;align-self:center;border-bottom:none!important;">Turismo</a>
+    </div>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="#">Inicio</a>
+    <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><polyline points="96,48 160,128 96,208" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Servicios</span>
+  </div>
+</div>
+
+<div class="page-header">
+  <div class="ph-inner">
+    <div class="ph-eye">⚙️ Municipalidad de Esquina</div>
+    <h1>Servicios municipales</h1>
+    <p>Información actualizada sobre todos los servicios que el municipio brinda a los vecinos de Esquina.</p>
+  </div>
+</div>
+
+<!-- EMERGENCIAS -->
+<div class="emergencias-strip">
+  <div class="em-inner">
+    <div style="display:flex;align-items:center;gap:8px;padding:12px 20px;border-right:1px solid rgba(255,255,255,0.15);flex-shrink:0;">
+      <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><path d="M142.41 40.22l87.46 151.87A16 16 0 01216 216H40a16 16 0 01-13.87-24l87.46-151.87a16 16 0 0128.82.09z" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><line x1="128" y1="104" x2="128" y2="144" stroke="white" stroke-width="14" stroke-linecap="round"/><circle cx="128" cy="180" r="8" fill="white"/></svg>
+      <span style="font-family:var(--font-d);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.8);">Emergencias</span>
+    </div>
+    <div class="em-item"><div><div class="em-num">100</div><div class="em-lbl">Bomberos</div></div></div>
+    <div class="em-item"><div><div class="em-num">101</div><div class="em-lbl">Policía</div></div></div>
+    <div class="em-item"><div><div class="em-num">107</div><div class="em-lbl">SAME</div></div></div>
+    <div class="em-item"><div><div class="em-num">103</div><div class="em-lbl">Def. Civil</div></div></div>
+    <div class="em-item"><div><div class="em-num" style="font-size:1rem;">(03777) 420-000</div><div class="em-lbl">Municipal</div></div></div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+
+  <!-- SIDEBAR NAVEGACIÓN -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M218.67 21.33a8 8 0 00-7.41 2.29L160 75.31 148.69 64 200 12.74a8 8 0 00-9.7-10.7 72 72 0 00-49.87 94.38L34.1 202.74a24 24 0 0033.94 34l106.37-106.37A72 72 0 00218.67 21.33z" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Servicios
+    </div>
+    <ul class="nav-service">
+      <li><a href="#" class="active" onclick="setPanel('agua',this);return false;">
+        <span class="svc-dot" style="background:#0077c0"></span>💧 Agua y saneamiento
+      </a></li>
+      <li><a href="#" onclick="setPanel('residuos',this);return false;">
+        <span class="svc-dot" style="background:#2e7d32"></span>🗑 Recolección de residuos
+      </a></li>
+      <li><a href="#" onclick="setPanel('alumbrado',this);return false;">
+        <span class="svc-dot" style="background:#d4a900"></span>💡 Alumbrado público
+      </a></li>
+      <li><a href="#" onclick="setPanel('salud',this);return false;">
+        <span class="svc-dot" style="background:#c62828"></span>🏥 Salud municipal
+      </a></li>
+      <li><a href="#" onclick="setPanel('denuncias',this);return false;">
+        <span class="svc-dot" style="background:#4527a0"></span>📋 Denuncias y reclamos
+      </a></li>
+      <li><a href="#" onclick="setPanel('ambiente',this);return false;">
+        <span class="svc-dot" style="background:#2e7d32"></span>🌿 Medio ambiente
+      </a></li>
+      <li><div class="divider"></div></li>
+      <li><a href="#" onclick="setPanel('transporte',this);return false;">
+        <span class="svc-dot" style="background:#e65100"></span>🚌 Transporte urbano
+      </a></li>
+      <li><a href="#" onclick="setPanel('cementerio',this);return false;">
+        <span class="svc-dot" style="background:#555"></span>🕊 Cementerio municipal
+      </a></li>
+    </ul>
+    <div class="sidebar-contact">
+      <p>Contacto directo</p>
+      <a href="#">📞 (03777) 420–000</a>
+      <a href="#">✉ servicios@esquina.gob.ar</a>
+      <a href="#">📍 25 de Mayo 511</a>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <div>
+
+    <!-- ═══ AGUA Y SANEAMIENTO ═══ -->
+    <div class="servicio-panel active" id="panel-agua">
+      <div class="panel-header" style="border-top-color:#0077c0;">
+        <div class="panel-icon" style="background:var(--azul-light);font-size:28px;">💧</div>
+        <div class="panel-header-text">
+          <h2>Agua y saneamiento</h2>
+          <p>Servicio de agua potable, cloacas y saneamiento urbano. Ante cualquier desperfecto o corte programado, se comunica con 48 hs de anticipación.</p>
+          <div class="panel-badges">
+            <span class="pbadge" style="background:var(--verde-light);color:var(--verde);">✅ Servicio operativo</span>
+            <span class="pbadge" style="background:var(--azul-light);color:var(--azul-dark);">Cobertura 98% del ejido urbano</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="agua-estado">
+        <div class="agua-estado-icon">🟢</div>
+        <div>
+          <h4>Sistema operando con normalidad</h4>
+          <p>No hay cortes ni interrupciones programadas para hoy.</p>
+        </div>
+        <div class="agua-estado-time">
+          Actualizado hoy<br>08:00 hs
+        </div>
+      </div>
+
+      <div class="info-grid-3">
+        <div class="info-card">
+          <div class="info-card-lbl">📞 Urgencias 24 hs</div>
+          <div class="info-card-val">(03777) 420-111</div>
+          <div class="info-card-sub">Roturas, pérdidas y emergencias de red</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">🕐 Atención al usuario</div>
+          <div class="info-card-val">Lun–Vie</div>
+          <div class="info-card-sub">07:00 a 13:00 hs · 25 de Mayo 511</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">💧 Calidad del agua</div>
+          <div class="info-card-val" style="color:var(--verde);">Apta</div>
+          <div class="info-card-sub">Análisis bacteriológico: Mar 2025</div>
+        </div>
+      </div>
+
+      <div class="st">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Trámites relacionados
+      </div>
+      <div class="info-grid-2">
+        <div class="info-card" style="cursor:pointer;transition:border-color 0.15s;" onmouseover="this.style.borderColor='#0077c0'" onmouseout="this.style.borderColor='#ddd'">
+          <div class="info-card-lbl">📋 Trámite</div>
+          <div class="info-card-val" style="font-size:14px;">Nueva conexión domiciliaria</div>
+          <div class="info-card-sub">Requisitos: escritura o contrato de alquiler, DNI, croquis de la propiedad.</div>
+        </div>
+        <div class="info-card" style="cursor:pointer;transition:border-color 0.15s;" onmouseover="this.style.borderColor='#0077c0'" onmouseout="this.style.borderColor='#ddd'">
+          <div class="info-card-lbl">📋 Trámite</div>
+          <div class="info-card-val" style="font-size:14px;">Reclamo por corte o baja presión</div>
+          <div class="info-card-sub">Presentar reclamo en oficinas o llamar al número de urgencias. Tiempo de respuesta: 24–48 hs.</div>
+        </div>
+      </div>
+
+      <div class="alerta alerta-info">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><line x1="128" y1="112" x2="128" y2="176" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="128" cy="84" r="8" fill="currentColor"/></svg>
+        <div>Los cortes programados por mantenimiento se informan con al menos 48 hs de anticipación en esta página y en las redes sociales del municipio.</div>
+      </div>
+    </div>
+
+    <!-- ═══ RESIDUOS ═══ -->
+    <div class="servicio-panel" id="panel-residuos">
+      <div class="panel-header" style="border-top-color:#2e7d32;">
+        <div class="panel-icon" style="background:var(--verde-light);font-size:28px;">🗑</div>
+        <div class="panel-header-text">
+          <h2>Recolección de residuos</h2>
+          <p>Cronograma de recolección domiciliaria, reciclado y poda. Los residuos deben estar en la vereda antes de las 21:00 hs del día anterior.</p>
+          <div class="panel-badges">
+            <span class="pbadge" style="background:var(--verde-light);color:var(--verde);">✅ Sin interrupciones</span>
+            <span class="pbadge" style="background:var(--azul-light);color:var(--azul-dark);">🌿 Reciclado disponible</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alerta alerta-ok">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><path d="M128 24a104 104 0 100 208A104 104 0 00128 24zm45.66 85.66l-56 56a8 8 0 01-11.32 0l-24-24a8 8 0 0111.32-11.32L112 148.69l50.34-50.35a8 8 0 0111.32 11.32z" fill="currentColor"/></svg>
+        <div>El servicio opera con normalidad. Próxima recolección en el Centro: <strong>mañana miércoles, turno noche.</strong></div>
+      </div>
+
+      <div class="st">📅 Cronograma semanal — Semana del 17 al 23 de marzo</div>
+      <div class="calendario-semana">
+        <div class="cal-header">
+          <div class="cal-dia-header">Lun</div><div class="cal-dia-header">Mar</div><div class="cal-dia-header">Mié</div>
+          <div class="cal-dia-header">Jue</div><div class="cal-dia-header">Vie</div><div class="cal-dia-header">Sáb</div><div class="cal-dia-header">Dom</div>
+        </div>
+        <div class="cal-body">
+          <div class="cal-dia"><span class="cal-dia-num">17</span><span class="cal-tag ct-dom">Domiciliario</span><span class="cal-tag ct-rec">Reciclado</span></div>
+          <div class="cal-dia"><span class="cal-dia-num">18</span><span class="cal-tag ct-dom">Domiciliario</span></div>
+          <div class="cal-dia cal-hoy"><span class="cal-dia-num" style="color:var(--azul);">19 ★</span><span class="cal-tag ct-dom">Domiciliario</span><span class="cal-tag ct-pod">Poda</span></div>
+          <div class="cal-dia"><span class="cal-dia-num">20</span><span class="cal-tag ct-dom">Domiciliario</span></div>
+          <div class="cal-dia"><span class="cal-dia-num">21</span><span class="cal-tag ct-dom">Domiciliario</span><span class="cal-tag ct-verd">Verdes</span></div>
+          <div class="cal-dia"><span class="cal-dia-num">22</span><span class="cal-tag ct-dom">Domiciliario</span></div>
+          <div class="cal-dia"><span class="cal-dia-num">23</span><span style="font-size:11px;color:var(--gris);">Sin servicio</span></div>
+        </div>
+      </div>
+
+      <div class="st">🏘 Cronograma por barrio</div>
+      <table class="barrios-table">
+        <thead>
+          <tr><th>Barrio / Zona</th><th>Días de recolección</th><th>Horario</th><th>Estado</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Centro</strong></td><td><span class="dia-pill dp-lmv">Lun · Mié · Vie</span></td><td>22:00 – 02:00 hs</td><td><span class="estado-badge eb-ok">✅ Normal</span></td></tr>
+          <tr><td><strong>San Cayetano</strong></td><td><span class="dia-pill dp-mj">Mar · Jue</span></td><td>20:00 – 00:00 hs</td><td><span class="estado-badge eb-ok">✅ Normal</span></td></tr>
+          <tr><td><strong>Villa del Parque</strong></td><td><span class="dia-pill dp-lmv">Lun · Mié · Vie</span></td><td>06:00 – 10:00 hs</td><td><span class="estado-badge eb-ok">✅ Normal</span></td></tr>
+          <tr><td><strong>Malvinas</strong></td><td><span class="dia-pill dp-mj">Mar · Jue</span></td><td>06:00 – 10:00 hs</td><td><span class="estado-badge eb-warn">⚠ Demorado</span></td></tr>
+          <tr><td><strong>FONAVI</strong></td><td><span class="dia-pill dp-vs">Vie · Sáb</span></td><td>06:00 – 10:00 hs</td><td><span class="estado-badge eb-ok">✅ Normal</span></td></tr>
+          <tr><td><strong>Zona rural norte</strong></td><td><span class="dia-pill dp-vs">Vie</span></td><td>08:00 – 14:00 hs</td><td><span class="estado-badge eb-ok">✅ Normal</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-grid-3">
+        <div class="info-card">
+          <div class="info-card-lbl">♻️ Reciclado</div>
+          <div class="info-card-val" style="font-size:14px;">Lunes — zona Centro</div>
+          <div class="info-card-sub">Papel, cartón, plásticos, vidrio y metales. Bolsa azul diferenciada.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">🌳 Poda y verdes</div>
+          <div class="info-card-val" style="font-size:14px;">Miércoles y viernes</div>
+          <div class="info-card-sub">Ramas, pasto y residuos de jardín. Atarlo en bultos de máx. 1 metro.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">🪑 Voluminosos</div>
+          <div class="info-card-val" style="font-size:14px;">Con turno previo</div>
+          <div class="info-card-sub">Muebles, electrodomésticos y colchones. Llamar al 420-000 para coordinar.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ ALUMBRADO ═══ -->
+    <div class="servicio-panel" id="panel-alumbrado">
+      <div class="panel-header" style="border-top-color:#d4a900;">
+        <div class="panel-icon" style="background:var(--amarillo-light);font-size:28px;">💡</div>
+        <div class="panel-header-text">
+          <h2>Alumbrado público</h2>
+          <p>Gestión del alumbrado vial y de espacios públicos. Reportá luminarias apagadas o con desperfectos directamente desde esta página.</p>
+          <div class="panel-badges">
+            <span class="pbadge" style="background:var(--verde-light);color:var(--verde);">✅ 94% operativo</span>
+            <span class="pbadge" style="background:var(--amarillo-light);color:#7a5c00;">18 reclamos activos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-grid-3" style="margin-bottom:1rem;">
+        <div class="info-card">
+          <div class="info-card-lbl">💡 Luminarias totales</div>
+          <div class="info-card-val">2.840</div>
+          <div class="info-card-sub">en el ejido urbano</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">✅ Operativas</div>
+          <div class="info-card-val" style="color:var(--verde);">2.668</div>
+          <div class="info-card-sub">94% del total</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">🔧 En reparación</div>
+          <div class="info-card-val" style="color:var(--naranja);">172</div>
+          <div class="info-card-sub">tiempo promedio: 72 hs</div>
+        </div>
+      </div>
+
+      <div class="mapa-estilo">
+        <img class="mapa-img" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=70" alt="Mapa alumbrado">
+        <div class="mapa-footer">
+          <p>Mapa de estado del alumbrado público · Actualizado: hoy 08:00 hs</p>
+          <button class="btn-outline-az">🗺 Ver mapa interactivo</button>
+        </div>
+      </div>
+
+      <div class="st">📋 Reportar luminaria apagada</div>
+      <div class="form-card">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Calle</label>
+            <input class="form-input" type="text" placeholder="Ej: San Martín">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Altura / Intersección</label>
+            <input class="form-input" type="text" placeholder="Ej: 450 o esq. Rivadavia">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descripción del problema</label>
+          <textarea class="form-textarea" placeholder="Ej: La luminaria del poste frente al nro 450 está apagada hace 3 días..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tu nombre</label>
+            <input class="form-input" type="text" placeholder="Nombre y apellido">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Teléfono de contacto</label>
+            <input class="form-input" type="text" placeholder="(03777) ...">
+          </div>
+        </div>
+        <button class="btn-submit">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><line x1="40" y1="128" x2="216" y2="128" stroke="white" stroke-width="16" stroke-linecap="round"/><polyline points="144,56 216,128 144,200" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Enviar reporte
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ SALUD ═══ -->
+    <div class="servicio-panel" id="panel-salud">
+      <div class="panel-header" style="border-top-color:#c62828;">
+        <div class="panel-icon" style="background:var(--rojo-light);font-size:28px;">🏥</div>
+        <div class="panel-header-text">
+          <h2>Salud municipal</h2>
+          <p>Centros de atención primaria, vacunación, salud materno-infantil y programas de prevención distribuidos en los distintos barrios de Esquina.</p>
+          <div class="panel-badges">
+            <span class="pbadge" style="background:var(--rojo-light);color:var(--rojo);">🚨 Guardia 24 hs: Hospital</span>
+            <span class="pbadge" style="background:var(--verde-light);color:var(--verde);">6 centros activos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alerta alerta-warn">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><path d="M142.41 40.22l87.46 151.87A16 16 0 01216 216H40a16 16 0 01-13.87-24l87.46-151.87a16 16 0 0128.82.09z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><line x1="128" y1="104" x2="128" y2="144" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="128" cy="180" r="8" fill="currentColor"/></svg>
+        <div><strong>Campaña de vacunación antigripal activa.</strong> Mayores de 60 años, embarazadas y personal de salud pueden vacunarse sin turno en cualquier CAP, lunes a viernes de 7 a 13 hs.</div>
+      </div>
+
+      <div class="st">🏥 Centros de atención primaria</div>
+      <div class="centros-grid">
+        <div class="centro-card">
+          <h4>CAP Centro</h4>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M128 24a80 80 0 00-80 80c0 72 80 128 80 128s80-56 80-128a80 80 0 00-80-80z" stroke="currentColor" stroke-width="14"/></svg>25 de Mayo 320</div>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Lun–Vie · 07:00–13:00 hs</div>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M222.37 158.46l-47.11-21.11a16 16 0 00-18.67 4.72l-21.62 26.61a124.07 124.07 0 01-57.65-57.65l26.61-21.62a16 16 0 004.72-18.67L87.54 33.63A16 16 0 0070.73 24H32a16 16 0 00-16 16C32 164.38 91.62 224 208 224a16 16 0 0016-16v-38.73a16 16 0 00-1.63-11.81z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>(03777) 420-200</div>
+          <div class="centro-especialidades">
+            <span class="esp-tag">Clínica</span><span class="esp-tag">Pediatría</span><span class="esp-tag">Vacunación</span><span class="esp-tag">Odontología</span>
+          </div>
+        </div>
+        <div class="centro-card">
+          <h4>CAP San Cayetano</h4>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M128 24a80 80 0 00-80 80c0 72 80 128 80 128s80-56 80-128a80 80 0 00-80-80z" stroke="currentColor" stroke-width="14"/></svg>Gral. Paz 840</div>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Lun–Vie · 07:00–13:00 hs</div>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M222.37 158.46l-47.11-21.11a16 16 0 00-18.67 4.72l-21.62 26.61a124.07 124.07 0 01-57.65-57.65l26.61-21.62a16 16 0 004.72-18.67L87.54 33.63A16 16 0 0070.73 24H32a16 16 0 00-16 16C32 164.38 91.62 224 208 224a16 16 0 0016-16v-38.73a16 16 0 00-1.63-11.81z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>(03777) 420-210</div>
+          <div class="centro-especialidades">
+            <span class="esp-tag">Clínica</span><span class="esp-tag">Vacunación</span><span class="esp-tag">Nutrición</span>
+          </div>
+        </div>
+        <div class="centro-card">
+          <h4>CAP Villa del Parque</h4>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M128 24a80 80 0 00-80 80c0 72 80 128 80 128s80-56 80-128a80 80 0 00-80-80z" stroke="currentColor" stroke-width="14"/></svg>Los Pinos 150</div>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Mar y Jue · 08:00–12:00 hs</div>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M222.37 158.46l-47.11-21.11a16 16 0 00-18.67 4.72l-21.62 26.61a124.07 124.07 0 01-57.65-57.65l26.61-21.62a16 16 0 004.72-18.67L87.54 33.63A16 16 0 0070.73 24H32a16 16 0 00-16 16C32 164.38 91.62 224 208 224a16 16 0 0016-16v-38.73a16 16 0 00-1.63-11.81z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>(03777) 420-220</div>
+          <div class="centro-especialidades">
+            <span class="esp-tag">Pediatría</span><span class="esp-tag">Vacunación</span>
+          </div>
+        </div>
+        <div class="centro-card" style="border-left-color:var(--rojo);">
+          <div class="centro-guardia">🚨 Guardia 24 hs</div>
+          <h4 style="margin-top:6px;">Hospital Zonal Dr. Lucio Molas</h4>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M128 24a80 80 0 00-80 80c0 72 80 128 80 128s80-56 80-128a80 80 0 00-80-80z" stroke="currentColor" stroke-width="14"/></svg>Belgrano 580</div>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Atención: 24 hs · 365 días</div>
+          <div class="centro-row"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M222.37 158.46l-47.11-21.11a16 16 0 00-18.67 4.72l-21.62 26.61a124.07 124.07 0 01-57.65-57.65l26.61-21.62a16 16 0 004.72-18.67L87.54 33.63A16 16 0 0070.73 24H32a16 16 0 00-16 16C32 164.38 91.62 224 208 224a16 16 0 0016-16v-38.73a16 16 0 00-1.63-11.81z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>(03777) 420-107</div>
+          <div class="centro-especialidades">
+            <span class="esp-tag">Guardia</span><span class="esp-tag">Cirugía</span><span class="esp-tag">Internación</span><span class="esp-tag">Maternidad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ DENUNCIAS ═══ -->
+    <div class="servicio-panel" id="panel-denuncias">
+      <div class="panel-header" style="border-top-color:#4527a0;">
+        <div class="panel-icon" style="background:var(--violeta-light);font-size:28px;">📋</div>
+        <div class="panel-header-text">
+          <h2>Denuncias y reclamos</h2>
+          <p>Reportá inconvenientes en la vía pública, incumplimientos de ordenanzas, problemas con servicios o cualquier situación que requiera atención municipal.</p>
+          <div class="panel-badges">
+            <span class="pbadge" style="background:var(--violeta-light);color:var(--violeta);">Online disponible</span>
+            <span class="pbadge" style="background:var(--azul-light);color:var(--azul-dark);">Respuesta en 48–72 hs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="st">¿Qué querés reportar?</div>
+      <div class="denuncia-tipos">
+        <div class="denuncia-tipo selected" onclick="selectTipo(this)">
+          <div class="dt-icon">🏗</div>
+          <h4>Infraestructura</h4>
+          <p>Baches, veredas rotas, semáforos</p>
+        </div>
+        <div class="denuncia-tipo" onclick="selectTipo(this)">
+          <div class="dt-icon">🌿</div>
+          <h4>Espacios verdes</h4>
+          <p>Árboles caídos, maleza, plazas</p>
+        </div>
+        <div class="denuncia-tipo" onclick="selectTipo(this)">
+          <div class="dt-icon">💧</div>
+          <h4>Agua / Cloacas</h4>
+          <p>Pérdidas, cortes, anegamientos</p>
+        </div>
+        <div class="denuncia-tipo" onclick="selectTipo(this)">
+          <div class="dt-icon">💡</div>
+          <h4>Alumbrado</h4>
+          <p>Luminarias apagadas o dañadas</p>
+        </div>
+        <div class="denuncia-tipo" onclick="selectTipo(this)">
+          <div class="dt-icon">🔊</div>
+          <h4>Ruidos molestos</h4>
+          <p>Incumplimiento de ordenanza</p>
+        </div>
+        <div class="denuncia-tipo" onclick="selectTipo(this)">
+          <div class="dt-icon">📝</div>
+          <h4>Otro</h4>
+          <p>Cualquier otra situación</p>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nombre completo</label>
+            <input class="form-input" type="text" placeholder="Tu nombre y apellido">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Teléfono o email</label>
+            <input class="form-input" type="text" placeholder="Para notificarte el seguimiento">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dirección del problema</label>
+          <input class="form-input" type="text" placeholder="Calle, altura o intersección">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descripción detallada</label>
+          <textarea class="form-textarea" placeholder="Describí el problema con el mayor detalle posible. Si podés, mencioná desde cuándo ocurre..."></textarea>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <button class="btn-submit">
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><line x1="40" y1="128" x2="216" y2="128" stroke="white" stroke-width="16" stroke-linecap="round"/><polyline points="144,56 216,128 144,200" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Enviar reclamo
+          </button>
+          <span style="font-family:var(--font-d);font-size:11px;color:var(--gris);">También podés llamar al (03777) 420–000</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MEDIO AMBIENTE ═══ -->
+    <div class="servicio-panel" id="panel-ambiente">
+      <div class="panel-header" style="border-top-color:#2e7d32;">
+        <div class="panel-icon" style="background:var(--verde-light);font-size:28px;">🌿</div>
+        <div class="panel-header-text">
+          <h2>Medio ambiente</h2>
+          <p>Programas de sustentabilidad, gestión de residuos especiales, arbolado urbano y protección de los recursos naturales del municipio.</p>
+          <div class="panel-badges">
+            <span class="pbadge" style="background:var(--verde-light);color:var(--verde);">🌳 4 programas activos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ma-grid">
+        <div class="ma-card">
+          <div class="ma-icon">♻️</div>
+          <h4>Reciclado domiciliario</h4>
+          <p>Retiro semanal de materiales reciclables (papel, plástico, vidrio, metales) diferenciados en bolsa azul.</p>
+          <div class="ma-link">Ver cronograma →</div>
+        </div>
+        <div class="ma-card">
+          <div class="ma-icon">🌳</div>
+          <h4>Arbolado urbano</h4>
+          <p>Plantación, poda y cuidado de los árboles en espacios públicos. Solicitud de poda o extracción.</p>
+          <div class="ma-link">Solicitar intervención →</div>
+        </div>
+        <div class="ma-card">
+          <div class="ma-icon">🐾</div>
+          <h4>Bromatología y zoonosis</h4>
+          <p>Control sanitario de alimentos, tenencia responsable de mascotas y programa de castración gratuita.</p>
+          <div class="ma-link">Ver turnos de castración →</div>
+        </div>
+        <div class="ma-card">
+          <div class="ma-icon">🏭</div>
+          <h4>Residuos especiales</h4>
+          <p>Puntos verdes para pilas, electrónicos, aceites y otros residuos que no van al contenedor domiciliario.</p>
+          <div class="ma-link">Ver puntos verdes →</div>
+        </div>
+        <div class="ma-card">
+          <div class="ma-icon">💧</div>
+          <h4>Cuidado de los ríos</h4>
+          <p>Monitoreo del Río Corriente y del canal, control de vertidos y sensibilización ambiental en escuelas.</p>
+          <div class="ma-link">Ver informe de calidad →</div>
+        </div>
+        <div class="ma-card">
+          <div class="ma-icon">🎓</div>
+          <h4>Educación ambiental</h4>
+          <p>Talleres en escuelas, charlas comunitarias y programa "Esquina Verde" para vecinos e instituciones.</p>
+          <div class="ma-link">Inscribirse a talleres →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TRANSPORTE ═══ -->
+    <div class="servicio-panel" id="panel-transporte">
+      <div class="panel-header" style="border-top-color:#e65100;">
+        <div class="panel-icon" style="background:var(--naranja-light);font-size:28px;">🚌</div>
+        <div class="panel-header-text">
+          <h2>Transporte urbano</h2>
+          <p>Líneas de colectivo urbano, paradas y frecuencias en el ejido municipal de Esquina.</p>
+          <div class="panel-badges">
+            <span class="pbadge" style="background:var(--naranja-light);color:var(--naranja);">3 líneas activas</span>
+          </div>
+        </div>
+      </div>
+      <div class="info-grid-3">
+        <div class="info-card" style="border-left:4px solid var(--azul);">
+          <div class="info-card-lbl">🚌 Línea 1 — Centro · Hospital</div>
+          <div class="info-card-val" style="font-size:14px;">Cada 30 min</div>
+          <div class="info-card-sub">Lun–Sáb · 06:00–22:00 hs</div>
+        </div>
+        <div class="info-card" style="border-left:4px solid var(--verde);">
+          <div class="info-card-lbl">🚌 Línea 2 — Centro · Malvinas</div>
+          <div class="info-card-val" style="font-size:14px;">Cada 45 min</div>
+          <div class="info-card-sub">Lun–Vie · 06:00–20:00 hs</div>
+        </div>
+        <div class="info-card" style="border-left:4px solid var(--naranja);">
+          <div class="info-card-lbl">🚌 Línea 3 — Centro · Terminal</div>
+          <div class="info-card-val" style="font-size:14px;">Cada 60 min</div>
+          <div class="info-card-sub">Lun–Dom · 07:00–21:00 hs</div>
+        </div>
+      </div>
+      <div class="alerta alerta-info">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><line x1="128" y1="112" x2="128" y2="176" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="128" cy="84" r="8" fill="currentColor"/></svg>
+        <div>Para conocer el recorrido exacto de cada línea y las paradas, consultá en la Dirección de Tránsito o llamá al (03777) 420–000.</div>
+      </div>
+    </div>
+
+    <!-- ═══ CEMENTERIO ═══ -->
+    <div class="servicio-panel" id="panel-cementerio">
+      <div class="panel-header" style="border-top-color:#555;">
+        <div class="panel-icon" style="background:#f5f5f5;font-size:28px;">🕊</div>
+        <div class="panel-header-text">
+          <h2>Cementerio municipal</h2>
+          <p>Información sobre el cementerio municipal, inhumaciones, renovación de bóvedas y nichos.</p>
+        </div>
+      </div>
+      <div class="info-grid-2">
+        <div class="info-card"><div class="info-card-lbl">📍 Ubicación</div><div class="info-card-val" style="font-size:14px;">Av. Independencia s/n</div><div class="info-card-sub">Extremo norte de la ciudad</div></div>
+        <div class="info-card"><div class="info-card-lbl">🕐 Horario de visita</div><div class="info-card-val" style="font-size:14px;">Todos los días</div><div class="info-card-sub">08:00 a 18:00 hs</div></div>
+        <div class="info-card"><div class="info-card-lbl">📞 Administración</div><div class="info-card-val" style="font-size:14px;">(03777) 420-300</div><div class="info-card-sub">Lun–Vie · 07:00–13:00 hs</div></div>
+        <div class="info-card"><div class="info-card-lbl">📋 Trámites</div><div class="info-card-val" style="font-size:14px;">Nichos y bóvedas</div><div class="info-card-sub">Renovación anual, inhumaciones y exhumaciones</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <div class="cta-in">
+    <div>
+      <h2>¿No encontrás lo que buscás?</h2>
+      <p>Comunicate con el municipio y te orientamos al área correcta.</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-am">📞 Llamar al municipio</button>
+      <button onclick="setPanel('denuncias',null)" style="background:white;color:var(--azul);font-family:var(--font-d);font-size:13px;font-weight:700;padding:11px 22px;border-radius:6px;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.02em;">📋 Hacer un reclamo</button>
+    </div>
+  </div>
+</section>
+
+<div class="footer-mini">
+  <div class="footer-mini-in">
+    <span>© 2025 Municipalidad de Esquina · <a href="#">Inicio</a> · <a href="#">Trámites</a> · <a href="#">Contacto</a></span>
+    <span>Servicios municipales · Esquina, Corrientes</span>
+  </div>
+</div>
+
+<script>
+function setPanel(id, linkEl) {
+  document.querySelectorAll('.servicio-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-service li a').forEach(a => a.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  if (linkEl) linkEl.classList.add('active');
+  else {
+    document.querySelectorAll('.nav-service li a').forEach(a => {
+      if (a.getAttribute('onclick') && a.getAttribute('onclick').includes("'" + id + "'")) {
+        a.classList.add('active');
+      }
+    });
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectTipo(el) {
+  document.querySelectorAll('.denuncia-tipo').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>
+</body>
+</html>

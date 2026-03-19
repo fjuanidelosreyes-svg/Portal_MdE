@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turismo — Municipalidad de Esquina</title>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --azul: #0077c0; --azul-dark: #005a91; --azul-light: #e6f3fb;
+  --amarillo: #ffcc00; --amarillo-dark: #d4a900; --amarillo-light: #fffbe6;
+  --oscuro: #2b2b2b; --gris: #6b6b6b; --gris-claro: #e8e8e8;
+  --fondo: #f5f5f5; --blanco: #fff; --borde: #ddd;
+  --verde: #2e7d32; --verde-light: #e8f5e9;
+  --font-body: Verdana, Geneva, sans-serif;
+  --font-d: 'Dosis', sans-serif;
+}
+body { font-family: var(--font-body); background: var(--fondo); color: var(--oscuro); font-size: 14px; line-height: 1.6; }
+.demo-bar { background: var(--amarillo); color: var(--oscuro); text-align: center; padding: 7px 1rem; font-family: var(--font-d); font-size: 12px; font-weight: 700; }
+.top-bar { background: var(--oscuro); padding: 6px 0; }
+.top-bar-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+.top-bar-inner a { color: rgba(255,255,255,0.6); font-family: var(--font-d); font-size: 11px; font-weight: 500; text-decoration: none; }
+.top-bar-inner a:hover { color: var(--amarillo); }
+.top-links { display: flex; gap: 20px; align-items: center; }
+nav { background: var(--azul); position: sticky; top: 0; z-index: 200; box-shadow: 0 3px 16px rgba(0,0,0,0.2); }
+.nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 64px; }
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-escudo { width: 42px; height: 42px; background: var(--amarillo); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-weight: 800; color: var(--oscuro); font-size: 14px; }
+.logo-text strong { display: block; font-family: var(--font-d); font-size: 15px; font-weight: 700; color: white; }
+.logo-text span { display: block; font-family: var(--font-d); font-size: 11px; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.05em; }
+.nav-links { display: flex; }
+.nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 0 14px; height: 64px; display: flex; align-items: center; gap: 6px; font-family: var(--font-d); font-size: 13px; font-weight: 600; letter-spacing: 0.03em; transition: background 0.15s; border-bottom: 3px solid transparent; text-transform: uppercase; }
+.nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-links a.active { background: var(--amarillo); color: var(--oscuro) !important; border-bottom: none; }
+.breadcrumb { background: white; border-bottom: 1px solid var(--gris-claro); padding: 10px 0; }
+.breadcrumb-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 8px; font-family: var(--font-d); font-size: 12px; color: var(--gris); }
+.breadcrumb a { color: var(--azul); text-decoration: none; }
+
+/* HERO */
+.hero { position: relative; height: 580px; overflow: hidden; display: flex; align-items: flex-end; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,30,60,0.92) 0%, rgba(0,40,80,0.5) 45%, rgba(0,40,80,0.1) 100%); }
+.hero-content { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem 3rem; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,204,0,0.18); border: 1px solid rgba(255,204,0,0.4); color: var(--amarillo); font-family: var(--font-d); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 4px; margin-bottom: 14px; }
+.hero h1 { font-family: var(--font-d); font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800; color: white; line-height: 1.08; margin-bottom: 14px; max-width: 640px; }
+.hero h1 span { color: var(--amarillo); }
+.hero-sub { color: rgba(255,255,255,0.78); font-size: 15px; max-width: 500px; margin-bottom: 2rem; line-height: 1.65; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-am { background: var(--amarillo); color: var(--oscuro); font-family: var(--font-d); font-weight: 700; font-size: 13px; padding: 12px 24px; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.15s; letter-spacing: 0.02em; text-transform: uppercase; }
+.btn-am:hover { background: var(--amarillo-dark); }
+.btn-ow { background: transparent; color: white; font-family: var(--font-d); font-weight: 600; font-size: 13px; padding: 11px 24px; border-radius: 6px; border: 1.5px solid rgba(255,255,255,0.45); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: border-color 0.15s, background 0.15s; letter-spacing: 0.02em; text-transform: uppercase; }
+.btn-ow:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+/* STATS BAR */
+.hero-stats { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,119,192,0.92); z-index: 3; }
+.hsi { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(4,1fr); }
+.hstat { padding: 14px 20px; border-right: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 12px; }
+.hstat:last-child { border-right: none; }
+.hstat-ic { width: 36px; height: 36px; background: rgba(255,255,255,0.12); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.hstat strong { display: block; font-family: var(--font-d); font-size: 1.1rem; font-weight: 800; color: white; line-height: 1; }
+.hstat span { font-family: var(--font-d); font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* TABS */
+.tabs-bar { background: white; border-bottom: 2px solid var(--gris-claro); position: sticky; top: 64px; z-index: 100; }
+.tabs-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; overflow-x: auto; }
+.tab-btn { display: flex; align-items: center; gap: 7px; padding: 0 20px; height: 52px; font-family: var(--font-d); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: var(--gris); background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; transition: color 0.15s, border-color 0.15s; white-space: nowrap; }
+.tab-btn:hover { color: var(--azul); }
+.tab-btn.active { color: var(--azul); border-bottom-color: var(--amarillo); }
+
+/* SECTIONS */
+.sw { display: none; }
+.sw.active { display: block; }
+.container { max-width: 1200px; margin: 2.5rem auto; padding: 0 2rem; }
+.sec-eye { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--azul); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.sec-h2 { font-family: var(--font-d); font-size: 1.8rem; font-weight: 800; color: var(--oscuro); margin-bottom: 6px; }
+.sec-p { color: var(--gris); font-size: 14px; margin-bottom: 1.75rem; max-width: 560px; line-height: 1.65; }
+.st { font-family: var(--font-d); font-size: 1.2rem; font-weight: 800; color: var(--azul); text-transform: uppercase; padding-bottom: 10px; border-bottom: 3px solid var(--amarillo); display: inline-block; margin-bottom: 1.5rem; }
+
+/* FEATURE CARD */
+.feature { display: grid; grid-template-columns: 1fr 1fr; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--borde); margin-bottom: 1.75rem; }
+.feature-img { position: relative; height: 320px; }
+.feature-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.feature-badge { position: absolute; top: 16px; left: 16px; background: var(--amarillo); color: var(--oscuro); font-family: var(--font-d); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; padding: 5px 12px; border-radius: 4px; }
+.feature-body { background: white; padding: 2rem; display: flex; flex-direction: column; justify-content: center; }
+.feature-body h3 { font-family: var(--font-d); font-size: 1.4rem; font-weight: 800; color: var(--oscuro); margin-bottom: 10px; line-height: 1.2; }
+.feature-body p { font-size: 13px; color: var(--gris); line-height: 1.65; margin-bottom: 1.25rem; }
+.atags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+.atag { font-family: var(--font-d); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 4px; }
+.tag-az { background: var(--azul-light); color: var(--azul-dark); }
+.tag-vd { background: var(--verde-light); color: var(--verde); }
+.tag-am { background: var(--amarillo-light); color: #7a5c00; }
+
+/* ACTIVITY CARDS */
+.act-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.act-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; overflow: hidden; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; text-decoration: none; color: inherit; display: block; }
+.act-card:hover { border-color: var(--azul); box-shadow: 0 4px 20px rgba(0,119,192,0.1); transform: translateY(-2px); }
+.act-img { height: 160px; overflow: hidden; position: relative; }
+.act-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+.act-card:hover .act-img img { transform: scale(1.04); }
+.act-img-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 60%); }
+.act-season { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.55); color: white; font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 9px; border-radius: 3px; }
+.act-body { padding: 14px; }
+.act-body h4 { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: var(--oscuro); margin-bottom: 5px; }
+.act-body p { font-size: 12px; color: var(--gris); line-height: 1.5; }
+.act-foot { padding: 10px 14px; border-top: 1px solid var(--gris-claro); display: flex; align-items: center; gap: 8px; }
+.act-foot span { font-family: var(--font-d); font-size: 11px; font-weight: 600; color: var(--gris); display: flex; align-items: center; gap: 4px; }
+.ver-mas { margin-left: auto; color: var(--azul); font-family: var(--font-d); font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 3px; }
+
+/* PACÚ */
+.pacu-sec { background: var(--oscuro); padding: 4rem 0; }
+.pacu-in { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.pacu-eye { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amarillo); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.pacu-h2 { font-family: var(--font-d); font-size: 2.2rem; font-weight: 800; color: white; line-height: 1.1; margin-bottom: 14px; }
+.pacu-h2 span { color: var(--amarillo); }
+.pacu-p { color: rgba(255,255,255,0.72); font-size: 14px; line-height: 1.7; margin-bottom: 1rem; }
+.pacu-datos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.75rem; }
+.pacu-dato { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 14px; }
+.pacu-dato-lbl { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+.pacu-dato-val { font-family: var(--font-d); font-size: 1rem; font-weight: 800; color: white; }
+.pacu-dato-val span { color: var(--amarillo); }
+.pacu-img-wrap { position: relative; border-radius: 12px; overflow: hidden; height: 380px; }
+.pacu-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pacu-badge { position: absolute; top: 20px; right: 20px; background: var(--amarillo); color: var(--oscuro); font-family: var(--font-d); font-size: 12px; font-weight: 800; padding: 8px 16px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px; }
+.pacu-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.pacu-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.5rem; border-top-width: 4px; }
+.pacu-card-lbl { font-family: var(--font-d); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.pacu-card h4 { font-family: var(--font-d); font-size: 1rem; font-weight: 700; color: var(--oscuro); margin-bottom: 5px; }
+.pacu-card p { font-size: 12px; color: var(--gris); line-height: 1.6; }
+
+/* ALOJAMIENTO */
+.aloj-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.aloj-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; }
+.aloj-card:hover { border-color: var(--azul); box-shadow: 0 4px 16px rgba(0,119,192,0.09); }
+.aloj-img { height: 140px; overflow: hidden; }
+.aloj-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+.aloj-card:hover .aloj-img img { transform: scale(1.04); }
+.aloj-body { padding: 14px; }
+.aloj-tipo { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--azul); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+.aloj-body h4 { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: var(--oscuro); margin-bottom: 4px; }
+.aloj-body p { font-size: 12px; color: var(--gris); line-height: 1.5; }
+.aloj-foot { padding: 10px 14px; border-top: 1px solid var(--gris-claro); display: flex; align-items: center; justify-content: space-between; }
+.aloj-precio { font-family: var(--font-d); font-size: 13px; font-weight: 700; color: var(--oscuro); }
+.aloj-precio span { font-size: 11px; font-weight: 400; color: var(--gris); }
+.aloj-btn { background: var(--azul-light); color: var(--azul); font-family: var(--font-d); font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 5px; border: none; cursor: pointer; transition: background 0.15s; text-transform: uppercase; }
+.aloj-btn:hover { background: rgba(0,119,192,0.18); }
+.stars { color: var(--amarillo); font-size: 12px; letter-spacing: 1px; margin-top: 4px; }
+.aloj-cta { background: var(--azul); border-color: var(--azul); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; }
+
+/* GASTRONOMÍA */
+.gastro-bg { background: var(--azul-light); border-top: 3px solid var(--azul); border-bottom: 3px solid var(--azul); padding: 2.5rem 0; }
+.gastro-in { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.gastro-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 1.5rem; }
+.gastro-card { background: white; border-radius: 10px; border: 1.5px solid var(--borde); overflow: hidden; transition: border-color 0.15s, transform 0.1s; }
+.gastro-card:hover { border-color: var(--azul); transform: translateY(-2px); }
+.gastro-img { height: 120px; overflow: hidden; }
+.gastro-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gastro-body { padding: 12px; }
+.gastro-tipo { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gris); margin-bottom: 4px; }
+.gastro-body h4 { font-family: var(--font-d); font-size: 13px; font-weight: 700; color: var(--oscuro); margin-bottom: 3px; }
+.gastro-body p { font-size: 11px; color: var(--gris); }
+.gastro-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.gastro-tag { font-family: var(--font-d); font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 3px; background: var(--azul-light); color: var(--azul-dark); }
+
+/* GALERÍA */
+.gal-grid { display: grid; grid-template-columns: repeat(4,1fr); grid-template-rows: repeat(2,180px); gap: 8px; border-radius: 12px; overflow: hidden; }
+.gal-item { overflow: hidden; position: relative; cursor: pointer; }
+.gal-item:first-child { grid-column: span 2; grid-row: span 2; }
+.gal-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+.gal-item:hover img { transform: scale(1.06); }
+.gal-ov { position: absolute; inset: 0; background: rgba(0,40,80,0); transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+.gal-item:hover .gal-ov { background: rgba(0,40,80,0.35); }
+.gal-ov svg { opacity: 0; transition: opacity 0.2s; }
+.gal-item:hover .gal-ov svg { opacity: 1; }
+
+/* CÓMO LLEGAR */
+.llegar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+.llegar-opts { display: flex; flex-direction: column; gap: 12px; }
+.llegar-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.25rem; display: flex; gap: 14px; align-items: flex-start; transition: border-color 0.15s; }
+.llegar-card:hover { border-color: var(--azul); }
+.llegar-ic { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.llegar-card h4 { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: var(--oscuro); margin-bottom: 4px; }
+.llegar-card p { font-size: 12px; color: var(--gris); line-height: 1.55; }
+.llegar-dist { font-family: var(--font-d); font-size: 12px; font-weight: 700; color: var(--azul); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+.mapa-wrap { background: white; border: 1.5px solid var(--borde); border-radius: 10px; overflow: hidden; height: 340px; position: relative; }
+.mapa-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.7); }
+.mapa-ov { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,40,80,0.45); }
+.mapa-ov h4 { font-family: var(--font-d); font-size: 1rem; font-weight: 800; color: white; margin-top: 10px; }
+.mapa-ov p { font-family: var(--font-d); font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 4px; }
+.mapa-btn { margin-top: 14px; background: var(--amarillo); color: var(--oscuro); font-family: var(--font-d); font-size: 12px; font-weight: 700; padding: 9px 20px; border-radius: 6px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; transition: background 0.15s; }
+.mapa-btn:hover { background: var(--amarillo-dark); }
+.dist-table { width: 100%; margin-top: 1rem; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--borde); }
+.dist-table th { background: var(--azul); color: white; font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 14px; text-align: left; }
+.dist-table td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid var(--gris-claro); }
+.dist-table tr:last-child td { border-bottom: none; }
+.dist-table tr:hover td { background: var(--azul-light); }
+.dist-km { font-family: var(--font-d); font-weight: 700; color: var(--azul); }
+
+/* CTA */
+.cta-strip { background: var(--azul); padding: 2.5rem 0; }
+.cta-in { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.cta-in h2 { font-family: var(--font-d); font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 6px; }
+.cta-in p { color: rgba(255,255,255,0.72); font-size: 13px; }
+.cta-contacts { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.cta-info { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+.cta-info-lbl { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.6); }
+.cta-info-val { font-family: var(--font-d); font-size: 14px; font-weight: 700; color: white; }
+.footer-mini { background: var(--oscuro); color: rgba(255,255,255,0.5); padding: 1.5rem 0; }
+.footer-mini-in { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; font-family: var(--font-d); font-size: 12px; }
+.footer-mini a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.footer-mini a:hover { color: var(--amarillo); }
+.alerta-am { background: rgba(255,204,0,0.12); border: 1.5px solid rgba(255,204,0,0.4); border-radius: 10px; padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start; margin-top: 1.5rem; font-size: 13px; color: #7a5c00; }
+@media (max-width: 900px) {
+  .feature, .pacu-in, .llegar-grid { grid-template-columns: 1fr; }
+  .act-grid, .aloj-grid, .gastro-grid { grid-template-columns: repeat(2,1fr); }
+  .hsi { grid-template-columns: repeat(2,1fr); }
+  .gal-grid { grid-template-columns: repeat(2,1fr); grid-template-rows: auto; }
+  .gal-item:first-child { grid-column: span 1; grid-row: span 1; }
+  .nav-links { display: none; }
+  .pacu-img-wrap { height: 240px; }
+  .pacu-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">★ MOCKUP — Municipalidad de Esquina · Página de Turismo ★</div>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-links">
+      <a href="#">Inicio</a><a href="#">Transparencia</a><a href="#">Boletín Oficial</a>
+    </div>
+    <div class="top-links">
+      <a href="#">📞 Turismo: (03777) 420–000</a>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-escudo">ME</div>
+      <div class="logo-text">
+        <strong>Municipalidad de Esquina</strong>
+        <span>Corrientes · Argentina</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#">Inicio</a>
+      <a href="#">Gobierno</a>
+      <a href="#">Trámites</a>
+      <a href="#">Servicios</a>
+      <a href="#">Noticias</a>
+      <a href="#" class="active">Turismo</a>
+    </div>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="#">Inicio</a>
+    <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><polyline points="96,48 160,128 96,208" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Turismo</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=1400&q=85" alt="Río Corriente">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M128 24a80 80 0 00-80 80c0 72 80 128 80 128s80-56 80-128a80 80 0 00-80-80z" stroke="currentColor" stroke-width="14"/><circle cx="128" cy="104" r="24" stroke="currentColor" stroke-width="14"/></svg>
+      Esquina, Corrientes · Argentina
+    </div>
+    <h1>Donde el <span>Corriente</span><br>abraza al Paraná</h1>
+    <p class="hero-sub">Pesca del Pacú, carnaval, naturaleza y gastronomía. Una ciudad con historia colonial y paisajes únicos en el corazón correntino.</p>
+    <div class="hero-btns">
+      <button class="btn-am" onclick="setTab('pacu')">🐟 Fiesta del Pacú</button>
+      <button class="btn-ow" onclick="setTab('llegar')">📍 Cómo llegar</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hsi">
+      <div class="hstat"><div class="hstat-ic"><svg width="20" height="20" viewBox="0 0 256 256" fill="none"><path d="M152 128c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48z" stroke="white" stroke-width="13"/><path d="M152 128c24 0 72-40 88-88-48 16-88 64-88 88z" stroke="white" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>42 años</strong><span>Fiesta Nacional del Pacú</span></div></div>
+      <div class="hstat"><div class="hstat-ic"><svg width="20" height="20" viewBox="0 0 256 256" fill="none"><path d="M28 160c16 0 16 20 32 20s16-20 32-20 16 20 32 20 16-20 32-20 16 20 32 20 16-20 32-20" stroke="white" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>2 ríos</strong><span>Corriente y Paraná</span></div></div>
+      <div class="hstat"><div class="hstat-ic"><svg width="20" height="20" viewBox="0 0 256 256" fill="none"><circle cx="80" cy="192" r="22" stroke="white" stroke-width="13"/><polyline points="102,192 102,88 202,56 202,160" stroke="white" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Carnaval</strong><span>Enero y Febrero</span></div></div>
+      <div class="hstat"><div class="hstat-ic"><svg width="20" height="20" viewBox="0 0 256 256" fill="none"><path d="M128 24a80 80 0 00-80 80c0 72 80 128 80 128s80-56 80-128a80 80 0 00-80-80z" stroke="white" stroke-width="14"/><circle cx="128" cy="104" r="24" stroke="white" stroke-width="14"/></svg></div><div><strong>329 km</strong><span>de Corrientes Capital</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <div class="tabs-inner">
+    <button class="tab-btn active" id="tab-quehaver" onclick="setTab('quehaver')">🗺 Qué hacer</button>
+    <button class="tab-btn" id="tab-pacu" onclick="setTab('pacu')">🐟 Fiesta del Pacú</button>
+    <button class="tab-btn" id="tab-alojamiento" onclick="setTab('alojamiento')">🏨 Alojamiento</button>
+    <button class="tab-btn" id="tab-gastro" onclick="setTab('gastro')">🍽 Gastronomía</button>
+    <button class="tab-btn" id="tab-galeria" onclick="setTab('galeria')">📷 Galería</button>
+    <button class="tab-btn" id="tab-llegar" onclick="setTab('llegar')">📍 Cómo llegar</button>
+  </div>
+</div>
+
+<!-- QUÉ HACER -->
+<div class="sw active" id="sec-quehaver">
+  <div class="container">
+    <div class="sec-eye"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polygon points="161,95 116,110 101,155 146,140" fill="currentColor"/></svg>Turismo · Esquina</div>
+    <h2 class="sec-h2">Qué hacer en Esquina</h2>
+    <p class="sec-p">Desde la pesca del Pacú hasta el carnaval más colorido del interior correntino. Esquina tiene algo para cada visitante.</p>
+
+    <div class="feature">
+      <div class="feature-img">
+        <img src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=700&q=80" alt="Pesca del Pacú">
+        <div class="feature-badge">⭐ Actividad emblema</div>
+      </div>
+      <div class="feature-body">
+        <h3>Pesca del Pacú y pesca deportiva</h3>
+        <p>Esquina es reconocida a nivel nacional como uno de los mejores destinos de pesca deportiva de Argentina. Los ríos Corriente y Paraná ofrecen una variedad excepcional de especies: pacú, dorado, surubí, boga y tararira.</p>
+        <p>La ciudad es sede de la <strong>Fiesta Nacional del Pacú</strong>, que convoca cada marzo a más de 25.000 pescadores y turistas de todo el país.</p>
+        <div class="atags">
+          <span class="atag tag-az">Todo el año</span>
+          <span class="atag tag-vd">Apto para familias</span>
+          <span class="atag tag-am">Concursos y torneos</span>
+        </div>
+        <button class="btn-am" style="font-size:12px;padding:10px 18px;" onclick="setTab('pacu')">Ver info de la Fiesta del Pacú →</button>
+      </div>
+    </div>
+
+    <div class="act-grid">
+      <a href="#" class="act-card">
+        <div class="act-img"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80" alt="Carnaval"><div class="act-img-ov"></div><span class="act-season">Enero — Febrero</span></div>
+        <div class="act-body"><h4>Carnaval de Esquina</h4><p>Comparsas, murgas y desfiles que llenan las noches del verano correntino de color y ritmo.</p></div>
+        <div class="act-foot"><span>🎭 Cultura</span><span class="ver-mas">Ver más →</span></div>
+      </a>
+      <a href="#" class="act-card">
+        <div class="act-img"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Balneario"><div class="act-img-ov"></div><span class="act-season">Dic — Mar</span></div>
+        <div class="act-body"><h4>Balneario municipal</h4><p>Playa natural sobre el Río Corriente con aguas limpias y tranquilas. Acceso gratuito para familias.</p></div>
+        <div class="act-foot"><span>🌊 Naturaleza</span><span class="ver-mas">Ver más →</span></div>
+      </a>
+      <a href="#" class="act-card">
+        <div class="act-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Patrimonio"><div class="act-img-ov"></div><span class="act-season">Todo el año</span></div>
+        <div class="act-body"><h4>Patrimonio e historia</h4><p>Capilla Santa Rita de Casia (1799), Museo Municipal y el casco histórico fundado en 1806.</p></div>
+        <div class="act-foot"><span>🏛 Historia</span><span class="ver-mas">Ver más →</span></div>
+      </a>
+      <a href="#" class="act-card">
+        <div class="act-img"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80" alt="Naturaleza"><div class="act-img-ov"></div><span class="act-season">Mayo — Oct</span></div>
+        <div class="act-body"><h4>Avistaje de fauna y flora</h4><p>Esteros y palmares correntinos con carpinchos, yacarés, garzas y más de 200 especies de aves.</p></div>
+        <div class="act-foot"><span>🌿 Naturaleza</span><span class="ver-mas">Ver más →</span></div>
+      </a>
+      <a href="#" class="act-card">
+        <div class="act-img"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80" alt="Eventos"><div class="act-img-ov"></div><span class="act-season">Todo el año</span></div>
+        <div class="act-body"><h4>Eventos y festivales</h4><p>Agenda cultural con festivales de chamamé, ferias artesanales y eventos deportivos durante todo el año.</p></div>
+        <div class="act-foot"><span>📅 Agenda</span><span class="ver-mas">Ver más →</span></div>
+      </a>
+      <a href="#" class="act-card">
+        <div class="act-img"><img src="https://images.unsplash.com/photo-1473219861845-90e6eed4c0b8?w=600&q=80" alt="Kayak"><div class="act-img-ov"></div><span class="act-season">Sep — Abr</span></div>
+        <div class="act-body"><h4>Kayak y deportes acuáticos</h4><p>Los ríos Corriente y Paraná son ideales para kayak, canoa y navegación a vela.</p></div>
+        <div class="act-foot"><span>🚣 Deporte</span><span class="ver-mas">Ver más →</span></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FIESTA DEL PACÚ -->
+<div class="sw" id="sec-pacu">
+  <section class="pacu-sec">
+    <div class="pacu-in">
+      <div>
+        <div class="pacu-eye">⭐ Evento nacional</div>
+        <h2 class="pacu-h2">Fiesta Nacional<br>del <span>Pacú</span></h2>
+        <p class="pacu-p">Uno de los eventos de pesca deportiva más importantes de Argentina. Cada marzo, Esquina se convierte en la capital nacional de la pesca cuando miles de pescadores de todo el país compiten en las aguas del Río Corriente.</p>
+        <p class="pacu-p">La fiesta incluye concursos de pesca, stands gastronómicos, shows musicales y actividades para toda la familia durante 4 días consecutivos.</p>
+        <div class="pacu-datos">
+          <div class="pacu-dato"><div class="pacu-dato-lbl">Edición</div><div class="pacu-dato-val"><span>42.ª</span> en 2025</div></div>
+          <div class="pacu-dato"><div class="pacu-dato-lbl">Cuándo</div><div class="pacu-dato-val">Marzo</div></div>
+          <div class="pacu-dato"><div class="pacu-dato-lbl">Visitantes</div><div class="pacu-dato-val"><span>+25.000</span></div></div>
+          <div class="pacu-dato"><div class="pacu-dato-lbl">Duración</div><div class="pacu-dato-val">4 días</div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-am" style="font-size:12px;padding:10px 18px;">📋 Ver programa completo</button>
+          <button class="btn-ow" style="font-size:12px;padding:10px 18px;border-color:rgba(255,255,255,0.4);">📞 Consultar fecha exacta</button>
+        </div>
+      </div>
+      <div class="pacu-img-wrap">
+        <img src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=700&q=85" alt="Río Corriente - Pesca">
+        <div class="pacu-badge">⭐ Evento nacional</div>
+      </div>
+    </div>
+  </section>
+  <div class="container">
+    <div class="st">Todo lo que necesitás saber</div>
+    <div class="pacu-cards">
+      <div class="pacu-card" style="border-top-color:var(--azul);">
+        <div class="pacu-card-lbl" style="color:var(--azul);">📍 Lugar del evento</div>
+        <h4>Costa del Río Corriente</h4>
+        <p>El predio se encuentra sobre la costanera municipal, a pocas cuadras del centro histórico de Esquina.</p>
+      </div>
+      <div class="pacu-card" style="border-top-color:var(--amarillo-dark);">
+        <div class="pacu-card-lbl" style="color:var(--amarillo-dark);">🐟 Inscripción</div>
+        <h4>Categorías individuales y equipos</h4>
+        <p>La inscripción abre 60 días antes del evento. Podés inscribirte online o en la Oficina de Turismo.</p>
+      </div>
+      <div class="pacu-card" style="border-top-color:var(--verde);">
+        <div class="pacu-card-lbl" style="color:var(--verde);">✅ Acceso gratuito</div>
+        <h4>Entrada libre al público</h4>
+        <p>El espectáculo, los shows musicales y la feria gastronómica son de acceso libre y gratuito para todos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALOJAMIENTO -->
+<div class="sw" id="sec-alojamiento">
+  <div class="container">
+    <div class="sec-eye">🏨 Dónde alojarse</div>
+    <h2 class="sec-h2">Alojamiento en Esquina</h2>
+    <p class="sec-p">Hoteles, posadas y cabañas para todos los gustos. Reservá con anticipación durante la Fiesta del Pacú y el Carnaval.</p>
+    <div class="aloj-grid">
+      <div class="aloj-card">
+        <div class="aloj-img"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=500&q=80" alt="Hotel"></div>
+        <div class="aloj-body"><div class="aloj-tipo">🏨 Hotel</div><h4>Hotel Esquina Río</h4><p>Ubicado sobre la costanera. Vista al río, desayuno incluido, estacionamiento y WiFi.</p><div class="stars">★★★</div></div>
+        <div class="aloj-foot"><div class="aloj-precio">Desde $XXXX <span>/ noche</span></div><button class="aloj-btn">Consultar</button></div>
+      </div>
+      <div class="aloj-card">
+        <div class="aloj-img"><img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=500&q=80" alt="Posada"></div>
+        <div class="aloj-body"><div class="aloj-tipo">🏡 Posada</div><h4>Posada Casa Blanca</h4><p>Posada familiar con jardín y pileta. Ambiente tranquilo, cocina casera y atención personalizada.</p><div class="stars">★★★★</div></div>
+        <div class="aloj-foot"><div class="aloj-precio">Desde $XXXX <span>/ noche</span></div><button class="aloj-btn">Consultar</button></div>
+      </div>
+      <div class="aloj-card">
+        <div class="aloj-img"><img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=500&q=80" alt="Cabañas"></div>
+        <div class="aloj-body"><div class="aloj-tipo">🌲 Cabañas</div><h4>Cabañas La Rosita</h4><p>Cabañas de 2 a 6 personas sobre el río. Ideal para grupos y familias con niños. Pesca directa desde el predio.</p><div class="stars">★★★★</div></div>
+        <div class="aloj-foot"><div class="aloj-precio">Desde $XXXX <span>/ noche</span></div><button class="aloj-btn">Consultar</button></div>
+      </div>
+      <div class="aloj-card">
+        <div class="aloj-img"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80" alt="Boutique"></div>
+        <div class="aloj-body"><div class="aloj-tipo">🌟 Hotel boutique</div><h4>La Casona de Cotota</h4><p>Casa histórica restaurada en el centro. Habitaciones únicas, desayuno gourmet y experiencia cultural.</p><div class="stars">★★★★★</div></div>
+        <div class="aloj-foot"><div class="aloj-precio">Desde $XXXX <span>/ noche</span></div><button class="aloj-btn">Consultar</button></div>
+      </div>
+      <div class="aloj-card">
+        <div class="aloj-img"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=500&q=80" alt="Camping"></div>
+        <div class="aloj-body"><div class="aloj-tipo">⛺ Camping</div><h4>Camping Municipal</h4><p>Camping sobre el río con baños, asadores, luz eléctrica y vigilancia. La opción más económica.</p><div class="stars">★★</div></div>
+        <div class="aloj-foot"><div class="aloj-precio">Económico <span>/ noche</span></div><button class="aloj-btn">Consultar</button></div>
+      </div>
+      <div class="aloj-card" style="background:var(--azul);border-color:var(--azul);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;">
+        <div style="font-size:2rem;margin-bottom:12px;opacity:0.7;">📞</div>
+        <div style="font-family:var(--font-d);font-size:14px;font-weight:700;color:white;margin-bottom:8px;">¿Más opciones?</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:14px;">Consultá a la Oficina de Turismo por alojamientos no listados.</div>
+        <button class="btn-am" style="font-size:12px;padding:9px 18px;">Contactar</button>
+      </div>
+    </div>
+    <div class="alerta-am">
+      <span style="font-size:1.2rem;flex-shrink:0;">⚠️</span>
+      <div><strong>Reservá con anticipación durante el Pacú y el Carnaval.</strong> La capacidad de alojamiento se completa rápidamente en esas fechas. Se recomienda reservar con al menos 30 días de anticipación.</div>
+    </div>
+  </div>
+</div>
+
+<!-- GASTRONOMÍA -->
+<div class="sw" id="sec-gastro">
+  <section class="gastro-bg" style="border-top:none;">
+    <div class="gastro-in" style="padding-top:2.5rem;">
+      <div class="sec-eye">🍽 Dónde comer</div>
+      <h2 class="sec-h2">Gastronomía local</h2>
+      <p class="sec-p">El pescado de río es el protagonista de la cocina esquinense. El pacú a las brasas, el surubí al horno y los chipás son imperdibles.</p>
+      <div class="gastro-grid">
+        <div class="gastro-card">
+          <div class="gastro-img"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80" alt="Restaurante"></div>
+          <div class="gastro-body"><div class="gastro-tipo">Restaurante</div><h4>Don Joaquín</h4><p>Especializado en pescados de río. El pacú a la parrilla es su plato estrella.</p><div class="gastro-tags"><span class="gastro-tag">Pescados</span><span class="gastro-tag">Parrilla</span></div></div>
+        </div>
+        <div class="gastro-card">
+          <div class="gastro-img"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80" alt="Comida"></div>
+          <div class="gastro-body"><div class="gastro-tipo">Resto-bar</div><h4>Italia</h4><p>Cocina italiana y criolla, vista al río. Ideal para almuerzos largos.</p><div class="gastro-tags"><span class="gastro-tag">Italiana</span><span class="gastro-tag">Vista al río</span></div></div>
+        </div>
+        <div class="gastro-card">
+          <div class="gastro-img"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80" alt="Parrilla"></div>
+          <div class="gastro-body"><div class="gastro-tipo">Parrilla</div><h4>El Soñador</h4><p>Parrilla tradicional correntina con locro y humita en invierno.</p><div class="gastro-tags"><span class="gastro-tag">Regional</span><span class="gastro-tag">Parrilla</span></div></div>
+        </div>
+        <div class="gastro-card">
+          <div class="gastro-img"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80" alt="Café"></div>
+          <div class="gastro-body"><div class="gastro-tipo">Café</div><h4>Brillo de Luna</h4><p>Café de especialidad, chipás caseros y repostería artesanal frente a la plaza.</p><div class="gastro-tags"><span class="gastro-tag">Café</span><span class="gastro-tag">Chipá</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- GALERÍA -->
+<div class="sw" id="sec-galeria">
+  <div class="container">
+    <div class="sec-eye">📷 Fotos de Esquina</div>
+    <h2 class="sec-h2">Galería de imágenes</h2>
+    <p class="sec-p">Mirá cómo es Esquina antes de visitarla.</p>
+    <div class="gal-grid">
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=700&q=80" alt="Río"><div class="gal-ov"><svg width="36" height="36" viewBox="0 0 256 256" fill="none"><rect x="32" y="48" width="192" height="160" rx="8" stroke="white" stroke-width="14"/><circle cx="100" cy="108" r="20" stroke="white" stroke-width="14"/></svg></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80" alt="Carnaval"><div class="gal-ov"><svg width="28" height="28" viewBox="0 0 256 256" fill="none"><rect x="32" y="48" width="192" height="160" rx="8" stroke="white" stroke-width="14"/><circle cx="100" cy="108" r="20" stroke="white" stroke-width="14"/></svg></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80" alt="Balneario"><div class="gal-ov"><svg width="28" height="28" viewBox="0 0 256 256" fill="none"><rect x="32" y="48" width="192" height="160" rx="8" stroke="white" stroke-width="14"/><circle cx="100" cy="108" r="20" stroke="white" stroke-width="14"/></svg></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Patrimonio"><div class="gal-ov"><svg width="28" height="28" viewBox="0 0 256 256" fill="none"><rect x="32" y="48" width="192" height="160" rx="8" stroke="white" stroke-width="14"/><circle cx="100" cy="108" r="20" stroke="white" stroke-width="14"/></svg></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80" alt="Naturaleza"><div class="gal-ov"><svg width="28" height="28" viewBox="0 0 256 256" fill="none"><rect x="32" y="48" width="192" height="160" rx="8" stroke="white" stroke-width="14"/><circle cx="100" cy="108" r="20" stroke="white" stroke-width="14"/></svg></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1473219861845-90e6eed4c0b8?w=400&q=80" alt="Kayak"><div class="gal-ov"><svg width="28" height="28" viewBox="0 0 256 256" fill="none"><rect x="32" y="48" width="192" height="160" rx="8" stroke="white" stroke-width="14"/><circle cx="100" cy="108" r="20" stroke="white" stroke-width="14"/></svg></div></div>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;">
+      <button class="btn-am" style="font-size:12px;padding:10px 20px;">📷 Ver galería completa</button>
+    </div>
+  </div>
+</div>
+
+<!-- CÓMO LLEGAR -->
+<div class="sw" id="sec-llegar">
+  <div class="container">
+    <div class="sec-eye">📍 Accesos</div>
+    <h2 class="sec-h2">Cómo llegar a Esquina</h2>
+    <p class="sec-p">Esquina está conectada por ruta y ómnibus con las principales ciudades de la región.</p>
+    <div class="llegar-grid">
+      <div class="llegar-opts">
+        <div class="llegar-card">
+          <div class="llegar-ic" style="background:var(--azul-light);font-size:22px;">🚌</div>
+          <div><h4>En ómnibus</h4><p>Servicios regulares desde Corrientes, Goya, Buenos Aires y Rosario. La Terminal de Ómnibus está a 5 cuadras del centro.</p><div class="llegar-dist">⏱ Desde Corrientes: ~4 hs · Desde Bs. As.: ~10 hs</div></div>
+        </div>
+        <div class="llegar-card">
+          <div class="llegar-ic" style="background:var(--verde-light);font-size:22px;">🚗</div>
+          <div><h4>En auto</h4><p>Desde Corrientes por Ruta Nacional 12 hasta Goya, luego Ruta Nacional 123 hasta Esquina. Todo pavimentado.</p><div class="llegar-dist">⏱ Corrientes: 329 km · Buenos Aires: 668 km</div></div>
+        </div>
+        <div class="llegar-card">
+          <div class="llegar-ic" style="background:rgba(230,81,0,0.1);font-size:22px;">✈️</div>
+          <div><h4>En avión</h4><p>El aeropuerto más cercano es el de Goya (~80 km). Desde Corrientes Capital hay vuelos diarios desde Aeroparque.</p><div class="llegar-dist">✈️ Aeropuerto Goya: ~80 km</div></div>
+        </div>
+        <table class="dist-table">
+          <thead><tr><th>Ciudad</th><th>Distancia</th><th>Tiempo estimado</th></tr></thead>
+          <tbody>
+            <tr><td>Corrientes Capital</td><td class="dist-km">329 km</td><td>~4 hs</td></tr>
+            <tr><td>Goya</td><td class="dist-km">122 km</td><td>~1:30 hs</td></tr>
+            <tr><td>Rosario</td><td class="dist-km">480 km</td><td>~5:30 hs</td></tr>
+            <tr><td>Buenos Aires</td><td class="dist-km">668 km</td><td>~8 hs</td></tr>
+            <tr><td>Resistencia (Chaco)</td><td class="dist-km">350 km</td><td>~4:30 hs</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="mapa-wrap">
+          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=700&q=80" alt="Mapa">
+          <div class="mapa-ov">
+            <div style="font-size:3rem;">📍</div>
+            <h4>Esquina, Corrientes</h4>
+            <p>Argentina · 329 km de Corrientes Capital</p>
+            <button class="mapa-btn">🗺 Ver en Google Maps</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <div class="cta-in">
+    <div>
+      <h2>¿Querés planificar tu visita?</h2>
+      <p>La Oficina de Turismo Municipal te ayuda a organizar tu estadía en Esquina.</p>
+    </div>
+    <div class="cta-contacts">
+      <div class="cta-info"><span style="font-size:1.3rem;">📞</span><div><div class="cta-info-lbl">Teléfono</div><div class="cta-info-val">(03777) 420–000</div></div></div>
+      <div class="cta-info"><span style="font-size:1.3rem;">✉️</span><div><div class="cta-info-lbl">Email</div><div class="cta-info-val">turismo@esquina.gob.ar</div></div></div>
+      <div class="cta-info"><span style="font-size:1.3rem;">🕐</span><div><div class="cta-info-lbl">Horario</div><div class="cta-info-val">Lun–Vie 7–13 hs</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-mini">
+  <div class="footer-mini-in">
+    <span>© 2025 Municipalidad de Esquina · <a href="#">Inicio</a> · <a href="#">Trámites</a> · <a href="#">Contacto</a></span>
+    <span>Hecho con orgullo en Esquina, Corrientes 🐟</span>
+  </div>
+</div>
+
+<script>
+function setTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sw').forEach(s => s.classList.remove('active'));
+  const btn = document.getElementById('tab-' + id);
+  const sec = document.getElementById('sec-' + id);
+  if (btn) btn.classList.add('active');
+  if (sec) sec.classList.add('active');
+  document.querySelector('.tabs-bar').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>

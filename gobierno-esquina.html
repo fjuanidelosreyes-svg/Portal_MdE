@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gobierno — Municipalidad de Esquina</title>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --azul: #0077c0; --azul-dark: #005a91; --azul-light: #e6f3fb;
+  --amarillo: #ffcc00; --amarillo-dark: #d4a900; --amarillo-light: #fffbe6;
+  --oscuro: #2b2b2b; --gris: #6b6b6b; --gris-claro: #e8e8e8;
+  --fondo: #f5f5f5; --blanco: #fff; --borde: #ddd;
+  --font-body: Verdana, Geneva, sans-serif;
+  --font-d: 'Dosis', sans-serif;
+}
+body { font-family: var(--font-body); background: var(--fondo); color: var(--oscuro); font-size: 14px; line-height: 1.6; }
+.demo-bar { background: var(--amarillo); color: var(--oscuro); text-align: center; padding: 7px 1rem; font-family: var(--font-d); font-size: 12px; font-weight: 700; }
+.top-bar { background: var(--oscuro); padding: 6px 0; }
+.top-bar-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+.top-bar-inner a { color: rgba(255,255,255,0.6); font-family: var(--font-d); font-size: 11px; font-weight: 500; text-decoration: none; }
+.top-bar-inner a:hover { color: var(--amarillo); }
+.top-links { display: flex; gap: 20px; }
+nav { background: var(--azul); position: sticky; top: 0; z-index: 200; box-shadow: 0 3px 16px rgba(0,0,0,0.2); }
+.nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 64px; }
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-escudo { width: 42px; height: 42px; background: var(--amarillo); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-weight: 800; color: var(--oscuro); font-size: 14px; }
+.logo-text strong { display: block; font-family: var(--font-d); font-size: 15px; font-weight: 700; color: white; }
+.logo-text span { display: block; font-family: var(--font-d); font-size: 11px; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.05em; }
+.nav-links { display: flex; }
+.nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 0 14px; height: 64px; display: flex; align-items: center; gap: 6px; font-family: var(--font-d); font-size: 13px; font-weight: 600; letter-spacing: 0.03em; transition: background 0.15s; border-bottom: 3px solid transparent; text-transform: uppercase; }
+.nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-links a.active { border-bottom-color: var(--amarillo); color: white; }
+.breadcrumb { background: white; border-bottom: 1px solid var(--gris-claro); padding: 10px 0; }
+.bc-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 8px; font-family: var(--font-d); font-size: 12px; color: var(--gris); }
+.bc-inner a { color: var(--azul); text-decoration: none; }
+
+/* PAGE HEADER */
+.page-header { background: var(--azul-dark); padding: 3rem 0; position: relative; overflow: hidden; }
+.page-header::after { content:''; position:absolute; right:-80px; top:-80px; width:360px; height:360px; background:var(--amarillo); opacity:0.05; border-radius:50%; pointer-events:none; }
+.ph-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index:2; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+.ph-eye { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amarillo); margin-bottom: 8px; }
+.ph-inner h1 { font-family: var(--font-d); font-size: 2rem; font-weight: 800; color: white; margin-bottom: 8px; }
+.ph-inner p { color: rgba(255,255,255,0.7); font-size: 14px; max-width: 500px; }
+.ph-periodo { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 1.25rem 1.75rem; text-align: center; flex-shrink: 0; }
+.ph-periodo-lbl { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); margin-bottom: 6px; }
+.ph-periodo-val { font-family: var(--font-d); font-size: 1.6rem; font-weight: 800; color: var(--amarillo); line-height: 1; }
+.ph-periodo-sub { font-family: var(--font-d); font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+/* TABS */
+.tabs-bar { background: white; border-bottom: 2px solid var(--gris-claro); position: sticky; top: 64px; z-index: 100; }
+.tabs-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; overflow-x: auto; }
+.tab-btn { display: flex; align-items: center; gap: 7px; padding: 0 20px; height: 52px; font-family: var(--font-d); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: var(--gris); background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; transition: color 0.15s, border-color 0.15s; white-space: nowrap; }
+.tab-btn:hover { color: var(--azul); }
+.tab-btn.active { color: var(--azul); border-bottom-color: var(--amarillo); }
+.sw { display: none; }
+.sw.active { display: block; }
+
+/* CONTAINER */
+.container { max-width: 1200px; margin: 2.5rem auto; padding: 0 2rem; }
+.st { font-family: var(--font-d); font-size: 1rem; font-weight: 800; color: var(--azul); text-transform: uppercase; letter-spacing: 0.04em; padding-bottom: 8px; border-bottom: 2px solid var(--amarillo); display: inline-flex; align-items: center; gap: 7px; margin-bottom: 1.25rem; }
+
+/* AUTORIDADES */
+.autoridad-feature { display: grid; grid-template-columns: 320px 1fr; gap: 0; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--borde); margin-bottom: 1.5rem; }
+.autoridad-foto { position: relative; background: linear-gradient(135deg, var(--azul-dark) 0%, var(--azul) 100%); display: flex; align-items: center; justify-content: center; min-height: 280px; }
+.autoridad-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.autoridad-foto-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 2rem; }
+.autoridad-initials { width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 3px solid var(--amarillo); display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-size: 2.2rem; font-weight: 800; color: white; }
+.autoridad-cargo-badge { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; background: var(--amarillo); color: var(--oscuro); padding: 5px 14px; border-radius: 4px; }
+.autoridad-body { background: white; padding: 2rem; display: flex; flex-direction: column; justify-content: center; }
+.autoridad-body h2 { font-family: var(--font-d); font-size: 1.6rem; font-weight: 800; color: var(--oscuro); margin-bottom: 4px; }
+.autoridad-body .cargo { font-family: var(--font-d); font-size: 13px; font-weight: 600; color: var(--azul); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+.autoridad-body p { font-size: 13px; color: var(--gris); line-height: 1.7; margin-bottom: 1rem; }
+.autoridad-datos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.aut-dato { background: var(--fondo); border-radius: 6px; padding: 8px 12px; }
+.aut-dato-lbl { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gris); margin-bottom: 2px; }
+.aut-dato-val { font-family: var(--font-d); font-size: 13px; font-weight: 700; color: var(--oscuro); }
+.autoridad-contacto { margin-top: 1rem; display: flex; flex-direction: column; gap: 5px; }
+.aut-contact-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--gris); }
+.aut-contact-row a { color: var(--azul); text-decoration: none; }
+.aut-contact-row a:hover { text-decoration: underline; }
+
+/* SECRETARÍAS GRID */
+.secs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 1.5rem; }
+.sec-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.25rem; border-top: 4px solid var(--azul); transition: box-shadow 0.15s, border-color 0.15s; cursor: pointer; }
+.sec-card:hover { box-shadow: 0 4px 16px rgba(0,119,192,0.1); border-top-color: var(--amarillo-dark); }
+.sec-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.sec-card h4 { font-family: var(--font-d); font-size: 14px; font-weight: 800; color: var(--oscuro); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.02em; }
+.sec-titular { font-family: var(--font-d); font-size: 12px; font-weight: 600; color: var(--azul); margin-bottom: 5px; }
+.sec-card p { font-size: 12px; color: var(--gris); line-height: 1.5; }
+.sec-tel { font-family: var(--font-d); font-size: 11px; font-weight: 600; color: var(--gris); margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+
+/* CONCEJO */
+.concejo-header { background: var(--oscuro); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.concejo-header h3 { font-family: var(--font-d); font-size: 1.1rem; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.03em; }
+.concejo-header p { color: rgba(255,255,255,0.65); font-size: 12px; margin-top: 3px; }
+.concejo-info { display: flex; gap: 12px; flex-wrap: wrap; }
+.ci-badge { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 8px 14px; text-align: center; }
+.ci-badge strong { display: block; font-family: var(--font-d); font-size: 1.4rem; font-weight: 800; color: var(--amarillo); }
+.ci-badge span { font-family: var(--font-d); font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.05em; }
+.concejales-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.25rem; }
+.concejal-card { background: white; border: 1.5px solid var(--borde); border-radius: 8px; padding: 1rem; display: flex; align-items: center; gap: 12px; transition: border-color 0.15s; }
+.concejal-card:hover { border-color: var(--azul); }
+.concejal-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--azul); display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-size: 14px; font-weight: 800; color: white; flex-shrink: 0; border: 2px solid var(--amarillo); }
+.concejal-name { font-family: var(--font-d); font-size: 13px; font-weight: 700; color: var(--oscuro); }
+.concejal-bloque { font-family: var(--font-d); font-size: 11px; color: var(--gris); font-weight: 500; margin-top: 2px; }
+.concejal-card.presidente .concejal-avatar { background: var(--amarillo-dark); color: var(--oscuro); }
+.sesiones-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.25rem; }
+.sesion-row { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--gris-claro); }
+.sesion-row:last-child { border-bottom: none; }
+.sesion-fecha { width: 52px; height: 52px; border-radius: 8px; background: var(--azul); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+.sesion-dia { font-family: var(--font-d); font-size: 1.3rem; font-weight: 800; color: white; line-height: 1; }
+.sesion-mes { font-family: var(--font-d); font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.05em; }
+.sesion-info h4 { font-family: var(--font-d); font-size: 14px; font-weight: 700; color: var(--oscuro); margin-bottom: 3px; }
+.sesion-info p { font-size: 12px; color: var(--gris); }
+.sesion-badge { margin-left: auto; font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 9px; border-radius: 4px; white-space: nowrap; }
+.sb-publica { background: var(--azul-light); color: var(--azul-dark); }
+.sb-especial { background: var(--amarillo-light); color: #7a5c00; }
+
+/* ORGANIGRAMA */
+.org-wrap { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 2rem; overflow-x: auto; }
+.org-level { display: flex; justify-content: center; gap: 1rem; margin-bottom: 0; position: relative; }
+.org-connector { display: flex; justify-content: center; margin: 0; }
+.org-line-v { width: 2px; height: 28px; background: var(--gris-claro); }
+.org-line-h-wrap { display: flex; align-items: flex-start; }
+.org-node { background: var(--azul); color: white; border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 130px; flex-shrink: 0; }
+.org-node.top { background: var(--azul-dark); border: 2px solid var(--amarillo); min-width: 180px; }
+.org-node.mid { background: var(--azul); }
+.org-node.sub { background: var(--oscuro); min-width: 110px; }
+.org-node.concejo { background: var(--amarillo-dark); }
+.org-node-title { font-family: var(--font-d); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: white; }
+.org-node.concejo .org-node-title { color: var(--oscuro); }
+.org-node-name { font-family: var(--font-d); font-size: 11px; font-weight: 400; opacity: 0.8; margin-top: 2px; color: white; }
+.org-node.concejo .org-node-name { color: var(--oscuro); opacity: 0.7; }
+.org-branches { display: flex; justify-content: center; gap: 1rem; position: relative; padding-top: 28px; }
+.org-branches::before { content:''; position:absolute; top:0; left:50%; width:2px; height:28px; background:var(--gris-claro); transform:translateX(-50%); }
+.org-branches-mid { display: flex; gap: 0; }
+.org-branch-line { display: flex; flex-direction: column; align-items: center; }
+.org-h-line { height: 2px; background: var(--gris-claro); }
+.org-sub-group { display: flex; gap: 8px; padding-top: 28px; position: relative; }
+.org-sub-group::before { content:''; position:absolute; top:0; left:50%; width:2px; height:28px; background:var(--gris-claro); transform:translateX(-50%); }
+
+/* CARTA ORGÁNICA */
+.carta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.carta-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.25rem; }
+.carta-card h4 { font-family: var(--font-d); font-size: 14px; font-weight: 800; color: var(--azul); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; }
+.carta-card p { font-size: 13px; color: var(--gris); line-height: 1.7; }
+.boletin-list { display: flex; flex-direction: column; gap: 8px; }
+.boletin-item { background: white; border: 1.5px solid var(--borde); border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; transition: border-color 0.15s; cursor: pointer; }
+.boletin-item:hover { border-color: var(--azul); }
+.boletin-num { font-family: var(--font-d); font-size: 13px; font-weight: 800; color: var(--azul); min-width: 80px; }
+.boletin-desc { flex: 1; font-size: 13px; color: var(--oscuro); }
+.boletin-fecha { font-family: var(--font-d); font-size: 11px; color: var(--gris); font-weight: 600; white-space: nowrap; }
+.boletin-dl { background: var(--azul-light); color: var(--azul); font-family: var(--font-d); font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 5px; border: none; cursor: pointer; white-space: nowrap; }
+.boletin-dl:hover { background: rgba(0,119,192,0.18); }
+
+/* TRANSPARENCIA */
+.trans-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.trans-card { background: white; border: 1.5px solid var(--borde); border-radius: 10px; padding: 1.25rem; text-align: center; transition: border-color 0.15s, transform 0.1s; cursor: pointer; }
+.trans-card:hover { border-color: var(--azul); transform: translateY(-2px); }
+.trans-icon { font-size: 2.2rem; margin-bottom: 10px; }
+.trans-card h4 { font-family: var(--font-d); font-size: 13px; font-weight: 800; color: var(--oscuro); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.02em; }
+.trans-card p { font-size: 12px; color: var(--gris); line-height: 1.5; }
+.trans-tag { font-family: var(--font-d); font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 4px; background: var(--azul-light); color: var(--azul-dark); margin-top: 8px; display: inline-block; }
+
+/* HISTORIA */
+.historia-grid { display: grid; grid-template-columns: 1fr 380px; gap: 2rem; align-items: start; }
+.historia-img { border-radius: 10px; overflow: hidden; height: 280px; }
+.historia-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item { display: flex; gap: 14px; padding-bottom: 22px; position: relative; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.tl-year { font-family: var(--font-d); font-size: 13px; font-weight: 800; color: white; background: var(--azul); border-radius: 6px; padding: 4px 10px; min-width: 52px; text-align: center; }
+.tl-line { width: 2px; background: var(--gris-claro); flex: 1; margin-top: 4px; }
+.tl-item:last-child .tl-line { display: none; }
+.tl-content { padding-top: 2px; }
+.tl-content h4 { font-family: var(--font-d); font-size: 14px; font-weight: 700; color: var(--oscuro); margin-bottom: 3px; }
+.tl-content p { font-size: 12px; color: var(--gris); line-height: 1.5; }
+
+/* CTA */
+.cta-strip { background: var(--azul); padding: 2rem 0; margin-top: 2rem; }
+.cta-in { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.cta-in h2 { font-family: var(--font-d); font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 4px; }
+.cta-in p { color: rgba(255,255,255,0.7); font-size: 13px; }
+.btn-am { background: var(--amarillo); color: var(--oscuro); font-family: var(--font-d); font-weight: 700; font-size: 13px; padding: 11px 22px; border-radius: 6px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.15s; letter-spacing: 0.02em; text-transform: uppercase; }
+.btn-am:hover { background: var(--amarillo-dark); }
+.footer-mini { background: var(--oscuro); color: rgba(255,255,255,0.5); padding: 1.5rem 0; }
+.footer-mini-in { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; font-family: var(--font-d); font-size: 12px; }
+.footer-mini a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.footer-mini a:hover { color: var(--amarillo); }
+
+@media (max-width: 900px) {
+  .autoridad-feature, .historia-grid { grid-template-columns: 1fr; }
+  .secs-grid, .concejales-grid, .trans-grid, .carta-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .ph-inner { grid-template-columns: 1fr; }
+  .ph-periodo { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">★ MOCKUP — Municipalidad de Esquina · Gobierno Municipal ★</div>
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-links"><a href="#">Inicio</a><a href="#">Transparencia</a><a href="#">Boletín Oficial</a><a href="#">Acceso a la información</a></div>
+    <div class="top-links"><a href="#">📞 (03777) 420–000</a></div>
+  </div>
+</div>
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-escudo">ME</div>
+      <div class="logo-text"><strong>Municipalidad de Esquina</strong><span>Corrientes · Argentina</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#">Inicio</a><a href="#" class="active">Gobierno</a><a href="#">Trámites</a><a href="#">Servicios</a><a href="#">Noticias</a>
+      <a href="#" style="background:var(--amarillo);color:var(--oscuro)!important;border-radius:6px;margin-left:8px;height:36px!important;padding:0 14px!important;align-self:center;border-bottom:none!important;font-weight:700!important;">Turismo</a>
+    </div>
+  </div>
+</nav>
+<div class="breadcrumb">
+  <div class="bc-inner">
+    <a href="#">Inicio</a>
+    <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><polyline points="96,48 160,128 96,208" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Gobierno</span>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-inner">
+    <div>
+      <div class="ph-eye">🏛 Municipalidad de Esquina · Corrientes</div>
+      <h1>Gobierno municipal</h1>
+      <p>Conocé las autoridades, el organigrama institucional, el Concejo Deliberante y los documentos oficiales del Municipio de Esquina.</p>
+    </div>
+    <div class="ph-periodo">
+      <div class="ph-periodo-lbl">Período de gestión</div>
+      <div class="ph-periodo-val">2023–2027</div>
+      <div class="ph-periodo-sub">Gobierno electo democráticamente</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <div class="tabs-inner">
+    <button class="tab-btn active" id="tab-autoridades" onclick="setTab('autoridades')">👤 Autoridades</button>
+    <button class="tab-btn" id="tab-concejo" onclick="setTab('concejo')">🏛 Concejo Deliberante</button>
+    <button class="tab-btn" id="tab-organigrama" onclick="setTab('organigrama')">📊 Organigrama</button>
+    <button class="tab-btn" id="tab-transparencia" onclick="setTab('transparencia')">📋 Transparencia</button>
+    <button class="tab-btn" id="tab-historia" onclick="setTab('historia')">📖 Historia</button>
+  </div>
+</div>
+
+<!-- ═══ AUTORIDADES ═══ -->
+<div class="sw active" id="sec-autoridades">
+  <div class="container">
+
+    <div class="st">👤 Intendente Municipal</div>
+    <div class="autoridad-feature">
+      <div class="autoridad-foto">
+        <div class="autoridad-foto-placeholder">
+          <div class="autoridad-initials">[I]</div>
+          <div class="autoridad-cargo-badge">Intendente</div>
+        </div>
+      </div>
+      <div class="autoridad-body">
+        <div class="cargo">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M24 224h208M48 224V80l80-56 80 56v144" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Intendente Municipal · Período 2023–2027
+        </div>
+        <h2>[Nombre del Intendente]</h2>
+        <p>El Intendente es el responsable del Poder Ejecutivo Municipal, encargado de administrar los recursos del municipio, ejecutar las ordenanzas del Concejo Deliberante y garantizar la prestación de los servicios esenciales a los vecinos de Esquina.</p>
+        <p>Encabeza el gabinete municipal conformado por las secretarías de Gobierno, Hacienda, Obras, Salud, Acción Social, Cultura, Deportes y Turismo.</p>
+        <div class="autoridad-datos">
+          <div class="aut-dato"><div class="aut-dato-lbl">Asumió el cargo</div><div class="aut-dato-val">10 Dic. 2023</div></div>
+          <div class="aut-dato"><div class="aut-dato-lbl">Mandato hasta</div><div class="aut-dato-val">10 Dic. 2027</div></div>
+          <div class="aut-dato"><div class="aut-dato-lbl">Partido / Alianza</div><div class="aut-dato-val">[Partido político]</div></div>
+          <div class="aut-dato"><div class="aut-dato-lbl">Votos obtenidos</div><div class="aut-dato-val">[XX%]</div></div>
+        </div>
+        <div class="autoridad-contacto">
+          <div class="aut-contact-row">
+            <svg width="13" height="13" viewBox="0 0 256 256" fill="none"><path d="M222.37 158.46l-47.11-21.11a16 16 0 00-18.67 4.72l-21.62 26.61a124.07 124.07 0 01-57.65-57.65l26.61-21.62a16 16 0 004.72-18.67L87.54 33.63A16 16 0 0070.73 24H32a16 16 0 00-16 16C32 164.38 91.62 224 208 224a16 16 0 0016-16v-38.73a16 16 0 00-1.63-11.81z" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Intendencia: <a href="#">(03777) 420–001</a>
+          </div>
+          <div class="aut-contact-row">
+            <svg width="13" height="13" viewBox="0 0 256 256" fill="none"><rect x="24" y="48" width="208" height="160" rx="16" stroke="currentColor" stroke-width="13"/><polyline points="24,88 128,152 232,88" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <a href="#">intendencia@esquinacorrientes.gob.ar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="st">👤 Viceintendente</div>
+    <div class="autoridad-feature">
+      <div class="autoridad-foto">
+        <div class="autoridad-foto-placeholder">
+          <div class="autoridad-initials">[V]</div>
+          <div class="autoridad-cargo-badge">Viceintendente</div>
+        </div>
+      </div>
+      <div class="autoridad-body">
+        <div class="cargo">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M24 224h208M48 224V80l80-56 80 56v144" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Viceintendente · Presidente del Concejo Deliberante
+        </div>
+        <h2>[Nombre del Viceintendente]</h2>
+        <p>El Viceintendente ejerce la presidencia del Concejo Deliberante y asume el Ejecutivo Municipal en caso de ausencia, impedimento o acefalía del Intendente. Es el nexo institucional entre el Poder Ejecutivo y el Legislativo.</p>
+        <div class="autoridad-datos">
+          <div class="aut-dato"><div class="aut-dato-lbl">Asumió el cargo</div><div class="aut-dato-val">10 Dic. 2023</div></div>
+          <div class="aut-dato"><div class="aut-dato-lbl">Mandato hasta</div><div class="aut-dato-val">10 Dic. 2027</div></div>
+        </div>
+        <div class="autoridad-contacto">
+          <div class="aut-contact-row">
+            <svg width="13" height="13" viewBox="0 0 256 256" fill="none"><path d="M222.37 158.46l-47.11-21.11a16 16 0 00-18.67 4.72l-21.62 26.61a124.07 124.07 0 01-57.65-57.65l26.61-21.62a16 16 0 004.72-18.67L87.54 33.63A16 16 0 0070.73 24H32a16 16 0 00-16 16C32 164.38 91.62 224 208 224a16 16 0 0016-16v-38.73a16 16 0 00-1.63-11.81z" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Concejo: <a href="#">(03777) 420–010</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="st">⚙️ Secretarías del Ejecutivo</div>
+    <div class="secs-grid">
+      <div class="sec-card"><div class="sec-icon">🏛</div><h4>Secretaría de Gobierno</h4><div class="sec-titular">Secretario/a: [Nombre]</div><p>Coordinación política, relaciones institucionales, despacho y protocolo municipal.</p><div class="sec-tel">📞 (03777) 420–020</div></div>
+      <div class="sec-card"><div class="sec-icon">💰</div><h4>Secretaría de Hacienda</h4><div class="sec-titular">Secretario/a: [Nombre]</div><p>Administración financiera, presupuesto, tesorería, compras y contrataciones.</p><div class="sec-tel">📞 (03777) 420–030</div></div>
+      <div class="sec-card"><div class="sec-icon">🏗</div><h4>Secretaría de Obras</h4><div class="sec-titular">Secretario/a: [Nombre]</div><p>Obra pública, mantenimiento vial, servicios urbanos e infraestructura.</p><div class="sec-tel">📞 (03777) 420–040</div></div>
+      <div class="sec-card"><div class="sec-icon">🏥</div><h4>Secretaría de Salud</h4><div class="sec-titular">Secretario/a: [Nombre]</div><p>Centros de atención primaria, programas de salud pública y bromatología.</p><div class="sec-tel">📞 (03777) 420–050</div></div>
+      <div class="sec-card"><div class="sec-icon">🤝</div><h4>Acción Social</h4><div class="sec-titular">Secretario/a: [Nombre]</div><p>Programas sociales, asistencia a familias vulnerables y adultos mayores.</p><div class="sec-tel">📞 (03777) 420–060</div></div>
+      <div class="sec-card"><div class="sec-icon">🎭</div><h4>Cultura, Turismo y Deporte</h4><div class="sec-titular">Secretario/a: [Nombre]</div><p>Eventos culturales, Fiesta del Pacú, deportes comunitarios y turismo.</p><div class="sec-tel">📞 (03777) 420–070</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONCEJO ═══ -->
+<div class="sw" id="sec-concejo">
+  <div class="container">
+    <div class="concejo-header">
+      <div>
+        <h3>🏛 Honorable Concejo Deliberante</h3>
+        <p>Órgano legislativo del Municipio de Esquina · Período 2023–2027</p>
+      </div>
+      <div class="concejo-info">
+        <div class="ci-badge"><strong>9</strong><span>Concejales</span></div>
+        <div class="ci-badge"><strong>1.ª</strong><span>Sesión ordinaria/mes</span></div>
+        <div class="ci-badge"><strong>Pública</strong><span>Acceso libre</span></div>
+      </div>
+    </div>
+
+    <div class="st">👥 Composición del Concejo</div>
+    <div class="concejales-grid">
+      <div class="concejal-card presidente">
+        <div class="concejal-avatar">PR</div>
+        <div>
+          <div class="concejal-name">[Nombre — Presidente]</div>
+          <div class="concejal-bloque">Presidente · [Bloque político]</div>
+        </div>
+      </div>
+      <div class="concejal-card">
+        <div class="concejal-avatar">C2</div>
+        <div><div class="concejal-name">[Nombre concejal]</div><div class="concejal-bloque">[Bloque político]</div></div>
+      </div>
+      <div class="concejal-card">
+        <div class="concejal-avatar">C3</div>
+        <div><div class="concejal-name">[Nombre concejal]</div><div class="concejal-bloque">[Bloque político]</div></div>
+      </div>
+      <div class="concejal-card">
+        <div class="concejal-avatar">C4</div>
+        <div><div class="concejal-name">[Nombre concejal]</div><div class="concejal-bloque">[Bloque político]</div></div>
+      </div>
+      <div class="concejal-card">
+        <div class="concejal-avatar">C5</div>
+        <div><div class="concejal-name">[Nombre concejal]</div><div class="concejal-bloque">[Bloque político]</div></div>
+      </div>
+      <div class="concejal-card">
+        <div class="concejal-avatar">C6</div>
+        <div><div class="concejal-name">[Nombre concejal]</div><div class="concejal-bloque">[Bloque político]</div></div>
+      </div>
+      <div class="concejal-card">
+        <div class="concejal-avatar">C7</div>
+        <div><div class="concejal-name">[Nombre concejal]</div><div class="concejal-bloque">[Bloque político]</div></div>
+      </div>
+      <div class="concejal-card">
+        <div class="concejal-avatar">C8</div>
+        <div><div class="concejal-name">[Nombre concejal]</div><div class="concejal-bloque">[Bloque político]</div></div>
+      </div>
+      <div class="concejal-card">
+        <div class="concejal-avatar">C9</div>
+        <div><div class="concejal-name">[Nombre concejal]</div><div class="concejal-bloque">[Bloque político]</div></div>
+      </div>
+    </div>
+
+    <div class="st">📅 Próximas sesiones</div>
+    <div class="sesiones-card">
+      <div class="sesion-row">
+        <div class="sesion-fecha"><div class="sesion-dia">01</div><div class="sesion-mes">Abr</div></div>
+        <div class="sesion-info"><h4>Sesión ordinaria — Abril 2025</h4><p>Casa Municipal · Sala del Concejo · 10:00 hs</p></div>
+        <span class="sesion-badge sb-publica">Abierta al público</span>
+      </div>
+      <div class="sesion-row">
+        <div class="sesion-fecha" style="background:var(--amarillo-dark);"><div class="sesion-dia">15</div><div class="sesion-mes">Abr</div></div>
+        <div class="sesion-info"><h4>Sesión especial — Presupuesto 2025</h4><p>Casa Municipal · Sala del Concejo · 09:00 hs</p></div>
+        <span class="sesion-badge sb-especial">Sesión especial</span>
+      </div>
+      <div class="sesion-row">
+        <div class="sesion-fecha"><div class="sesion-dia">06</div><div class="sesion-mes">May</div></div>
+        <div class="sesion-info"><h4>Sesión ordinaria — Mayo 2025</h4><p>Casa Municipal · Sala del Concejo · 10:00 hs</p></div>
+        <span class="sesion-badge sb-publica">Abierta al público</span>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;background:var(--azul-light);border:1px solid rgba(0,119,192,0.25);border-radius:10px;padding:13px 16px;font-size:13px;color:var(--azul-dark);display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1.1rem;flex-shrink:0;">ℹ️</span>
+      <div>Las sesiones del Concejo Deliberante son <strong>públicas y de acceso libre</strong> para todos los vecinos. Se transmiten en vivo por las redes sociales del municipio. Para pedir uso de la palabra, comunicarse con la Secretaría del Concejo al (03777) 420–010.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ORGANIGRAMA ═══ -->
+<div class="sw" id="sec-organigrama">
+  <div class="container">
+    <div class="st">📊 Estructura institucional</div>
+    <div class="org-wrap">
+      <!-- NIVEL SUPERIOR -->
+      <div style="display:flex;justify-content:center;gap:2rem;margin-bottom:0;">
+        <div class="org-node top"><div class="org-node-title">Intendente Municipal</div><div class="org-node-name">[Nombre]</div></div>
+        <div class="org-node concejo"><div class="org-node-title">Concejo Deliberante</div><div class="org-node-name">9 concejales</div></div>
+      </div>
+      <!-- CONECTOR -->
+      <div style="display:flex;justify-content:center;margin:0 0 0 -120px;">
+        <div style="width:2px;height:28px;background:var(--gris-claro);"></div>
+      </div>
+      <!-- VICEINTENDENTE -->
+      <div style="display:flex;justify-content:center;margin-bottom:0;margin-left:-120px;">
+        <div class="org-node mid" style="min-width:160px;"><div class="org-node-title">Viceintendente</div><div class="org-node-name">[Nombre]</div></div>
+      </div>
+      <!-- CONECTOR HORIZONTAL -->
+      <div style="display:flex;justify-content:center;margin-bottom:0;margin-left:-120px;">
+        <div style="width:2px;height:28px;background:var(--gris-claro);"></div>
+      </div>
+      <!-- SECRETARÍAS -->
+      <div style="position:relative;padding-top:0;">
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+          <div class="org-node sub"><div class="org-node-title">Gobierno</div></div>
+          <div class="org-node sub"><div class="org-node-title">Hacienda</div></div>
+          <div class="org-node sub"><div class="org-node-title">Obras</div></div>
+          <div class="org-node sub"><div class="org-node-title">Salud</div></div>
+          <div class="org-node sub"><div class="org-node-title">Acción Social</div></div>
+          <div class="org-node sub"><div class="org-node-title">Cultura</div></div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;padding:1rem;background:var(--fondo);border-radius:8px;font-size:12px;color:var(--gris);text-align:center;">
+        Organigrama simplificado · Para el organigrama completo descargá el documento oficial
+      </div>
+    </div>
+    <div style="margin-top:1rem;text-align:center;">
+      <button class="btn-am" style="font-size:12px;padding:10px 20px;">📥 Descargar organigrama completo (PDF)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TRANSPARENCIA ═══ -->
+<div class="sw" id="sec-transparencia">
+  <div class="container">
+    <div class="st">📋 Documentos y acceso a la información</div>
+    <div class="trans-grid" style="margin-bottom:1.5rem;">
+      <div class="trans-card"><div class="trans-icon">📜</div><h4>Carta Orgánica</h4><p>Constitución del municipio. Derechos y deberes de los vecinos, estructura de gobierno.</p><span class="trans-tag">PDF disponible</span></div>
+      <div class="trans-card"><div class="trans-icon">💰</div><h4>Presupuesto municipal</h4><p>Presupuesto anual aprobado por el Concejo Deliberante y su ejecución trimestral.</p><span class="trans-tag">Actualizado 2025</span></div>
+      <div class="trans-card"><div class="trans-icon">📊</div><h4>Rendición de cuentas</h4><p>Balances contables y rendiciones presentadas al Tribunal de Cuentas de Corrientes.</p><span class="trans-tag">PDF disponible</span></div>
+      <div class="trans-card"><div class="trans-icon">📑</div><h4>Ordenanzas vigentes</h4><p>Registro completo de ordenanzas aprobadas por el Concejo Deliberante.</p><span class="trans-tag">Buscador disponible</span></div>
+      <div class="trans-card"><div class="trans-icon">🏗</div><h4>Contratos y licitaciones</h4><p>Licitaciones públicas, contrataciones directas y sus respectivas actas de adjudicación.</p><span class="trans-tag">Actualizado</span></div>
+      <div class="trans-card"><div class="trans-icon">👥</div><h4>Nómina de personal</h4><p>Listado del personal municipal, cargos y escalas salariales según convenio colectivo.</p><span class="trans-tag">PDF disponible</span></div>
+    </div>
+
+    <div class="st">📰 Boletín Oficial Municipal</div>
+    <div class="boletin-list">
+      <div class="boletin-item"><div class="boletin-num">N° 142</div><div class="boletin-desc">Ordenanza 1.842 — Aprobación del Presupuesto Municipal 2025</div><div class="boletin-fecha">Mar 2025</div><button class="boletin-dl">⬇ Descargar</button></div>
+      <div class="boletin-item"><div class="boletin-num">N° 141</div><div class="boletin-desc">Decreto 0234/25 — Convocatoria a licitación pública: pavimentación Acceso Sur</div><div class="boletin-fecha">Feb 2025</div><button class="boletin-dl">⬇ Descargar</button></div>
+      <div class="boletin-item"><div class="boletin-num">N° 140</div><div class="boletin-desc">Ordenanza 1.838 — Régimen de habilitaciones comerciales (modificación)</div><div class="boletin-fecha">Ene 2025</div><button class="boletin-dl">⬇ Descargar</button></div>
+      <div class="boletin-item"><div class="boletin-num">N° 139</div><div class="boletin-desc">Decreto 0198/24 — Designaciones en planta municipal</div><div class="boletin-fecha">Dic 2024</div><button class="boletin-dl">⬇ Descargar</button></div>
+      <div class="boletin-item"><div class="boletin-num">N° 138</div><div class="boletin-desc">Ordenanza Tarifaria 1.835 — Tasas municipales 2025</div><div class="boletin-fecha">Nov 2024</div><button class="boletin-dl">⬇ Descargar</button></div>
+    </div>
+    <div style="margin-top:1rem;text-align:center;">
+      <button class="btn-am" style="font-size:12px;padding:10px 20px;">📰 Ver todos los boletines</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HISTORIA ═══ -->
+<div class="sw" id="sec-historia">
+  <div class="container">
+    <div class="st">📖 Historia de Esquina</div>
+    <div class="historia-grid">
+      <div>
+        <div class="historia-img" style="margin-bottom:1.25rem;">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80" alt="Patrimonio histórico de Esquina">
+        </div>
+        <div class="carta-grid">
+          <div class="carta-card">
+            <h4>📍 Ubicación</h4>
+            <p>Ciudad cabecera del Departamento Esquina, al sudoeste de la Provincia de Corrientes. Ubicada a 329 km de la capital provincial y 668 km de Buenos Aires.</p>
+          </div>
+          <div class="carta-card">
+            <h4>👥 Población</h4>
+            <p>Aproximadamente 30.000 habitantes según el último censo. La ciudad conserva un aspecto colonial con calles arboladas y arquitectura histórica.</p>
+          </div>
+          <div class="carta-card">
+            <h4>🌊 Geografía</h4>
+            <p>Ubicada sobre la margen izquierda del Río Corriente, muy cerca de su desembocadura en el Paraná. Un canal inaugurado en 1924 une ambos ríos.</p>
+          </div>
+          <div class="carta-card">
+            <h4>🏛 Autonomía</h4>
+            <p>Esquina rige su vida institucional por la Carta Orgánica Municipal, sancionada en 1994 y reformada posteriormente con plena autonomía constitucional.</p>
+          </div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">1782</div><div class="tl-line"></div></div>
+          <div class="tl-content"><h4>Fundación de la posta</h4><p>Benito Lamela levanta una posta en sus tierras y erige una capilla en honor a Santa Rita de Casia, dando origen al poblado.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">1799</div><div class="tl-line"></div></div>
+          <div class="tl-content"><h4>Capilla Pública</h4><p>Se inaugura la Capilla Pública dedicada a Santa Rita de Casia, patrona de la ciudad, el 22 de mayo.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">1806</div><div class="tl-line"></div></div>
+          <div class="tl-content"><h4>Fundación oficial</h4><p>Se funda oficialmente la ciudad de "Santa Rita de la Esquina del Río Corriente" el 10 de febrero.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">1839</div><div class="tl-line"></div></div>
+          <div class="tl-content"><h4>Saqueo e incendio</h4><p>Durante las guerras civiles, Esquina es saqueada e incendiada. Se reconstruye en 1846 más al norte.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">1924</div><div class="tl-line"></div></div>
+          <div class="tl-content"><h4>Canal Corriente–Paraná</h4><p>Inauguración del canal que une el Río Corriente con el Paraná, transformando la geografía y economía local.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">1940</div><div class="tl-line"></div></div>
+          <div class="tl-content"><h4>Esquina es ciudad</h4><p>Se le otorga el rango oficial de ciudad. Comienza una etapa de desarrollo urbano e institucional.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">1983</div><div class="tl-line"></div></div>
+          <div class="tl-content"><h4>Primera Fiesta del Pacú</h4><p>Se realiza la primera edición de la Fiesta Nacional del Pacú, que se convierte en el evento turístico más importante del municipio.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">1994</div><div class="tl-line"></div></div>
+          <div class="tl-content"><h4>Carta Orgánica Municipal</h4><p>Esquina sanciona su primera Carta Orgánica, consolidando la autonomía municipal plena.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <div class="cta-in">
+    <div>
+      <h2>¿Querés comunicarte con el gobierno municipal?</h2>
+      <p>Intendencia, secretarías y Concejo Deliberante disponibles de lunes a viernes.</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-am">📞 (03777) 420–000</button>
+      <button style="background:white;color:var(--azul);font-family:var(--font-d);font-size:13px;font-weight:700;padding:11px 22px;border-radius:6px;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.02em;">✉ Escribinos</button>
+    </div>
+  </div>
+</section>
+
+<div class="footer-mini">
+  <div class="footer-mini-in">
+    <span>© 2025 Municipalidad de Esquina · <a href="#">Inicio</a> · <a href="#">Trámites</a> · <a href="#">Contacto</a></span>
+    <span>Gobierno Municipal · Período 2023–2027</span>
+  </div>
+</div>
+
+<script>
+function setTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sw').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelector('.tabs-bar').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+</script>
+</body>
+</html>

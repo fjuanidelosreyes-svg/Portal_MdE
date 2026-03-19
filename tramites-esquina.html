@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trámites — Municipalidad de Esquina</title>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --azul:        #0077c0;
+  --azul-dark:   #005a91;
+  --azul-light:  #e6f3fb;
+  --amarillo:    #ffcc00;
+  --amarillo-dark: #d4a900;
+  --oscuro:      #2b2b2b;
+  --gris:        #6b6b6b;
+  --gris-claro:  #e8e8e8;
+  --fondo:       #f5f5f5;
+  --blanco:      #ffffff;
+  --borde:       #ddd;
+  --font-body:   Verdana, Geneva, sans-serif;
+  --font-d:      'Dosis', sans-serif;
+  --verde-ok:    #2e7d32;
+  --verde-light: #e8f5e9;
+}
+body { font-family: var(--font-body); background: var(--fondo); color: var(--oscuro); font-size: 14px; line-height: 1.6; }
+
+/* DEMO BAR */
+.demo-bar { background: var(--amarillo); color: var(--oscuro); text-align: center; padding: 7px 1rem; font-family: var(--font-d); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+
+/* TOP BAR */
+.top-bar { background: var(--oscuro); padding: 6px 0; }
+.top-bar-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+.top-bar-inner a { color: rgba(255,255,255,0.6); font-family: var(--font-d); font-size: 11px; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; transition: color 0.15s; }
+.top-bar-inner a:hover { color: var(--amarillo); }
+.top-bar-links { display: flex; gap: 20px; align-items: center; }
+
+/* NAV */
+nav { background: var(--azul); position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 16px rgba(0,0,0,0.2); }
+.nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 64px; }
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-escudo { width: 42px; height: 42px; background: var(--amarillo); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-weight: 800; color: var(--oscuro); font-size: 14px; flex-shrink: 0; }
+.logo-text strong { display: block; font-family: var(--font-d); font-size: 15px; font-weight: 700; color: white; }
+.logo-text span { display: block; font-family: var(--font-d); font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.05em; }
+.nav-links { display: flex; }
+.nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 0 14px; height: 64px; display: flex; align-items: center; gap: 6px; font-family: var(--font-d); font-size: 13px; font-weight: 600; letter-spacing: 0.03em; transition: background 0.15s; border-bottom: 3px solid transparent; text-transform: uppercase; }
+.nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-links a.active { border-bottom-color: var(--amarillo); color: white; }
+
+/* BREADCRUMB */
+.breadcrumb { background: white; border-bottom: 1px solid var(--gris-claro); padding: 10px 0; }
+.breadcrumb-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 8px; font-family: var(--font-d); font-size: 12px; color: var(--gris); }
+.breadcrumb a { color: var(--azul); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb svg { opacity: 0.4; }
+
+/* PAGE HEADER */
+.page-header { background: var(--azul-dark); padding: 2.5rem 0; position: relative; overflow: hidden; }
+.page-header::after { content:''; position:absolute; right:-60px; top:-60px; width:300px; height:300px; background:var(--amarillo); opacity:0.06; border-radius:50%; pointer-events:none; }
+.page-header::before { content:''; position:absolute; left:-40px; bottom:-80px; width:220px; height:220px; background:var(--azul); opacity:0.25; border-radius:50%; pointer-events:none; }
+.page-header-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index:2; }
+.page-header-eyebrow { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amarillo); margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+.page-header h1 { font-family: var(--font-d); font-size: 2rem; font-weight: 800; color: white; margin-bottom: 8px; }
+.page-header p { color: rgba(255,255,255,0.7); font-size: 14px; max-width: 520px; }
+
+/* STATS ROW */
+.stats-row { background: white; border-bottom: 2px solid var(--gris-claro); }
+.stats-inner { max-width: 1200px; margin: 0 auto; padding: 1.25rem 2rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.stat-card { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; background: var(--fondo); border: 1px solid var(--gris-claro); }
+.stat-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.stat-card strong { display: block; font-family: var(--font-d); font-size: 1.4rem; font-weight: 800; color: var(--oscuro); line-height: 1; }
+.stat-card span { font-family: var(--font-d); font-size: 11px; font-weight: 600; color: var(--gris); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* SEARCH BAR */
+.search-section { background: white; border-bottom: 2px solid var(--gris-claro); padding: 1.25rem 0; }
+.search-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; gap: 12px; align-items: center; }
+.search-wrap { flex: 1; display: flex; align-items: center; gap: 10px; border: 2px solid var(--gris-claro); border-radius: 8px; padding: 0 14px; height: 46px; transition: border-color 0.15s; background: var(--fondo); }
+.search-wrap:focus-within { border-color: var(--azul); background: white; }
+.search-wrap input { border: none; background: transparent; font-family: var(--font-body); font-size: 14px; color: var(--oscuro); width: 100%; outline: none; }
+.search-wrap input::placeholder { color: #aaa; }
+.search-btn { background: var(--azul); color: white; font-family: var(--font-d); font-size: 13px; font-weight: 700; padding: 0 20px; height: 46px; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; gap: 8px; transition: background 0.15s; white-space: nowrap; }
+.search-btn:hover { background: var(--azul-dark); }
+
+/* LAYOUT */
+.main-layout { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: 260px 1fr; gap: 2rem; align-items: start; }
+
+/* SIDEBAR FILTROS */
+.sidebar-filtros { background: white; border: 1px solid var(--borde); border-radius: 10px; overflow: hidden; position: sticky; top: 80px; }
+.filter-header { background: var(--azul); color: white; padding: 12px 16px; font-family: var(--font-d); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 8px; border-left: 5px solid var(--amarillo); }
+.filter-section { padding: 14px 16px; border-bottom: 1px solid var(--gris-claro); }
+.filter-section:last-child { border-bottom: none; }
+.filter-section-title { font-family: var(--font-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gris); margin-bottom: 10px; }
+
+.filter-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid transparent; background: transparent; cursor: pointer; font-family: var(--font-d); font-size: 13px; font-weight: 600; color: var(--oscuro); text-align: left; transition: all 0.12s; margin-bottom: 4px; }
+.filter-btn:hover { background: var(--azul-light); color: var(--azul); }
+.filter-btn.active { background: var(--azul-light); border-color: rgba(0,119,192,0.3); color: var(--azul); }
+.filter-btn .count { margin-left: auto; background: var(--gris-claro); color: var(--gris); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+.filter-btn.active .count { background: var(--azul); color: white; }
+
+.time-filters { display: flex; flex-direction: column; gap: 4px; }
+.time-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 7px 10px; border-radius: 6px; border: 1.5px solid transparent; background: transparent; cursor: pointer; font-family: var(--font-d); font-size: 12px; font-weight: 600; color: var(--oscuro); text-align: left; transition: all 0.12s; }
+.time-btn:hover { background: var(--fondo); }
+.time-btn.active { background: var(--azul-light); border-color: rgba(0,119,192,0.3); color: var(--azul); }
+.time-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* TRAMITES GRID */
+.tramites-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.tramites-title { font-family: var(--font-d); font-size: 1.1rem; font-weight: 800; color: var(--azul); text-transform: uppercase; letter-spacing: 0.02em; }
+.tramites-count { font-family: var(--font-d); font-size: 12px; color: var(--gris); font-weight: 600; }
+
+.tramites-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+.tramite-card {
+  background: white;
+  border: 1.5px solid var(--borde);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  display: flex;
+  flex-direction: column;
+}
+.tramite-card:hover { border-color: var(--azul); box-shadow: 0 4px 20px rgba(0,119,192,0.1); transform: translateY(-2px); }
+.tramite-card.destacado { border-color: var(--amarillo-dark); border-top: 4px solid var(--amarillo); }
+
+.tramite-card-top { padding: 1.1rem 1.1rem 0.75rem; flex: 1; }
+.tramite-cat-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.tramite-cat { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 3px 9px; border-radius: 3px; display: flex; align-items: center; gap: 4px; }
+.cat-licencias  { background: var(--azul-light); color: var(--azul-dark); }
+.cat-comercio   { background: rgba(46,125,50,0.1); color: #2e7d32; }
+.cat-impuestos  { background: rgba(255,204,0,0.15); color: #7a5c00; }
+.cat-certificados { background: rgba(103,58,183,0.1); color: #4527a0; }
+.cat-obras      { background: rgba(230,81,0,0.1); color: #e65100; }
+.cat-social     { background: rgba(21,101,192,0.1); color: #1565c0; }
+
+.tramite-online { font-family: var(--font-d); font-size: 10px; font-weight: 700; color: var(--verde-ok); background: var(--verde-light); padding: 3px 8px; border-radius: 3px; display: flex; align-items: center; gap: 4px; }
+.tramite-presencial { font-family: var(--font-d); font-size: 10px; font-weight: 700; color: var(--gris); background: var(--fondo); padding: 3px 8px; border-radius: 3px; }
+
+.tramite-card h3 { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: var(--oscuro); margin-bottom: 6px; line-height: 1.3; }
+.tramite-card p { font-size: 12px; color: var(--gris); line-height: 1.5; }
+
+.tramite-card-footer { padding: 10px 1.1rem; border-top: 1px solid var(--gris-claro); display: flex; align-items: center; gap: 10px; background: var(--fondo); }
+.tramite-meta { display: flex; align-items: center; gap: 5px; font-family: var(--font-d); font-size: 11px; color: var(--gris); font-weight: 600; }
+.tramite-meta svg { flex-shrink: 0; }
+.tramite-btn { margin-left: auto; background: var(--azul); color: white; font-family: var(--font-d); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 5px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; gap: 5px; transition: background 0.15s; white-space: nowrap; }
+.tramite-btn:hover { background: var(--azul-dark); }
+.tramite-btn-outline { margin-left: auto; background: transparent; color: var(--azul); font-family: var(--font-d); font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 5px; border: 1.5px solid var(--azul); cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; gap: 5px; transition: background 0.15s; white-space: nowrap; }
+.tramite-btn-outline:hover { background: var(--azul-light); }
+
+/* MODAL DETALLE */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 660px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-header { background: var(--azul); padding: 1.25rem 1.5rem; position: sticky; top: 0; z-index:10; border-radius: 12px 12px 0 0; }
+.modal-header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.modal-header h2 { font-family: var(--font-d); font-size: 1.2rem; font-weight: 800; color: white; line-height: 1.2; }
+.modal-header p { font-family: var(--font-d); font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+.modal-close { background: rgba(255,255,255,0.15); border: none; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background 0.15s; }
+.modal-close:hover { background: rgba(255,255,255,0.25); }
+.modal-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.modal-badge { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 10px; border-radius: 4px; display: flex; align-items: center; gap: 5px; }
+.badge-online { background: rgba(46,125,50,0.2); color: #a5d6a7; }
+.badge-tiempo { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+.badge-costo  { background: rgba(255,204,0,0.2); color: var(--amarillo); }
+
+.modal-body { padding: 1.5rem; }
+.modal-section { margin-bottom: 1.5rem; }
+.modal-section-title { font-family: var(--font-d); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--azul); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; padding-bottom: 6px; border-bottom: 2px solid var(--amarillo); }
+
+/* PASOS */
+.pasos-list { display: flex; flex-direction: column; gap: 0; }
+.paso-item { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+.paso-item:last-child { padding-bottom: 0; }
+.paso-item:last-child .paso-line { display: none; }
+.paso-num-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.paso-num { width: 30px; height: 30px; border-radius: 50%; background: var(--azul); color: white; font-family: var(--font-d); font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.paso-line { width: 2px; background: var(--gris-claro); flex: 1; margin-top: 4px; min-height: 20px; }
+.paso-content { flex: 1; padding-top: 4px; }
+.paso-content strong { display: block; font-family: var(--font-d); font-size: 14px; font-weight: 700; color: var(--oscuro); margin-bottom: 3px; }
+.paso-content p { font-size: 12px; color: var(--gris); line-height: 1.5; }
+.paso-online-tag { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-d); font-size: 10px; font-weight: 700; color: var(--verde-ok); background: var(--verde-light); padding: 2px 8px; border-radius: 3px; margin-top: 5px; }
+
+/* REQUISITOS */
+.requisitos-list { display: flex; flex-direction: column; gap: 6px; }
+.req-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; background: var(--fondo); border-radius: 6px; border: 1px solid var(--gris-claro); font-size: 13px; }
+.req-item svg { flex-shrink: 0; margin-top: 1px; }
+.req-item.req-ok { background: var(--verde-light); border-color: rgba(46,125,50,0.2); }
+.req-note { font-size: 11px; color: var(--gris); margin-top: 3px; display: block; }
+
+/* INFO BOXES */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.info-box { background: var(--fondo); border-radius: 8px; padding: 12px; border: 1px solid var(--gris-claro); }
+.info-box-label { font-family: var(--font-d); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gris); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+.info-box-value { font-family: var(--font-d); font-size: 15px; font-weight: 800; color: var(--oscuro); }
+.info-box-sub { font-size: 11px; color: var(--gris); margin-top: 2px; }
+
+/* MODAL CTA */
+.modal-cta { padding: 1.25rem 1.5rem; border-top: 1px solid var(--gris-claro); display: flex; gap: 10px; background: var(--fondo); border-radius: 0 0 12px 12px; }
+.btn-cta-primary { flex: 1; background: var(--azul); color: white; font-family: var(--font-d); font-size: 13px; font-weight: 700; padding: 12px 20px; border-radius: 8px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.15s; }
+.btn-cta-primary:hover { background: var(--azul-dark); }
+.btn-cta-secondary { background: white; color: var(--oscuro); font-family: var(--font-d); font-size: 13px; font-weight: 700; padding: 12px 18px; border-radius: 8px; border: 1.5px solid var(--borde); cursor: pointer; display: flex; align-items: center; gap: 7px; transition: border-color 0.15s; }
+.btn-cta-secondary:hover { border-color: var(--azul); color: var(--azul); }
+
+/* ALERTA INFO */
+.alerta-info { background: var(--azul-light); border: 1px solid rgba(0,119,192,0.25); border-radius: 8px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; font-size: 12px; color: var(--azul-dark); margin-bottom: 1rem; }
+.alerta-info svg { flex-shrink: 0; margin-top: 1px; }
+
+/* NO RESULTS */
+.no-results { grid-column: 1/-1; text-align: center; padding: 3rem 2rem; color: var(--gris); }
+.no-results svg { opacity: 0.25; margin-bottom: 1rem; }
+.no-results h3 { font-family: var(--font-d); font-size: 1.1rem; font-weight: 700; color: var(--gris); margin-bottom: 6px; }
+
+/* FOOTER MINI */
+.footer-mini { background: var(--oscuro); color: rgba(255,255,255,0.55); padding: 1.5rem 0; margin-top: 3rem; }
+.footer-mini-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; font-family: var(--font-d); font-size: 12px; }
+.footer-mini a { color: rgba(255,255,255,0.55); text-decoration: none; }
+.footer-mini a:hover { color: var(--amarillo); }
+
+@media (max-width: 900px) {
+  .main-layout { grid-template-columns: 1fr; }
+  .tramites-grid { grid-template-columns: 1fr; }
+  .info-grid { grid-template-columns: 1fr; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .sidebar-filtros { position: static; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">★ MOCKUP — Municipalidad de Esquina · Página de Trámites ★</div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-bar-links">
+      <a href="#">Transparencia</a>
+      <a href="#">Boletín Oficial</a>
+      <a href="#">Concejo Deliberante</a>
+    </div>
+    <div class="top-bar-links">
+      <a href="#" style="display:flex;align-items:center;gap:5px;">
+        <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M222.37 158.46l-47.11-21.11a16 16 0 00-18.67 4.72l-21.62 26.61a124.07 124.07 0 01-57.65-57.65l26.61-21.62a16 16 0 004.72-18.67L87.54 33.63A16 16 0 0070.73 24H32a16 16 0 00-16 16C32 164.38 91.62 224 208 224a16 16 0 0016-16v-38.73a16 16 0 00-1.63-11.81z" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        (03777) 420–000
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-escudo">ME</div>
+      <div class="logo-text">
+        <strong>Municipalidad de Esquina</strong>
+        <span>Corrientes · Argentina</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#">
+        <svg width="15" height="15" viewBox="0 0 256 256" fill="none"><path d="M218.83 103.77L138.83 27.2a16 16 0 00-21.66 0l-80 76.57A16 16 0 0032 115.55V208a16 16 0 0016 16h72v-56h16v56h72a16 16 0 0016-16v-92.45a16 16 0 00-5.17-11.78z" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Inicio
+      </a>
+      <a href="#">Gobierno</a>
+      <a href="#" class="active">
+        <svg width="15" height="15" viewBox="0 0 256 256" fill="none"><path d="M160 40h40a8 8 0 018 8v168a8 8 0 01-8 8H56a8 8 0 01-8-8V48a8 8 0 018-8h40" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><path d="M160 40a32 32 0 00-64 0H80a8 8 0 00-8 8v16a8 8 0 008 8h96a8 8 0 008-8V48a8 8 0 00-8-8z" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Trámites
+      </a>
+      <a href="#">Servicios</a>
+      <a href="#">Noticias</a>
+      <a href="#" style="background:var(--amarillo);color:var(--oscuro)!important;border-radius:6px;margin-left:8px;height:36px!important;padding:0 14px!important;align-self:center;border-bottom:none!important;font-weight:700!important;">Turismo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="#">Inicio</a>
+    <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><polyline points="96,48 160,128 96,208" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Trámites</span>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-header-eyebrow">
+      <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M160 40h40a8 8 0 018 8v168a8 8 0 01-8 8H56a8 8 0 01-8-8V48a8 8 0 018-8h40" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><path d="M160 40a32 32 0 00-64 0H80a8 8 0 00-8 8v16a8 8 0 008 8h96a8 8 0 008-8V48a8 8 0 00-8-8z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Municipalidad de Esquina
+    </div>
+    <h1>Trámites municipales</h1>
+    <p>Encontrá toda la información sobre los trámites disponibles, sus requisitos, pasos y tiempos estimados.</p>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stats-inner">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--azul-light)">
+        <svg width="20" height="20" viewBox="0 0 256 256" fill="none"><path d="M160 40h40a8 8 0 018 8v168a8 8 0 01-8 8H56a8 8 0 01-8-8V48a8 8 0 018-8h40" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><path d="M160 40a32 32 0 00-64 0H80a8 8 0 00-8 8v16a8 8 0 008 8h96a8 8 0 008-8V48a8 8 0 00-8-8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><strong>24</strong><span>Trámites disponibles</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--verde-light)">
+        <svg width="20" height="20" viewBox="0 0 256 256" fill="none"><path d="M128 24a104 104 0 100 208A104 104 0 00128 24zm45.66 85.66l-56 56a8 8 0 01-11.32 0l-24-24a8 8 0 0111.32-11.32L112 148.69l50.34-50.35a8 8 0 0111.32 11.32z" fill="#2e7d32"/></svg>
+      </div>
+      <div><strong>11</strong><span>Disponibles online</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:rgba(255,204,0,0.15)">
+        <svg width="20" height="20" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="#d4a900" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="#d4a900" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><strong>24–72 hs</strong><span>Tiempo promedio</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:rgba(103,58,183,0.08)">
+        <svg width="20" height="20" viewBox="0 0 256 256" fill="none"><path d="M224 56H32a8 8 0 00-8 8v136a8 8 0 008 8h192a8 8 0 008-8V64a8 8 0 00-8-8z" stroke="#4527a0" stroke-width="14"/><path d="M164 168a28 28 0 110-56 28 28 0 010 56z" stroke="#4527a0" stroke-width="14"/></svg>
+      </div>
+      <div><strong>Lun–Vie</strong><span>07:00 a 13:00 hs</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- BÚSQUEDA -->
+<div class="search-section">
+  <div class="search-inner">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><circle cx="112" cy="112" r="80" stroke="#aaa" stroke-width="16"/><line x1="168.57" y1="168.57" x2="224" y2="224" stroke="#aaa" stroke-width="16" stroke-linecap="round"/></svg>
+      <input type="text" id="buscador" placeholder="Buscá por nombre de trámite (ej: licencia, habilitación...)" oninput="filtrar()">
+    </div>
+    <button class="search-btn" onclick="filtrar()">
+      <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><circle cx="112" cy="112" r="80" stroke="white" stroke-width="16"/><line x1="168.57" y1="168.57" x2="224" y2="224" stroke="white" stroke-width="16" stroke-linecap="round"/></svg>
+      Buscar
+    </button>
+  </div>
+</div>
+
+<!-- LAYOUT PRINCIPAL -->
+<div class="main-layout">
+
+  <!-- SIDEBAR FILTROS -->
+  <aside class="sidebar-filtros">
+    <div class="filter-header">
+      <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M32 64l72 88v64l48-32V152L152 64z" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Filtrar trámites
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-section-title">Categoría</div>
+      <button class="filter-btn active" onclick="setCategoria('todos', this)">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><rect x="40" y="40" width="68" height="68" rx="4" stroke="currentColor" stroke-width="14"/><rect x="148" y="40" width="68" height="68" rx="4" stroke="currentColor" stroke-width="14"/><rect x="40" y="148" width="68" height="68" rx="4" stroke="currentColor" stroke-width="14"/><rect x="148" y="148" width="68" height="68" rx="4" stroke="currentColor" stroke-width="14"/></svg>
+        Todos
+        <span class="count">24</span>
+      </button>
+      <button class="filter-btn" onclick="setCategoria('licencias', this)">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><rect x="32" y="56" width="192" height="144" rx="16" stroke="currentColor" stroke-width="14"/><line x1="32" y1="104" x2="224" y2="104" stroke="currentColor" stroke-width="14"/><circle cx="76" cy="148" r="16" stroke="currentColor" stroke-width="12"/></svg>
+        Licencias
+        <span class="count">4</span>
+      </button>
+      <button class="filter-btn" onclick="setCategoria('comercio', this)">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M48 40h160l16 64H32L48 40z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 104v112h192V104" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Comercio
+        <span class="count">5</span>
+      </button>
+      <button class="filter-btn" onclick="setCategoria('impuestos', this)">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><path d="M104 160c0 11 10.75 20 24 20s24-9 24-20-10.75-20-24-20-24-9-24-20 10.75-20 24-20 24 9 24 20" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><line x1="128" y1="76" x2="128" y2="92" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><line x1="128" y1="184" x2="128" y2="200" stroke="currentColor" stroke-width="14" stroke-linecap="round"/></svg>
+        Impuestos y tasas
+        <span class="count">5</span>
+      </button>
+      <button class="filter-btn" onclick="setCategoria('certificados', this)">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><polyline points="152,32 152,88 208,88" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><line x1="96" y1="136" x2="160" y2="136" stroke="currentColor" stroke-width="12" stroke-linecap="round"/><line x1="96" y1="160" x2="160" y2="160" stroke="currentColor" stroke-width="12" stroke-linecap="round"/></svg>
+        Certificados
+        <span class="count">4</span>
+      </button>
+      <button class="filter-btn" onclick="setCategoria('obras', this)">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M16 168h224a8 8 0 01-8 8H24a8 8 0 01-8-8z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><path d="M64 168V128a64 64 0 01128 0v40" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><line x1="128" y1="72" x2="128" y2="56" stroke="currentColor" stroke-width="14" stroke-linecap="round"/></svg>
+        Obras y construcción
+        <span class="count">3</span>
+      </button>
+      <button class="filter-btn" onclick="setCategoria('social', this)">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><circle cx="80" cy="96" r="48" stroke="currentColor" stroke-width="14"/><circle cx="176" cy="96" r="48" stroke="currentColor" stroke-width="14"/><path d="M16 216c0-44.18 28.65-80 64-80h96c35.35 0 64 35.82 64 80" stroke="currentColor" stroke-width="14" stroke-linecap="round"/></svg>
+        Social y vecinal
+        <span class="count">3</span>
+      </button>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-section-title">Modalidad</div>
+      <div class="time-filters">
+        <button class="time-btn active" onclick="setModalidad('todos', this)">
+          <div class="time-dot" style="background:var(--azul)"></div>
+          Todos
+        </button>
+        <button class="time-btn" onclick="setModalidad('online', this)">
+          <div class="time-dot" style="background:var(--verde-ok)"></div>
+          Online
+        </button>
+        <button class="time-btn" onclick="setModalidad('presencial', this)">
+          <div class="time-dot" style="background:var(--gris)"></div>
+          Presencial
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-section-title">Tiempo de resolución</div>
+      <div class="time-filters">
+        <button class="time-btn active" onclick="setTiempo('todos', this)">
+          <div class="time-dot" style="background:var(--azul)"></div>
+          Todos
+        </button>
+        <button class="time-btn" onclick="setTiempo('inmediato', this)">
+          <div class="time-dot" style="background:var(--verde-ok)"></div>
+          Inmediato (en el día)
+        </button>
+        <button class="time-btn" onclick="setTiempo('rapido', this)">
+          <div class="time-dot" style="background:#f57c00)"></div>
+          1–3 días hábiles
+        </button>
+        <button class="time-btn" onclick="setTiempo('normal', this)">
+          <div class="time-dot" style="background:var(--gris)"></div>
+          Más de 3 días
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div>
+    <div class="tramites-header">
+      <div class="tramites-title">Trámites disponibles</div>
+      <div class="tramites-count" id="results-count">Mostrando 12 trámites</div>
+    </div>
+
+    <div class="tramites-grid" id="tramites-grid">
+
+      <!-- LICENCIA DE CONDUCIR -->
+      <div class="tramite-card destacado" data-cat="licencias" data-modalidad="presencial" data-tiempo="rapido" data-nombre="licencia de conducir">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-licencias">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><rect x="32" y="56" width="192" height="144" rx="16" stroke="currentColor" stroke-width="16"/><circle cx="76" cy="148" r="14" stroke="currentColor" stroke-width="12"/></svg>
+              Licencias
+            </span>
+            <span class="tramite-presencial">Presencial</span>
+          </div>
+          <h3>Licencia de conducir — 1.ª vez</h3>
+          <p>Obtención de licencia de conducir para primera vez. Incluye curso teórico, examen práctico y médico.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            3–5 días hábiles
+          </div>
+          <div class="tramite-meta" style="margin-left:10px;">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><path d="M104 160c0 11 10.75 20 24 20s24-9 24-20-10.75-20-24-20-24-9-24-20 10.75-20 24-20 24 9 24 20" stroke="currentColor" stroke-width="12" stroke-linecap="round"/></svg>
+            Con costo
+          </div>
+          <button class="tramite-btn" onclick="abrirModal('licencia1')">
+            Ver detalle
+            <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><polyline points="96,48 160,128 96,208" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- RENOVACIÓN LICENCIA -->
+      <div class="tramite-card" data-cat="licencias" data-modalidad="presencial" data-tiempo="rapido" data-nombre="renovación licencia conducir">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-licencias">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><rect x="32" y="56" width="192" height="144" rx="16" stroke="currentColor" stroke-width="16"/><circle cx="76" cy="148" r="14" stroke="currentColor" stroke-width="12"/></svg>
+              Licencias
+            </span>
+            <span class="tramite-presencial">Presencial</span>
+          </div>
+          <h3>Renovación de licencia de conducir</h3>
+          <p>Renovación de licencia vencida o próxima a vencer. Se requiere examen médico y psicotécnico.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            1–2 días hábiles
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('renovLicencia')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- HABILITACIÓN COMERCIAL -->
+      <div class="tramite-card destacado" data-cat="comercio" data-modalidad="online" data-tiempo="normal" data-nombre="habilitación comercial">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-comercio">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><path d="M48 40h160l16 64H32L48 40z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 104v112h192V104" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Comercio
+            </span>
+            <span class="tramite-online">
+              <svg width="9" height="9" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="16"/><path d="M88 128a40 40 0 0080 0c0-87.72-80-112-80-112s-80 24.28-80 112a40 40 0 0080 0z" stroke="currentColor" stroke-width="14"/></svg>
+              Online disponible
+            </span>
+          </div>
+          <h3>Habilitación comercial</h3>
+          <p>Habilitación municipal para apertura de comercios, locales y actividades económicas en el municipio.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            15–30 días hábiles
+          </div>
+          <button class="tramite-btn" onclick="abrirModal('habilitacion')">
+            Ver detalle
+            <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><polyline points="96,48 160,128 96,208" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- PAGO TASAS -->
+      <div class="tramite-card" data-cat="impuestos" data-modalidad="online" data-tiempo="inmediato" data-nombre="pago tasas municipales">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-impuestos">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><path d="M104 160c0 11 10.75 20 24 20s24-9 24-20-10.75-20-24-20-24-9-24-20 10.75-20 24-20 24 9 24 20" stroke="currentColor" stroke-width="12" stroke-linecap="round"/></svg>
+              Impuestos y tasas
+            </span>
+            <span class="tramite-online">
+              <svg width="9" height="9" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="16"/></svg>
+              Online disponible
+            </span>
+          </div>
+          <h3>Pago de tasas municipales online</h3>
+          <p>Pagá la tasa de alumbrado, barrido y limpieza, tasa de seguridad e higiene y otras tasas municipales.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Inmediato
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('tasas')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- LIBRE DEUDA -->
+      <div class="tramite-card" data-cat="certificados" data-modalidad="online" data-tiempo="inmediato" data-nombre="libre deuda municipal certificado">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-certificados">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><polyline points="152,32 152,88 208,88" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Certificados
+            </span>
+            <span class="tramite-online">
+              <svg width="9" height="9" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="16"/></svg>
+              Online disponible
+            </span>
+          </div>
+          <h3>Libre deuda municipal</h3>
+          <p>Certificado que acredita que el contribuyente no posee deudas con el municipio. Requerido en transferencias.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            En el día
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('libreDeuda')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- CERTIFICADO DOMICILIO -->
+      <div class="tramite-card" data-cat="certificados" data-modalidad="presencial" data-tiempo="inmediato" data-nombre="certificado de domicilio residencia">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-certificados">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Certificados
+            </span>
+            <span class="tramite-presencial">Presencial</span>
+          </div>
+          <h3>Certificado de domicilio</h3>
+          <p>Acreditación de residencia en el municipio de Esquina. Se otorga en el mismo día con la documentación requerida.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Inmediato
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('domicilio')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- PERMISO OBRA -->
+      <div class="tramite-card" data-cat="obras" data-modalidad="presencial" data-tiempo="normal" data-nombre="permiso de obra construcción edificación">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-obras">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><path d="M64 168V128a64 64 0 01128 0v40" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><path d="M16 168h224" stroke="currentColor" stroke-width="14" stroke-linecap="round"/></svg>
+              Obras
+            </span>
+            <span class="tramite-presencial">Presencial</span>
+          </div>
+          <h3>Permiso de obra menor</h3>
+          <p>Autorización para construcciones, refacciones, ampliaciones o demoliciones dentro del ejido municipal.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            20–45 días hábiles
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('obra')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- HABILITACION VEHICULO -->
+      <div class="tramite-card" data-cat="licencias" data-modalidad="presencial" data-tiempo="rapido" data-nombre="habilitación vehículo taxi remis transporte">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-licencias">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><rect x="32" y="56" width="192" height="144" rx="16" stroke="currentColor" stroke-width="16"/><circle cx="76" cy="148" r="14" stroke="currentColor" stroke-width="12"/></svg>
+              Licencias
+            </span>
+            <span class="tramite-presencial">Presencial</span>
+          </div>
+          <h3>Habilitación vehículo de transporte</h3>
+          <p>Habilitación para taxis, remises y transporte escolar en el radio municipal.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            5–10 días hábiles
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('vehiculo')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- SUBSIDIO SOCIAL -->
+      <div class="tramite-card" data-cat="social" data-modalidad="presencial" data-tiempo="normal" data-nombre="subsidio social asistencia vecinal">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-social">
+              <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><circle cx="80" cy="96" r="40" stroke="currentColor" stroke-width="14"/><circle cx="176" cy="96" r="40" stroke="currentColor" stroke-width="14"/><path d="M16 216c0-44 28-80 64-80h96c36 0 64 36 64 80" stroke="currentColor" stroke-width="14" stroke-linecap="round"/></svg>
+              Social y vecinal
+            </span>
+            <span class="tramite-presencial">Presencial</span>
+          </div>
+          <h3>Solicitud de subsidio social</h3>
+          <p>Asistencia económica para familias en situación de vulnerabilidad. Evaluación por trabajadora social municipal.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            7–15 días hábiles
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('subsidio')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- TASA SEGURIDAD -->
+      <div class="tramite-card" data-cat="impuestos" data-modalidad="online" data-tiempo="inmediato" data-nombre="tasa seguridad higiene comercio">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-impuestos">Impuestos y tasas</span>
+            <span class="tramite-online">Online disponible</span>
+          </div>
+          <h3>Tasa de seguridad e higiene</h3>
+          <p>Pago anual de la tasa que grava el ejercicio de actividades comerciales, industriales y de servicios.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Inmediato
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('segHigiene')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- RENOVACION COMERCIO -->
+      <div class="tramite-card" data-cat="comercio" data-modalidad="online" data-tiempo="rapido" data-nombre="renovación habilitación comercial anual">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-comercio">Comercio</span>
+            <span class="tramite-online">Online disponible</span>
+          </div>
+          <h3>Renovación anual de habilitación</h3>
+          <p>Renovación de la habilitación comercial vigente. Debe realizarse antes del 31 de marzo de cada año.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            2–5 días hábiles
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('renovComercio')">Ver detalle</button>
+        </div>
+      </div>
+
+      <!-- INSCRIPCION PROVEEDOR -->
+      <div class="tramite-card" data-cat="comercio" data-modalidad="presencial" data-tiempo="normal" data-nombre="inscripción registro proveedores municipales">
+        <div class="tramite-card-top">
+          <div class="tramite-cat-row">
+            <span class="tramite-cat cat-comercio">Comercio</span>
+            <span class="tramite-presencial">Presencial</span>
+          </div>
+          <h3>Inscripción en el Registro de Proveedores</h3>
+          <p>Registro para empresas y personas que deseen participar en licitaciones y contrataciones del municipio.</p>
+        </div>
+        <div class="tramite-card-footer">
+          <div class="tramite-meta">
+            <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            10–20 días hábiles
+          </div>
+          <button class="tramite-btn-outline" onclick="abrirModal('proveedor')">Ver detalle</button>
+        </div>
+      </div>
+
+    </div><!-- fin grid -->
+
+    <div id="no-results" style="display:none;" class="tramites-grid">
+      <div class="no-results">
+        <svg width="48" height="48" viewBox="0 0 256 256" fill="none"><circle cx="112" cy="112" r="80" stroke="currentColor" stroke-width="14"/><line x1="168.57" y1="168.57" x2="224" y2="224" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><line x1="88" y1="112" x2="136" y2="112" stroke="currentColor" stroke-width="14" stroke-linecap="round"/></svg>
+        <h3>No se encontraron trámites</h3>
+        <p>Probá con otros términos o quitá los filtros aplicados.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL DETALLE LICENCIA 1 -->
+<div class="modal-overlay" id="modal-licencia1">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-top">
+        <div>
+          <h2>Licencia de conducir — 1.ª vez</h2>
+          <p>Municipalidad de Esquina · Dirección de Tránsito</p>
+        </div>
+        <button class="modal-close" onclick="cerrarModal('licencia1')">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><line x1="200" y1="56" x2="56" y2="200" stroke="white" stroke-width="16" stroke-linecap="round"/><line x1="56" y1="56" x2="200" y2="200" stroke="white" stroke-width="16" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="modal-badges">
+        <span class="modal-badge badge-tiempo">
+          <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          3–5 días hábiles
+        </span>
+        <span class="modal-badge badge-costo">
+          <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><path d="M104 160c0 11 10.75 20 24 20s24-9 24-20-10.75-20-24-20-24-9-24-20 10.75-20 24-20 24 9 24 20" stroke="currentColor" stroke-width="12" stroke-linecap="round"/></svg>
+          Con arancel municipal
+        </span>
+        <span class="modal-badge" style="background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);">
+          Presencial
+        </span>
+      </div>
+    </div>
+    <div class="modal-body">
+
+      <div class="alerta-info">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><line x1="128" y1="112" x2="128" y2="176" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="128" cy="84" r="8" fill="currentColor"/></svg>
+        <div>El trámite se realiza en la Dirección de Tránsito, ubicada en 25 de Mayo 511. <strong>Con turno previo</strong>, de lunes a viernes de 7:00 a 13:00 hs.</div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><line x1="128" y1="80" x2="128" y2="128" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="128" cy="168" r="8" fill="currentColor"/></svg>
+          Pasos del trámite
+        </div>
+        <div class="pasos-list">
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">1</div><div class="paso-line"></div></div>
+            <div class="paso-content">
+              <strong>Solicitá el turno</strong>
+              <p>Comunicáte al (03777) 420–000 o acercáte a la Dirección de Tránsito para reservar tu turno.</p>
+            </div>
+          </div>
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">2</div><div class="paso-line"></div></div>
+            <div class="paso-content">
+              <strong>Realizá el examen médico</strong>
+              <p>Presentate en el centro médico habilitado con tu DNI. El certificado tiene validez de 30 días.</p>
+            </div>
+          </div>
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">3</div><div class="paso-line"></div></div>
+            <div class="paso-content">
+              <strong>Realizá el curso teórico</strong>
+              <p>Completá el curso de educación vial en la escuela de conducción municipal o habilitada.</p>
+            </div>
+          </div>
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">4</div><div class="paso-line"></div></div>
+            <div class="paso-content">
+              <strong>Examen teórico y práctico</strong>
+              <p>Rendí el examen en la Dirección de Tránsito en la fecha asignada. El examen práctico se realiza en vía pública.</p>
+            </div>
+          </div>
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">5</div><div class="paso-line"></div></div>
+            <div class="paso-content">
+              <strong>Retirá tu licencia</strong>
+              <p>Una vez aprobado el examen, retirás la licencia en 24–48 hs hábiles en la Dirección de Tránsito.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Documentación requerida
+        </div>
+        <div class="requisitos-list">
+          <div class="req-item">
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>DNI original y fotocopia</div>
+          </div>
+          <div class="req-item">
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>
+              Certificado médico psicofísico
+              <span class="req-note">Otorgado por médico habilitado por el municipio. Vigencia: 30 días.</span>
+            </div>
+          </div>
+          <div class="req-item">
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>Certificado de curso de educación vial</div>
+          </div>
+          <div class="req-item">
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>
+              Comprobante de pago del arancel
+              <span class="req-note">Se abona en la Tesorería Municipal o mediante pago online.</span>
+            </div>
+          </div>
+          <div class="req-item">
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>2 fotos 4×4 fondo blanco</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Información útil
+        </div>
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="info-box-label">
+              <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><polyline points="128,72 128,136 168,136" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Tiempo de resolución
+            </div>
+            <div class="info-box-value">3–5 días</div>
+            <div class="info-box-sub">hábiles desde aprobación</div>
+          </div>
+          <div class="info-box">
+            <div class="info-box-label">
+              <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><path d="M104 160c0 11 10.75 20 24 20s24-9 24-20-10.75-20-24-20-24-9-24-20 10.75-20 24-20 24 9 24 20" stroke="currentColor" stroke-width="12" stroke-linecap="round"/></svg>
+              Costo
+            </div>
+            <div class="info-box-value">$XXXX</div>
+            <div class="info-box-sub">según Ordenanza Tarifaria vigente</div>
+          </div>
+          <div class="info-box">
+            <div class="info-box-label">
+              <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><path d="M128 24a80 80 0 00-80 80c0 72 80 128 80 128s80-56 80-128a80 80 0 00-80-80z" stroke="currentColor" stroke-width="14"/><circle cx="128" cy="104" r="24" stroke="currentColor" stroke-width="14"/></svg>
+              Dónde
+            </div>
+            <div class="info-box-value" style="font-size:13px;">Dirección de Tránsito</div>
+            <div class="info-box-sub">25 de Mayo 511 · Planta baja</div>
+          </div>
+          <div class="info-box">
+            <div class="info-box-label">
+              <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><rect x="32" y="48" width="192" height="160" rx="8" stroke="currentColor" stroke-width="14"/><line x1="32" y1="96" x2="224" y2="96" stroke="currentColor" stroke-width="14"/><line x1="88" y1="48" x2="88" y2="96" stroke="currentColor" stroke-width="14"/><line x1="168" y1="48" x2="168" y2="96" stroke="currentColor" stroke-width="14"/></svg>
+              Horario de atención
+            </div>
+            <div class="info-box-value" style="font-size:13px;">Lun–Vie</div>
+            <div class="info-box-sub">07:00 a 13:00 hs</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-cta">
+      <button class="btn-cta-primary">
+        <svg width="15" height="15" viewBox="0 0 256 256" fill="none"><rect x="32" y="48" width="192" height="160" rx="8" stroke="white" stroke-width="14"/><line x1="32" y1="96" x2="224" y2="96" stroke="white" stroke-width="14"/><line x1="88" y1="48" x2="88" y2="96" stroke="white" stroke-width="14"/><line x1="168" y1="48" x2="168" y2="96" stroke="white" stroke-width="14"/></svg>
+        Sacar turno online
+      </button>
+      <button class="btn-cta-secondary" onclick="cerrarModal('licencia1')">
+        <svg width="13" height="13" viewBox="0 0 256 256" fill="none"><path d="M222.37 158.46l-47.11-21.11a16 16 0 00-18.67 4.72l-21.62 26.61a124.07 124.07 0 01-57.65-57.65l26.61-21.62a16 16 0 004.72-18.67L87.54 33.63A16 16 0 0070.73 24H32a16 16 0 00-16 16C32 164.38 91.62 224 208 224a16 16 0 0016-16v-38.73a16 16 0 00-1.63-11.81z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Llamar al municipio
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL HABILITACIÓN (simplificado) -->
+<div class="modal-overlay" id="modal-habilitacion">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-top">
+        <div>
+          <h2>Habilitación comercial</h2>
+          <p>Municipalidad de Esquina · Dirección de Comercio</p>
+        </div>
+        <button class="modal-close" onclick="cerrarModal('habilitacion')">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><line x1="200" y1="56" x2="56" y2="200" stroke="white" stroke-width="16" stroke-linecap="round"/><line x1="56" y1="56" x2="200" y2="200" stroke="white" stroke-width="16" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="modal-badges">
+        <span class="modal-badge badge-online">
+          <svg width="11" height="11" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/></svg>
+          Inicio online disponible
+        </span>
+        <span class="modal-badge badge-tiempo">15–30 días hábiles</span>
+        <span class="modal-badge badge-costo">Con arancel</span>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="alerta-info">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><line x1="128" y1="112" x2="128" y2="176" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="128" cy="84" r="8" fill="currentColor"/></svg>
+        <div>Podés iniciar el expediente de forma online. La inspección física del local es obligatoria y se agenda por separado.</div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/><line x1="128" y1="80" x2="128" y2="128" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="128" cy="168" r="8" fill="currentColor"/></svg>
+          Pasos del trámite
+        </div>
+        <div class="pasos-list">
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">1</div><div class="paso-line"></div></div>
+            <div class="paso-content">
+              <strong>Iniciá el expediente</strong>
+              <p>Completá el formulario online o acercáte a la Dirección de Comercio con la documentación.</p>
+              <span class="paso-online-tag">
+                <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/></svg>
+                Disponible online
+              </span>
+            </div>
+          </div>
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">2</div><div class="paso-line"></div></div>
+            <div class="paso-content">
+              <strong>Inspección del local</strong>
+              <p>Un inspector municipal verificará que el local cumple las condiciones de habilitación (bromatología, bomberos, etc.).</p>
+            </div>
+          </div>
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">3</div><div class="paso-line"></div></div>
+            <div class="paso-content">
+              <strong>Pago del arancel</strong>
+              <p>Abonás el arancel correspondiente según el rubro y la superficie del local.</p>
+            </div>
+          </div>
+          <div class="paso-item">
+            <div class="paso-num-wrap"><div class="paso-num">4</div></div>
+            <div class="paso-content">
+              <strong>Retiro de la habilitación</strong>
+              <p>Retirás el certificado de habilitación en la Dirección de Comercio o lo recibís por email.</p>
+              <span class="paso-online-tag">
+                <svg width="10" height="10" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="14"/></svg>
+                Certificado digital disponible
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Documentación requerida
+        </div>
+        <div class="requisitos-list">
+          <div class="req-item"><svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>DNI o CUIT del titular</div>
+          <div class="req-item"><svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Contrato de alquiler o título de propiedad del local</div>
+          <div class="req-item"><svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Plano del local (para superficies mayores a 50 m²)</div>
+          <div class="req-item"><svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Constancia de AFIP e Ingresos Brutos</div>
+          <div class="req-item"><svg width="14" height="14" viewBox="0 0 256 256" fill="none"><path d="M200 224H56a8 8 0 01-8-8V40a8 8 0 018-8h96l56 56v128a8 8 0 01-8 8z" stroke="#0077c0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Certificado de bomberos (para locales con público)</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-cta">
+      <button class="btn-cta-primary">
+        <svg width="15" height="15" viewBox="0 0 256 256" fill="none"><circle cx="128" cy="128" r="96" stroke="white" stroke-width="14"/><path d="M88 128a40 40 0 0080 0c0-87.72-80-112-80-112s-80 24.28-80 112a40 40 0 0080 0z" stroke="white" stroke-width="14"/></svg>
+        Iniciar trámite online
+      </button>
+      <button class="btn-cta-secondary" onclick="cerrarModal('habilitacion')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER MINI -->
+<div class="footer-mini">
+  <div class="footer-mini-inner">
+    <span>© 2025 Municipalidad de Esquina · <a href="#">Inicio</a> · <a href="#">Contacto</a> · <a href="#">Transparencia</a></span>
+    <span>Lun–Vie 07:00–13:00 hs · (03777) 420–000</span>
+  </div>
+</div>
+
+<script>
+let categoriaActual = 'todos';
+let modalidadActual = 'todos';
+let tiempoActual = 'todos';
+
+function filtrar() {
+  const q = document.getElementById('buscador').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.tramite-card');
+  let visibles = 0;
+
+  cards.forEach(card => {
+    const nombre = card.dataset.nombre || '';
+    const cat = card.dataset.cat || '';
+    const modalidad = card.dataset.modalidad || '';
+    const tiempo = card.dataset.tiempo || '';
+
+    const matchQ = q === '' || nombre.includes(q);
+    const matchCat = categoriaActual === 'todos' || cat === categoriaActual;
+    const matchMod = modalidadActual === 'todos' || modalidad === modalidadActual;
+    const matchTiempo = tiempoActual === 'todos' || tiempo === tiempoActual;
+
+    const show = matchQ && matchCat && matchMod && matchTiempo;
+    card.style.display = show ? '' : 'none';
+    if (show) visibles++;
+  });
+
+  document.getElementById('results-count').textContent =
+    visibles === 1 ? '1 trámite encontrado' : `${visibles} trámites encontrados`;
+  document.getElementById('no-results').style.display = visibles === 0 ? 'grid' : 'none';
+}
+
+function setCategoria(cat, btn) {
+  categoriaActual = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filtrar();
+}
+
+function setModalidad(mod, btn) {
+  modalidadActual = mod;
+  btn.closest('.filter-section').querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filtrar();
+}
+
+function setTiempo(t, btn) {
+  tiempoActual = t;
+  btn.closest('.filter-section').querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filtrar();
+}
+
+function abrirModal(id) {
+  const el = document.getElementById('modal-' + id);
+  if (el) el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal(id) {
+  const el = document.getElementById('modal-' + id);
+  if (el) el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => {
+      m.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  }
+});
+</script>
+</body>
+</html>

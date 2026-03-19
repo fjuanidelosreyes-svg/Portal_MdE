@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noticias — Municipalidad de Esquina</title>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --azul:#0077c0; --azul-dark:#005a91; --azul-light:#e6f3fb;
+  --amarillo:#ffcc00; --amarillo-dark:#d4a900; --amarillo-light:#fffbe6;
+  --oscuro:#2b2b2b; --gris:#6b6b6b; --gris-claro:#e8e8e8;
+  --fondo:#f5f5f5; --blanco:#fff; --borde:#ddd;
+  --font-body:Verdana,Geneva,sans-serif; --font-d:'Dosis',sans-serif;
+}
+body { font-family:var(--font-body); background:var(--fondo); color:var(--oscuro); font-size:14px; line-height:1.6; }
+
+/* PAGE HEADER */
+.page-header { background:var(--azul-dark); padding:2.5rem 0; position:relative; overflow:hidden; }
+.page-header::after { content:''; position:absolute; right:-60px; top:-60px; width:300px; height:300px; background:var(--amarillo); opacity:.06; border-radius:50%; pointer-events:none; }
+.ph-inner { max-width:1200px; margin:0 auto; padding:0 2rem; position:relative; z-index:2; }
+.ph-eye { font-family:var(--font-d); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--amarillo); margin-bottom:8px; }
+.ph-inner h1 { font-family:var(--font-d); font-size:2rem; font-weight:800; color:white; margin-bottom:8px; }
+.ph-inner p { color:rgba(255,255,255,.7); font-size:14px; max-width:520px; }
+
+/* FILTROS */
+.filtros-bar { background:white; border-bottom:2px solid var(--gris-claro); padding:1rem 0; position:sticky; top:64px; z-index:100; }
+.filtros-inner { max-width:1200px; margin:0 auto; padding:0 2rem; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.filtros-label { font-family:var(--font-d); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--gris); white-space:nowrap; }
+.filtro-btn { font-family:var(--font-d); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; padding:6px 14px; border-radius:20px; border:1.5px solid var(--borde); background:transparent; color:var(--gris); cursor:pointer; transition:all .15s; white-space:nowrap; }
+.filtro-btn:hover { border-color:var(--azul); color:var(--azul); }
+.filtro-btn.active { background:var(--azul); border-color:var(--azul); color:white; }
+.search-noticia { flex:1; min-width:200px; display:flex; align-items:center; gap:8px; border:1.5px solid var(--gris-claro); border-radius:8px; padding:0 12px; height:38px; transition:border-color .15s; }
+.search-noticia:focus-within { border-color:var(--azul); }
+.search-noticia input { border:none; background:transparent; font-family:var(--font-body); font-size:13px; color:var(--oscuro); width:100%; outline:none; }
+
+/* MAIN LAYOUT */
+.main-layout { max-width:1200px; margin:2rem auto; padding:0 2rem; display:grid; grid-template-columns:1fr 320px; gap:2rem; align-items:start; }
+
+/* NOTICIAS */
+.noticia-destacada { background:white; border:1.5px solid var(--borde); border-radius:12px; overflow:hidden; margin-bottom:1.5rem; display:grid; grid-template-columns:1fr 1fr; cursor:pointer; transition:box-shadow .15s, border-color .15s; }
+.noticia-destacada:hover { border-color:var(--azul); box-shadow:0 6px 24px rgba(0,119,192,.1); }
+.nd-img { height:280px; overflow:hidden; position:relative; }
+.nd-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
+.noticia-destacada:hover .nd-img img { transform:scale(1.03); }
+.nd-badge { position:absolute; top:14px; left:14px; background:var(--amarillo); color:var(--oscuro); font-family:var(--font-d); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.07em; padding:4px 12px; border-radius:4px; }
+.nd-body { padding:1.75rem; display:flex; flex-direction:column; justify-content:center; }
+.nd-cat { font-family:var(--font-d); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:3px 10px; border-radius:3px; display:inline-flex; align-items:center; gap:5px; margin-bottom:10px; }
+.nd-body h2 { font-family:var(--font-d); font-size:1.3rem; font-weight:800; color:var(--oscuro); line-height:1.3; margin-bottom:10px; }
+.nd-body p { font-size:13px; color:var(--gris); line-height:1.65; margin-bottom:1rem; }
+.nd-meta { display:flex; align-items:center; gap:12px; font-family:var(--font-d); font-size:11px; color:var(--gris); font-weight:600; flex-wrap:wrap; }
+.nd-leer { margin-top:1rem; display:inline-flex; align-items:center; gap:6px; font-family:var(--font-d); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--azul); text-decoration:none; }
+.nd-leer:hover { text-decoration:underline; }
+
+/* LISTA NOTICIAS */
+.noticias-lista { display:flex; flex-direction:column; gap:12px; }
+.noticia-item { background:white; border:1.5px solid var(--borde); border-radius:10px; display:grid; grid-template-columns:140px 1fr; overflow:hidden; cursor:pointer; transition:border-color .15s, box-shadow .15s; text-decoration:none; color:inherit; }
+.noticia-item:hover { border-color:var(--azul); box-shadow:0 3px 14px rgba(0,119,192,.08); }
+.ni-img { overflow:hidden; }
+.ni-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
+.noticia-item:hover .ni-img img { transform:scale(1.04); }
+.ni-body { padding:1rem 1.25rem; display:flex; flex-direction:column; justify-content:center; }
+.ni-cat { font-family:var(--font-d); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:2px 8px; border-radius:3px; display:inline-flex; align-items:center; gap:4px; margin-bottom:6px; }
+.ni-body h3 { font-family:var(--font-d); font-size:15px; font-weight:700; color:var(--oscuro); line-height:1.3; margin-bottom:5px; }
+.ni-body p { font-size:12px; color:var(--gris); line-height:1.5; }
+.ni-meta { display:flex; align-items:center; gap:10px; font-family:var(--font-d); font-size:11px; color:var(--gris); font-weight:600; margin-top:6px; flex-wrap:wrap; }
+
+/* CATEGORÍAS PILLS */
+.cat-gobierno   { background:var(--azul-light); color:var(--azul-dark); }
+.cat-turismo    { background:rgba(255,204,0,.15); color:#7a5c00; }
+.cat-obras      { background:rgba(43,43,43,.08); color:var(--oscuro); }
+.cat-salud      { background:rgba(198,40,40,.08); color:#8b2020; }
+.cat-cultura    { background:rgba(103,58,183,.1); color:#4527a0; }
+.cat-social     { background:rgba(46,125,50,.1); color:#2e7d32; }
+.cat-deporte    { background:rgba(230,81,0,.08); color:#e65100; }
+
+/* PAGINACIÓN */
+.paginacion { display:flex; align-items:center; gap:6px; margin-top:1.5rem; }
+.pag-btn { width:36px; height:36px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--borde); border-radius:6px; background:white; font-family:var(--font-d); font-size:13px; font-weight:700; color:var(--gris); cursor:pointer; transition:all .15s; }
+.pag-btn:hover { border-color:var(--azul); color:var(--azul); }
+.pag-btn.active { background:var(--azul); border-color:var(--azul); color:white; }
+.pag-btn:disabled { opacity:.4; cursor:not-allowed; }
+
+/* SIDEBAR */
+.sidebar { display:flex; flex-direction:column; gap:1.5rem; }
+.widget { background:white; border:1px solid var(--borde); border-radius:10px; overflow:hidden; }
+.widget-header { background:var(--azul); color:white; padding:11px 16px; font-family:var(--font-d); font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; display:flex; align-items:center; gap:8px; border-left:5px solid var(--amarillo); }
+.widget-body { padding:1rem; }
+
+/* WIDGET CATEGORÍAS */
+.cat-list { list-style:none; }
+.cat-list li { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--gris-claro); cursor:pointer; }
+.cat-list li:last-child { border-bottom:none; }
+.cat-list li:hover .cat-name { color:var(--azul); }
+.cat-name { font-family:var(--font-d); font-size:13px; font-weight:600; color:var(--oscuro); display:flex; align-items:center; gap:7px; }
+.cat-count { font-family:var(--font-d); font-size:11px; font-weight:700; background:var(--gris-claro); color:var(--gris); padding:2px 8px; border-radius:10px; }
+
+/* WIDGET NOTICIAS RÁPIDAS */
+.quick-list { display:flex; flex-direction:column; gap:0; }
+.quick-item { display:flex; gap:10px; padding:9px 0; border-bottom:1px solid var(--gris-claro); cursor:pointer; text-decoration:none; color:inherit; }
+.quick-item:last-child { border-bottom:none; }
+.quick-item:hover .quick-title { color:var(--azul); }
+.quick-thumb { width:52px; height:48px; border-radius:6px; overflow:hidden; flex-shrink:0; }
+.quick-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.quick-title { font-family:var(--font-d); font-size:12px; font-weight:700; color:var(--oscuro); line-height:1.3; margin-bottom:3px; }
+.quick-date { font-family:var(--font-d); font-size:10px; color:var(--gris); font-weight:600; }
+
+/* WIDGET REDES */
+.redes-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.red-btn { display:flex; align-items:center; justify-content:center; gap:7px; padding:10px; border-radius:8px; font-family:var(--font-d); font-size:12px; font-weight:700; text-decoration:none; transition:opacity .15s; }
+.red-btn:hover { opacity:.88; }
+.red-fb { background:#1877f2; color:white; }
+.red-ig { background:linear-gradient(135deg,#e1306c,#fd1d1d,#fcb045); color:white; }
+.red-yt { background:#ff0000; color:white; }
+.red-x  { background:#000; color:white; }
+
+/* NEWSLETTER */
+.newsletter-form { display:flex; flex-direction:column; gap:8px; }
+.nl-input { border:1.5px solid var(--borde); border-radius:6px; padding:9px 12px; font-family:var(--font-body); font-size:13px; color:var(--oscuro); outline:none; transition:border-color .15s; }
+.nl-input:focus { border-color:var(--azul); }
+.nl-btn { background:var(--azul); color:white; font-family:var(--font-d); font-size:12px; font-weight:700; padding:9px; border-radius:6px; border:none; cursor:pointer; text-transform:uppercase; letter-spacing:.04em; transition:background .15s; }
+.nl-btn:hover { background:var(--azul-dark); }
+.nl-note { font-size:11px; color:var(--gris); }
+
+/* MODAL NOTICIA */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:500; align-items:flex-start; justify-content:center; padding:2rem 1rem; overflow-y:auto; }
+.modal-overlay.open { display:flex; }
+.modal { background:white; border-radius:12px; width:100%; max-width:720px; box-shadow:0 20px 60px rgba(0,0,0,.3); margin:auto; }
+.modal-img { height:320px; overflow:hidden; border-radius:12px 12px 0 0; }
+.modal-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.modal-body { padding:2rem; }
+.modal-close-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+.modal-cat-row { display:flex; align-items:center; gap:8px; }
+.modal-close-btn { background:var(--gris-claro); border:none; border-radius:6px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; transition:background .15s; }
+.modal-close-btn:hover { background:var(--borde); }
+.modal-body h2 { font-family:var(--font-d); font-size:1.6rem; font-weight:800; color:var(--oscuro); line-height:1.2; margin-bottom:10px; }
+.modal-meta { display:flex; align-items:center; gap:14px; font-family:var(--font-d); font-size:12px; color:var(--gris); font-weight:600; margin-bottom:1.25rem; flex-wrap:wrap; }
+.modal-text p { font-size:14px; color:var(--gris); line-height:1.75; margin-bottom:1rem; }
+.modal-text p:last-child { margin-bottom:0; }
+.modal-share { padding:1.25rem 2rem; border-top:1px solid var(--gris-claro); display:flex; align-items:center; gap:10px; background:var(--fondo); border-radius:0 0 12px 12px; }
+.modal-share span { font-family:var(--font-d); font-size:12px; font-weight:700; color:var(--gris); text-transform:uppercase; letter-spacing:.05em; }
+.share-btn { font-family:var(--font-d); font-size:11px; font-weight:700; padding:6px 14px; border-radius:5px; border:none; cursor:pointer; transition:opacity .15s; }
+.share-btn:hover { opacity:.85; }
+
+/* NO RESULTS */
+.no-results { text-align:center; padding:3rem 2rem; color:var(--gris); }
+.no-results h3 { font-family:var(--font-d); font-size:1.1rem; font-weight:700; margin-bottom:6px; }
+
+/* CTA */
+.cta-strip { background:var(--azul); padding:2rem 0; margin-top:2rem; }
+.cta-in { max-width:1200px; margin:0 auto; padding:0 2rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
+.cta-in h2 { font-family:var(--font-d); font-size:1.3rem; font-weight:800; color:white; margin-bottom:4px; }
+.cta-in p { color:rgba(255,255,255,.7); font-size:13px; }
+.btn-am { background:var(--amarillo); color:var(--oscuro); font-family:var(--font-d); font-weight:700; font-size:13px; padding:11px 22px; border-radius:6px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:background .15s; letter-spacing:.02em; text-transform:uppercase; }
+.btn-am:hover { background:var(--amarillo-dark); }
+
+@media (max-width:900px) {
+  .noticia-destacada, .main-layout { grid-template-columns:1fr; }
+  .noticia-item { grid-template-columns:100px 1fr; }
+  .nd-img { height:200px; }
+  .sidebar { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV compartido -->
+<div id="muni-top-bar"></div>
+<div id="muni-nav"></div>
+<div id="muni-breadcrumb"></div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-inner">
+    <div class="ph-eye">📰 Municipalidad de Esquina</div>
+    <h1>Noticias municipales</h1>
+    <p>Información oficial, obras, eventos y todo lo que pasa en Esquina.</p>
+  </div>
+</div>
+
+<!-- FILTROS -->
+<div class="filtros-bar">
+  <div class="filtros-inner">
+    <span class="filtros-label">Filtrar por:</span>
+    <button class="filtro-btn active" onclick="filtrar('todos',this)">Todas</button>
+    <button class="filtro-btn" onclick="filtrar('gobierno',this)">Gobierno</button>
+    <button class="filtro-btn" onclick="filtrar('obras',this)">Obras</button>
+    <button class="filtro-btn" onclick="filtrar('salud',this)">Salud</button>
+    <button class="filtro-btn" onclick="filtrar('turismo',this)">Turismo</button>
+    <button class="filtro-btn" onclick="filtrar('cultura',this)">Cultura</button>
+    <button class="filtro-btn" onclick="filtrar('social',this)">Social</button>
+    <div class="search-noticia">
+      <svg width="14" height="14" viewBox="0 0 256 256" fill="none"><circle cx="112" cy="112" r="80" stroke="#aaa" stroke-width="16"/><line x1="168.57" y1="168.57" x2="224" y2="224" stroke="#aaa" stroke-width="16" stroke-linecap="round"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar noticias..." oninput="filtrar(categoriaActual)">
+    </div>
+  </div>
+</div>
+
+<div class="main-layout">
+  <!-- NOTICIAS -->
+  <div>
+
+    <!-- NOTICIA DESTACADA -->
+    <div class="noticia-destacada" data-cat="turismo" onclick="abrirNoticia(0)">
+      <div class="nd-img">
+        <img src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=700&q=80" alt="Fiesta del Pacú">
+        <div class="nd-badge">⭐ Destacada</div>
+      </div>
+      <div class="nd-body">
+        <span class="nd-cat cat-turismo">🗺 Turismo</span>
+        <h2>Todo listo para la 42.ª edición de la Fiesta Nacional del Pacú</h2>
+        <p>La celebración más esperada de la región se prepara para recibir más de 25.000 visitantes durante los próximos días. El municipio confirmó el programa completo con shows, concursos de pesca y actividades gratuitas para toda la familia.</p>
+        <div class="nd-meta">
+          <span>📅 Hoy · 10:30 hs</span>
+          <span>✍ Prensa Municipal</span>
+        </div>
+        <a class="nd-leer" href="#">Leer nota completa →</a>
+      </div>
+    </div>
+
+    <!-- LISTA DE NOTICIAS -->
+    <div id="noticias-lista" class="noticias-lista"></div>
+
+    <div id="no-results" class="no-results" style="display:none;">
+      <h3>No se encontraron noticias</h3>
+      <p>Probá con otros términos o cambiá el filtro de categoría.</p>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div class="paginacion" id="paginacion">
+      <button class="pag-btn" disabled>‹</button>
+      <button class="pag-btn active">1</button>
+      <button class="pag-btn">2</button>
+      <button class="pag-btn">3</button>
+      <span style="font-family:var(--font-d);font-size:12px;color:var(--gris);padding:0 4px;">...</span>
+      <button class="pag-btn">8</button>
+      <button class="pag-btn">›</button>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Categorías -->
+    <div class="widget">
+      <div class="widget-header">📂 Categorías</div>
+      <div class="widget-body">
+        <ul class="cat-list">
+          <li onclick="filtrar('gobierno')"><span class="cat-name"><span class="ni-cat cat-gobierno" style="padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;">Gobierno</span></span><span class="cat-count">24</span></li>
+          <li onclick="filtrar('obras')"><span class="cat-name"><span class="ni-cat cat-obras" style="padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;">Obras</span></span><span class="cat-count">18</span></li>
+          <li onclick="filtrar('salud')"><span class="cat-name"><span class="ni-cat cat-salud" style="padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;">Salud</span></span><span class="cat-count">12</span></li>
+          <li onclick="filtrar('turismo')"><span class="cat-name"><span class="ni-cat cat-turismo" style="padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;">Turismo</span></span><span class="cat-count">15</span></li>
+          <li onclick="filtrar('cultura')"><span class="cat-name"><span class="ni-cat cat-cultura" style="padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;">Cultura</span></span><span class="cat-count">9</span></li>
+          <li onclick="filtrar('social')"><span class="cat-name"><span class="ni-cat cat-social" style="padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;">Social</span></span><span class="cat-count">11</span></li>
+          <li onclick="filtrar('deporte')"><span class="cat-name"><span class="ni-cat cat-deporte" style="padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;">Deporte</span></span><span class="cat-count">7</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Noticias recientes -->
+    <div class="widget">
+      <div class="widget-header">🕐 Noticias recientes</div>
+      <div class="widget-body">
+        <div class="quick-list" id="quick-list"></div>
+      </div>
+    </div>
+
+    <!-- Redes sociales -->
+    <div class="widget">
+      <div class="widget-header">📱 Seguinos</div>
+      <div class="widget-body">
+        <div class="redes-grid">
+          <a href="#" class="red-btn red-fb">f Facebook</a>
+          <a href="#" class="red-btn red-ig">📷 Instagram</a>
+          <a href="#" class="red-btn red-yt">▶ YouTube</a>
+          <a href="#" class="red-btn red-x">𝕏 Twitter / X</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="widget">
+      <div class="widget-header">✉ Suscribirse</div>
+      <div class="widget-body">
+        <p style="font-size:12px;color:var(--gris);margin-bottom:10px;line-height:1.6;">Recibí las noticias del municipio directamente en tu correo.</p>
+        <div class="newsletter-form">
+          <input class="nl-input" type="text" placeholder="Tu nombre">
+          <input class="nl-input" type="email" placeholder="Tu email">
+          <button class="nl-btn">Suscribirme</button>
+          <p class="nl-note">Sin spam. Podés darte de baja cuando quieras.</p>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <div class="cta-in">
+    <div>
+      <h2>¿Tenés una noticia para el municipio?</h2>
+      <p>Comunicate con el área de Prensa y Comunicación del Municipio de Esquina.</p>
+    </div>
+    <button class="btn-am">📞 Contactar prensa</button>
+  </div>
+</section>
+
+<!-- MODAL NOTICIA -->
+<div class="modal-overlay" id="modal-noticia">
+  <div class="modal">
+    <div class="modal-img"><img id="modal-img" src="" alt=""></div>
+    <div class="modal-body">
+      <div class="modal-close-row">
+        <div class="modal-cat-row">
+          <span class="ni-cat" id="modal-cat"></span>
+        </div>
+        <button class="modal-close-btn" onclick="cerrarModal()">✕</button>
+      </div>
+      <h2 id="modal-titulo"></h2>
+      <div class="modal-meta" id="modal-meta"></div>
+      <div class="modal-text" id="modal-texto"></div>
+    </div>
+    <div class="modal-share">
+      <span>Compartir:</span>
+      <button class="share-btn" style="background:#1877f2;color:white;">f Facebook</button>
+      <button class="share-btn" style="background:#000;color:white;">𝕏 Twitter</button>
+      <button class="share-btn" style="background:var(--azul-light);color:var(--azul);">🔗 Copiar link</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER compartido -->
+<div id="muni-footer"></div>
+<script src="nav.js"></script>
+
+<script>
+// ════════════════════════════════════════════════
+//  BASE DE DATOS DE NOTICIAS
+//  Para agregar una noticia: copiá un objeto del
+//  array, editá los campos y guardá el archivo.
+// ════════════════════════════════════════════════
+const NOTICIAS = [
+  {
+    id: 1,
+    titulo: "Avanza la pavimentación del acceso sur: cronograma y cortes de tránsito",
+    resumen: "El municipio informa los desvíos vigentes y la fecha estimada de finalización de la obra vial que beneficiará a más de 5.000 vecinos.",
+    texto: `<p>La Secretaría de Obras Públicas del Municipio de Esquina informa que continúan los trabajos de pavimentación del acceso sur de la ciudad, en el tramo comprendido entre la Av. Independencia y la Ruta Nacional 123.</p><p>La obra, que demandó una inversión de $XXXX millones de pesos, beneficiará a más de 5.000 vecinos de los barrios sur de la ciudad y mejorará el acceso para los turistas que llegan a Esquina por esa arteria.</p><p>Durante los trabajos, que se realizan de lunes a sábado de 07:00 a 18:00 hs, habrá desvíos de tránsito en las calles adyacentes. Los vecinos pueden consultar el detalle de los desvíos en la página de Servicios o llamando al (03777) 420–040.</p><p>La fecha estimada de finalización de los trabajos es el 15 de abril de 2025.</p>`,
+    cat: "obras",
+    catLabel: "🏗 Obras",
+    fecha: "Ayer · 15:20 hs",
+    autor: "Secretaría de Obras",
+    img: "https://images.unsplash.com/photo-1590496793929-36417d3117de?w=600&q=80"
+  },
+  {
+    id: 2,
+    titulo: "Campaña de vacunación antigripal: sin turno en todos los CAP",
+    resumen: "Mayores de 60 años, embarazadas y personal de salud pueden acercarse sin turno previo a cualquier centro de atención primaria.",
+    texto: `<p>El Municipio de Esquina informa que se encuentra activa la campaña de vacunación antigripal para grupos prioritarios. Los centros de atención primaria municipales recibirán sin turno previo a mayores de 60 años, embarazadas, personas con enfermedades crónicas y personal de salud.</p><p>La vacuna es gratuita y se aplica en todos los CAP municipales de lunes a viernes de 07:00 a 13:00 hs. Para grupos no prioritarios, la vacuna estará disponible a partir del 1° de mayo.</p><p>El Intendente destacó la importancia de esta medida preventiva: "Queremos proteger a los vecinos más vulnerables antes de que llegue el frío".</p>`,
+    cat: "salud",
+    catLabel: "🏥 Salud",
+    fecha: "18 Mar · 09:00 hs",
+    autor: "Secretaría de Salud",
+    img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80"
+  },
+  {
+    id: 3,
+    titulo: "Inauguración del nuevo espacio verde en el barrio San Cayetano",
+    resumen: "El municipio habilitó una nueva plaza con juegos infantiles, bancos y iluminación LED en el corazón del barrio.",
+    texto: `<p>Con la presencia del Intendente, vecinos del barrio y representantes de las comisiones vecinales, se inauguró ayer el nuevo espacio verde en el barrio San Cayetano.</p><p>La plaza cuenta con juegos infantiles para diferentes edades, bancos de descanso, senderos peatonales e iluminación LED de bajo consumo. El proyecto surgió a partir de una propuesta de la comisión vecinal y fue financiado con fondos municipales y una partida especial de la Provincia de Corrientes.</p><p>"Este espacio es de los vecinos. Fue pensado con ellos y para ellos", dijo el Intendente durante el acto de inauguración.</p>`,
+    cat: "gobierno",
+    catLabel: "🏛 Gobierno",
+    fecha: "17 Mar · 18:00 hs",
+    autor: "Prensa Municipal",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80"
+  },
+  {
+    id: 4,
+    titulo: "Se realizó el taller de cocina sin TACC para personas celíacas",
+    resumen: "Más de 40 vecinos participaron del taller organizado por el Ministerio de Desarrollo Social en conjunto con el municipio.",
+    texto: `<p>En el marco del programa de apoyo a personas celíacas, se realizó un taller de cocina sin TACC en las instalaciones del Centro Cultural Municipal de Esquina.</p><p>La actividad, que contó con la participación de más de 40 vecinos, fue organizada en conjunto por el Municipio de Esquina y el Ministerio de Desarrollo Social de la Provincia de Corrientes. Los participantes aprendieron técnicas para preparar pan, pastas y repostería sin gluten con ingredientes accesibles.</p>`,
+    cat: "social",
+    catLabel: "🤝 Social",
+    fecha: "16 Mar · 11:00 hs",
+    autor: "Acción Social",
+    img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80"
+  },
+  {
+    id: 5,
+    titulo: "Festival de chamamé en la Plaza 25 de Mayo este fin de semana",
+    resumen: "El municipio organiza una jornada cultural con artistas locales y regionales, entrada libre y gratuita.",
+    texto: `<p>La Secretaría de Cultura y Turismo del Municipio de Esquina anuncia la realización del Festival de Chamamé en la Plaza 25 de Mayo, este sábado 22 de marzo a partir de las 20:00 hs.</p><p>El evento contará con la participación de artistas locales y grupos invitados de la región. La entrada es libre y gratuita. En el lugar habrá puestos gastronómicos con comidas y bebidas típicas correntinas.</p><p>"El chamamé es nuestra música, nuestra identidad. Queremos que los vecinos la disfruten en familia", expresó el Secretario de Cultura.</p>`,
+    cat: "cultura",
+    catLabel: "🎭 Cultura",
+    fecha: "15 Mar · 14:30 hs",
+    autor: "Secretaría de Cultura",
+    img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80"
+  },
+  {
+    id: 6,
+    titulo: "Torneo municipal de fútbol infantil: inscripciones abiertas hasta el 31 de marzo",
+    resumen: "Pueden participar equipos de niños de 6 a 14 años de todo el ejido municipal. La inscripción es gratuita.",
+    texto: `<p>La Dirección de Deportes del Municipio de Esquina informa que se encuentran abiertas las inscripciones para el Torneo Municipal de Fútbol Infantil 2025. Pueden participar equipos de niños y niñas de 6 a 14 años pertenecientes a clubes, escuelas, barrios o grupos organizados del ejido municipal.</p><p>La inscripción es gratuita y se realiza en la Dirección de Deportes, ubicada en 25 de Mayo 511, de lunes a viernes de 07:00 a 13:00 hs. El torneo comenzará el 5 de abril.</p>`,
+    cat: "deporte",
+    catLabel: "⚽ Deporte",
+    fecha: "14 Mar · 10:00 hs",
+    autor: "Dirección de Deportes",
+    img: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80"
+  },
+  {
+    id: 7,
+    titulo: "El municipio participa de la Feria Internacional de Caza, Pesca y Outdoor en Buenos Aires",
+    resumen: "Esquina tiene presencia en el stand del Ministerio de Turismo de Corrientes con información sobre la Fiesta del Pacú y la oferta turística local.",
+    texto: `<p>En el marco de la 29.ª Feria Internacional de Caza, Pesca y Outdoor que se desarrolla en el predio de la Sociedad Rural Argentina, el Municipio de Esquina participa en el stand del Ministerio de Turismo de Corrientes.</p><p>La delegación esquinense está promocionando la 42.ª Fiesta Nacional del Pacú, el turismo de pesca en los ríos Corriente y Paraná, y la oferta de alojamiento y gastronomía local.</p>`,
+    cat: "turismo",
+    catLabel: "🗺 Turismo",
+    fecha: "13 Mar · 09:30 hs",
+    autor: "Secretaría de Turismo",
+    img: "https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=600&q=80"
+  },
+  {
+    id: 8,
+    titulo: "Sesión ordinaria del Concejo Deliberante: aprobación del presupuesto 2025",
+    resumen: "Por unanimidad, el Concejo aprobó el presupuesto municipal para el ejercicio 2025 con un incremento del 45% respecto al año anterior.",
+    texto: `<p>En sesión ordinaria realizada el pasado miércoles, el Honorable Concejo Deliberante de Esquina aprobó por unanimidad el Presupuesto Municipal para el ejercicio 2025.</p><p>El presupuesto aprobado prevé un incremento del 45% en términos nominales respecto al ejercicio anterior, con especial énfasis en obra pública, salud y programas sociales. El documento fue enviado por el Ejecutivo Municipal en el mes de noviembre y tuvo dos rondas de debate en comisiones.</p>`,
+    cat: "gobierno",
+    catLabel: "🏛 Gobierno",
+    fecha: "12 Mar · 20:00 hs",
+    autor: "Concejo Deliberante",
+    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80"
+  },
+];
+
+// ════════════════════════════════
+//  LÓGICA DE FILTRADO Y RENDER
+// ════════════════════════════════
+let categoriaActual = 'todos';
+
+function filtrar(cat, btn) {
+  if (btn) {
+    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  if (cat !== undefined) categoriaActual = cat;
+  const q = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+  const lista = NOTICIAS.filter(n => {
+    const matchCat = categoriaActual === 'todos' || n.cat === categoriaActual;
+    const matchQ   = q === '' || n.titulo.toLowerCase().includes(q) || n.resumen.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  renderLista(lista);
+}
+
+function renderLista(lista) {
+  const container = document.getElementById('noticias-lista');
+  const noRes     = document.getElementById('no-results');
+  if (lista.length === 0) { container.innerHTML = ''; noRes.style.display = 'block'; return; }
+  noRes.style.display = 'none';
+  container.innerHTML = lista.map(n => `
+    <a class="noticia-item" onclick="abrirNoticia(${n.id});return false;" href="#" data-cat="${n.cat}">
+      <div class="ni-img"><img src="${n.img}" alt="${n.titulo}" loading="lazy"></div>
+      <div class="ni-body">
+        <span class="ni-cat ${getCatClass(n.cat)}">${n.catLabel}</span>
+        <h3>${n.titulo}</h3>
+        <p>${n.resumen}</p>
+        <div class="ni-meta"><span>📅 ${n.fecha}</span><span>✍ ${n.autor}</span></div>
+      </div>
+    </a>`).join('');
+}
+
+function getCatClass(cat) {
+  const map = { gobierno:'cat-gobierno', turismo:'cat-turismo', obras:'cat-obras', salud:'cat-salud', cultura:'cat-cultura', social:'cat-social', deporte:'cat-deporte' };
+  return map[cat] || 'cat-gobierno';
+}
+
+function abrirNoticia(id) {
+  const n = id === 0
+    ? { titulo:'Todo listo para la 42.ª edición de la Fiesta Nacional del Pacú', catLabel:'🗺 Turismo', cat:'turismo', fecha:'Hoy · 10:30 hs', autor:'Prensa Municipal', img:'https://images.unsplash.com/photo-1504297050568-910d24c426d3?w=800&q=80', texto:'<p>La celebración más esperada de la región se prepara para recibir más de 25.000 visitantes durante los próximos días. El municipio confirmó el programa completo con shows, concursos de pesca y actividades gratuitas para toda la familia.</p><p>La Fiesta Nacional del Pacú 2025 tendrá lugar del 20 al 23 de marzo en la costa del Río Corriente. La entrada a todos los espectáculos es libre y gratuita.</p>' }
+    : NOTICIAS.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById('modal-img').src = n.img;
+  document.getElementById('modal-img').alt = n.titulo;
+  document.getElementById('modal-cat').className = `ni-cat ${getCatClass(n.cat)}`;
+  document.getElementById('modal-cat').textContent = n.catLabel;
+  document.getElementById('modal-titulo').textContent = n.titulo;
+  document.getElementById('modal-meta').innerHTML = `<span>📅 ${n.fecha}</span><span>✍ ${n.autor}</span>`;
+  document.getElementById('modal-texto').innerHTML = n.texto;
+  document.getElementById('modal-noticia').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal() {
+  document.getElementById('modal-noticia').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-noticia').addEventListener('click', function(e) {
+  if (e.target === this) cerrarModal();
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+
+// Sidebar quick list
+function renderQuickList() {
+  const ql = document.getElementById('quick-list');
+  if (!ql) return;
+  ql.innerHTML = NOTICIAS.slice(0,5).map(n => `
+    <a class="quick-item" onclick="abrirNoticia(${n.id});return false;" href="#">
+      <div class="quick-thumb"><img src="${n.img}" alt="${n.titulo}" loading="lazy"></div>
+      <div>
+        <div class="quick-title">${n.titulo.length > 55 ? n.titulo.slice(0,55)+'…' : n.titulo}</div>
+        <div class="quick-date">📅 ${n.fecha}</div>
+      </div>
+    </a>`).join('');
+}
+
+// Init
+filtrar('todos');
+renderQuickList();
+</script>
+</body>
+</html>
