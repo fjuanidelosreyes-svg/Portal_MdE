@@ -31,13 +31,9 @@
   ];
 
   // ── BASE URL (funciona local y en GitHub Pages) ─────────
-  // Detecta automáticamente si estás en localhost o en un subpath de GitHub Pages
-  const pathParts   = window.location.pathname.split("/");
-  const currentFile = pathParts.pop() || "index.html";
-  // Si hay un segmento antes del archivo (ej: /Portal_MdE/) lo usamos como base
-  const basePath    = pathParts.length > 1
-    ? pathParts.slice(0, -0).join("/").replace(/\/$/, "") + "/"
-    : "";
+  // Toma todo el path hasta el último slash — funciona en /Portal_MdE/ o en raíz
+  const basePath    = window.location.pathname.replace(/\/[^\/]*$/, "/");
+  const currentFile = window.location.pathname.split("/").pop() || "index.html";
 
   // Prefija la base a todos los hrefs de las páginas
   PAGES.forEach(p => { p.href = basePath + p.href; });
