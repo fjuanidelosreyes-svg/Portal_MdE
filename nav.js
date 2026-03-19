@@ -30,11 +30,23 @@
     { id: "noticias",  label: "Noticias",  href: "noticias-esquina.html",  icon: "📰" },
   ];
 
-  // ── DETECTAR PÁGINA ACTIVA ──────────────────────────────
-  const currentFile = window.location.pathname.split("/").pop() || "index.html";
-  const activePage  = PAGES.find(p => currentFile.includes(p.id)) || PAGES[0];
+  // ── BASE URL (funciona local y en GitHub Pages) ─────────
+  // Detecta automáticamente si estás en localhost o en un subpath de GitHub Pages
+  const pathParts   = window.location.pathname.split("/");
+  const currentFile = pathParts.pop() || "index.html";
+  // Si hay un segmento antes del archivo (ej: /Portal_MdE/) lo usamos como base
+  const basePath    = pathParts.length > 1
+    ? pathParts.slice(0, -0).join("/").replace(/\/$/, "") + "/"
+    : "";
 
-  // ── INYECTAR CSS BASE ───────────────────────────────────
+  // Prefija la base a todos los hrefs de las páginas
+  PAGES.forEach(p => { p.href = basePath + p.href; });
+
+  // ── DETECTAR PÁGINA ACTIVA ──────────────────────────────
+  const activePage = PAGES.find(p => currentFile.includes(p.id)) || PAGES[0];
+
+  const turHref  = basePath + "turismo-esquina.html";
+  const idxHref  = basePath + "index.html";
   const style = document.createElement("style");
   style.textContent = `
     .muni-top-bar { background:#2b2b2b; padding:6px 0; }
@@ -120,7 +132,7 @@
   nav.className = "muni-nav";
   nav.innerHTML = `
     <div class="muni-nav-inner">
-      <a href="index.html" class="muni-logo">
+      <a href="${idxHref}" class="muni-logo">
         <div class="muni-escudo">ME</div>
         <div class="muni-logo-text">
           <strong>${MUNICIPIO.nombre}</strong>
@@ -141,7 +153,7 @@
     </div>
     <div class="muni-mobile-menu" id="muni-mobile-menu">
       ${PAGES.map(p => `<a href="${p.href}" class="${p.id === activePage.id ? 'active' : ''}">${p.icon} ${p.label}</a>`).join("")}
-      <a href="turismo-esquina.html">🗺 Turismo</a>
+      <a href="${turHref}">🗺 Turismo</a>
     </div>`;
 
   // ── BREADCRUMB ───────────────────────────────────────────
@@ -149,7 +161,7 @@
   breadcrumb.className = "muni-breadcrumb";
   const bcItems = activePage.id === "index"
     ? `<span>Inicio</span>`
-    : `<a href="index.html">Inicio</a>
+    : `<a href="${idxHref}">Inicio</a>
        <svg width="12" height="12" viewBox="0 0 256 256" fill="none"><polyline points="96,48 160,128 96,208" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
        <span>${activePage.label}</span>`;
   breadcrumb.innerHTML = `<div class="muni-bc-inner">${bcItems}</div>`;
@@ -183,27 +195,27 @@
       </div>
       <div class="muni-footer-col">
         <h4>Gobierno</h4>
-        <a href="gobierno-esquina.html">Intendencia</a>
-        <a href="gobierno-esquina.html#sec-concejo">Concejo Deliberante</a>
-        <a href="gobierno-esquina.html#sec-organigrama">Organigrama</a>
-        <a href="gobierno-esquina.html#sec-transparencia">Carta Orgánica</a>
-        <a href="gobierno-esquina.html#sec-transparencia">Boletín Oficial</a>
+        <a href="${basePath}gobierno-esquina.html">Intendencia</a>
+        <a href="${basePath}gobierno-esquina.html#sec-concejo">Concejo Deliberante</a>
+        <a href="${basePath}gobierno-esquina.html#sec-organigrama">Organigrama</a>
+        <a href="${basePath}gobierno-esquina.html#sec-transparencia">Carta Orgánica</a>
+        <a href="${basePath}gobierno-esquina.html#sec-transparencia">Boletín Oficial</a>
       </div>
       <div class="muni-footer-col">
         <h4>Vecinos</h4>
-        <a href="tramites-esquina.html">Trámites online</a>
-        <a href="servicios-esquina.html#panel-agua">Agua y saneamiento</a>
-        <a href="servicios-esquina.html#panel-residuos">Recolección de residuos</a>
-        <a href="servicios-esquina.html#panel-salud">Salud municipal</a>
-        <a href="servicios-esquina.html#panel-denuncias">Denuncias y reclamos</a>
+        <a href="${basePath}tramites-esquina.html">Trámites online</a>
+        <a href="${basePath}servicios-esquina.html">Agua y saneamiento</a>
+        <a href="${basePath}servicios-esquina.html">Recolección de residuos</a>
+        <a href="${basePath}servicios-esquina.html">Salud municipal</a>
+        <a href="${basePath}servicios-esquina.html">Denuncias y reclamos</a>
       </div>
       <div class="muni-footer-col">
         <h4>Turismo</h4>
-        <a href="turismo-esquina.html">Qué hacer</a>
-        <a href="turismo-esquina.html#sec-pacu">Fiesta del Pacú</a>
-        <a href="turismo-esquina.html#sec-alojamiento">Alojamiento</a>
-        <a href="turismo-esquina.html#sec-gastro">Gastronomía</a>
-        <a href="turismo-esquina.html#sec-llegar">Cómo llegar</a>
+        <a href="${turHref}">Qué hacer</a>
+        <a href="${turHref}#sec-pacu">Fiesta del Pacú</a>
+        <a href="${turHref}#sec-alojamiento">Alojamiento</a>
+        <a href="${turHref}#sec-gastro">Gastronomía</a>
+        <a href="${turHref}#sec-llegar">Cómo llegar</a>
       </div>
     </div>
     <div class="muni-footer-bottom">
